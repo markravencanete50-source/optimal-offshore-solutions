@@ -112,7 +112,7 @@ export const team = [
     role: "Founder",
     name: "Mark Raven Cañete",
     position: "Technology & Operations",
-    photo: null,
+    photo: "/images/team/mark-raven-canete.jpg",
     bio: "Operations and automation specialist spanning BPO leadership, web development and business-process automation. Mark builds the technology backbone behind delivery — from AI-powered client tools to internal reporting — so every managed team runs on modern, transparent infrastructure.",
   },
   {
@@ -120,7 +120,7 @@ export const team = [
     role: "Co-Founder",
     name: "Karl Ian Martin Cañeda",
     position: "Client Operations",
-    photo: null,
+    photo: "/images/team/karl-ian-caneda.jpeg",
     bio: "15+ years of operations leadership across healthcare, telecom, financial services and logistics, including roles at Sagility, Tech Mahindra and Fusion BPO. Karl builds high-performing teams, closes performance gaps through structured coaching, and runs multi-account operations that hit SLA and financial targets at once.",
   },
   {
@@ -128,7 +128,7 @@ export const team = [
     role: "Co-Founder",
     name: "Rizzie Lynne Larios",
     position: "Healthcare Operations",
-    photo: null,
+    photo: "/images/team/rizzie-larios.png",
     bio: "15+ years of contact-centre and healthcare operations leadership, including account management at Optum Global Solutions and Fusion BPO's US Healthcare division. A licensed Registered Nurse by training — a rare pairing of clinical depth and operations expertise on every healthcare account.",
   },
   {
@@ -136,7 +136,7 @@ export const team = [
     role: "Co-Founder",
     name: "Lynlee Gesoro",
     position: "Workforce Management",
-    photo: null,
+    photo: "/images/team/lynlee-gesoro.jpg",
     bio: "Workforce specialist with hands-on experience in real-time analytics, demand forecasting and resource scheduling at Teleperformance and Tech Mahindra. Lynlee keeps every account properly staffed and SLA-compliant, turning performance data into proactive coverage decisions.",
   },
   {
@@ -144,7 +144,7 @@ export const team = [
     role: "Co-Founder",
     name: "Karl Ivan David “KID” Cañeda",
     position: "Service Delivery & Quality",
-    photo: null,
+    photo: "/images/team/kid-caneda.png",
     bio: "13+ years of operations leadership across BPO, healthcare and tech — Concentrix, Tech Mahindra, Foundever and UnitedHealth's Optum. KID translates client objectives into processes that exceed SLA targets (CSAT, AHT, FCR), backed by Lean/Six Sigma and a background in HR and org development.",
   },
 ];

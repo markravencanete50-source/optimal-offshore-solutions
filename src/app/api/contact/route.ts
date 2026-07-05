@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { FieldValue } from "firebase-admin/firestore";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { getAdminDb } from "@/lib/firebaseAdmin";
+import { getClientDb } from "@/lib/firebaseClient";
 
 export const runtime = "nodejs";
 
@@ -54,20 +56,31 @@ export async function POST(req: Request) {
     createdAt: new Date().toISOString(),
   };
 
-  const db = getAdminDb();
-  if (!db) {
-    // Firebase not configured yet — don't lose the lead: log it server-side
-    // so it's recoverable, and let the visitor see success.
-    console.warn("[contact] Firebase Admin not configured. Lead (unstored):", lead);
-    return NextResponse.json({ success: true, stored: false });
-  }
-
   try {
-    await db.collection("leads").add({
-      ...lead,
-      createdAt: FieldValue.serverTimestamp(),
-    });
-    return NextResponse.json({ success: true, stored: true });
+    // Preferred: Admin SDK (most spam-resistant) when a service account is set.
+    const adminDb = getAdminDb();
+    if (adminDb) {
+      await adminDb.collection("leads").add({
+        ...lead,
+        createdAt: FieldValue.serverTimestamp(),
+      });
+      return NextResponse.json({ success: true, stored: true });
+    }
+
+    // Fallback: client SDK using the public web config. Requires Firestore
+    // rules that allow validated `create` on the `leads` collection.
+    const clientDb = getClientDb();
+    if (clientDb) {
+      await addDoc(collection(clientDb, "leads"), {
+        ...lead,
+        createdAt: serverTimestamp(),
+      });
+      return NextResponse.json({ success: true, stored: true });
+    }
+
+    // Nothing configured — don't lose the lead: log it so it's recoverable.
+    console.warn("[contact] Firebase not configured. Lead (unstored):", lead);
+    return NextResponse.json({ success: true, stored: false });
   } catch (err) {
     console.error("[contact] Failed to store lead:", err);
     return NextResponse.json(

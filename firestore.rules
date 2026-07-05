@@ -1,11 +1,28 @@
 rules_version = '2';
 
-// Leads are written server-side by the Admin SDK (which bypasses these rules).
-// This ruleset locks the database down for all client access by default.
-// Loosen specific collections later if you add public client-side reads
-// (e.g. published case studies).
+// Contact leads are created from the website (client SDK) with size-bounded,
+// typed fields. Nobody can read, update, or delete them from the client — only
+// your Firebase console / Admin SDK can. Everything else is locked down.
 service cloud.firestore {
   match /databases/{database}/documents {
+
+    match /leads/{doc} {
+      allow create: if
+        request.resource.data.firstName is string
+        && request.resource.data.firstName.size() > 0
+        && request.resource.data.firstName.size() < 100
+        && request.resource.data.email is string
+        && request.resource.data.email.size() < 200
+        && request.resource.data.email.matches('^[^@\\s]+@[^@\\s]+[.][^@\\s]+$')
+        && request.resource.data.company is string
+        && request.resource.data.company.size() < 200
+        && request.resource.data.industry is string
+        && request.resource.data.industry.size() < 100
+        && request.resource.data.challenge is string
+        && request.resource.data.challenge.size() < 5000;
+      allow read, update, delete: if false;
+    }
+
     match /{document=**} {
       allow read, write: if false;
     }

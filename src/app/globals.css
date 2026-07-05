@@ -605,6 +605,13 @@ section {
   position: relative;
   overflow: hidden;
 }
+/* real headshot */
+.member .av.photo {
+  object-fit: cover;
+  object-position: center top;
+  border: 1px solid var(--line-2);
+  border-style: solid;
+}
 .member .av .ph {
   position: absolute;
   bottom: -2px;

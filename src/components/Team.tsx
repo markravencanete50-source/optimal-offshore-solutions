@@ -28,11 +28,15 @@ export default function Team() {
         <div className="team-grid">
           {team.map((m, i) => (
             <Reveal className="member" key={m.name} delay={(i % 3) * 0.07}>
-              {/* Photos are being collected — placeholder shows initials for now */}
-              <div className="av" aria-hidden="true">
-                {m.initials}
-                <span className="ph">photo soon</span>
-              </div>
+              {m.photo ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img className="av photo" src={m.photo} alt={m.name} loading="lazy" />
+              ) : (
+                <div className="av" aria-hidden="true">
+                  {m.initials}
+                  <span className="ph">photo soon</span>
+                </div>
+              )}
               <div className="role">{m.role}</div>
               <h3>{m.name}</h3>
               <div className="pos">{m.position}</div>
