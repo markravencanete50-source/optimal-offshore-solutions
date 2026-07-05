@@ -1,6 +1,4 @@
 import Reveal from "./Reveal";
-import CountUp from "./CountUp";
-import { gauges } from "@/lib/content";
 
 export default function Hero() {
   return (
@@ -34,34 +32,6 @@ export default function Hero() {
             <a href="#approach" className="btn btn-ghost">
               See how a pilot works
             </a>
-          </div>
-        </Reveal>
-
-        {/* SIGNATURE: ops readout */}
-        <Reveal delay={0.3}>
-          <div className="readout">
-            <div className="readout-top">
-              <span>Operating scorecard</span>
-              <span className="live">
-                <span className="dot" />
-                Metrics we&apos;re measured on
-              </span>
-            </div>
-            <div className="gauges">
-              {gauges.map((g) => (
-                <div className="gauge" key={g.k}>
-                  <div className="k">{g.k}</div>
-                  <div className="v">
-                    <CountUp end={g.count} prefix={g.prefix} suffix={g.suffix} />
-                  </div>
-                  <div className="n">{g.note}</div>
-                </div>
-              ))}
-            </div>
-            <div className="readout-foot">
-              // Representative operating targets — every engagement is baselined to your own KPIs
-              on day one.
-            </div>
           </div>
         </Reveal>
       </div>
