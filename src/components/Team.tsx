@@ -29,24 +29,30 @@ export default function Team() {
           {team.map((m, i) => (
             <Reveal className="member" key={m.name} delay={(i % 3) * 0.07}>
               {m.photo ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img className="av photo" src={m.photo} alt={m.name} loading="lazy" />
+                <div className="portrait">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={m.photo} alt={m.name} loading="lazy" />
+                </div>
               ) : (
-                <div className="av" aria-hidden="true">
-                  {m.initials}
-                  <span className="ph">photo soon</span>
+                <div className="portrait placeholder">
+                  <span>Photo soon</span>
                 </div>
               )}
-              <div className="role">{m.role}</div>
-              <h3>{m.name}</h3>
-              <div className="pos">{m.position}</div>
-              <p>{m.bio}</p>
+              <div className="content">
+                <div className="role">{m.role}</div>
+                <h3>{m.name}</h3>
+                <div className="pos">{m.position}</div>
+                <p>{m.bio}</p>
+              </div>
             </Reveal>
           ))}
 
           {/* Open seat — assigned per engagement */}
           <Reveal className="member" delay={0.14}>
-            <div style={{ justifyContent: "center", display: "flex", flexDirection: "column", flex: 1 }}>
+            <div className="portrait placeholder">
+              <span>Growing</span>
+            </div>
+            <div className="content">
               <div className="role" style={{ color: "var(--faint)" }}>
                 Growing
               </div>

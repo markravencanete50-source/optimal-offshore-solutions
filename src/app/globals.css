@@ -584,42 +584,47 @@ section {
 }
 .member {
   background: var(--card);
-  padding: 30px 28px 32px;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 }
-/* empty photo placeholder — team photos still being collected */
-.member .av {
-  width: 64px;
-  height: 64px;
-  border-radius: 50%;
-  border: 1px dashed var(--line-2);
+/* full-width portrait at the top of each card */
+.member .portrait {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  background: var(--paper);
+}
+.member .portrait img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+  transition: transform 0.55s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.member:hover .portrait img {
+  transform: scale(1.045);
+}
+/* placeholder for cards without a photo (open seat / not yet collected) */
+.member .portrait.placeholder {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: var(--serif);
-  font-size: 20px;
-  color: var(--signal-ink);
-  margin-bottom: 20px;
-  background: var(--paper);
-  position: relative;
-  overflow: hidden;
+  border-bottom: 1px solid var(--line);
+  background: linear-gradient(160deg, var(--paper), var(--panel));
 }
-/* real headshot */
-.member .av.photo {
-  object-fit: cover;
-  object-position: center top;
-  border: 1px solid var(--line-2);
-  border-style: solid;
-}
-.member .av .ph {
-  position: absolute;
-  bottom: -2px;
+.member .portrait.placeholder span {
   font-family: var(--mono);
-  font-size: 7px;
-  letter-spacing: 0.08em;
+  font-size: 11px;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--faint);
+}
+.member .content {
+  padding: 24px 26px 28px;
+  display: flex;
+  flex-direction: column;
 }
 .member .role {
   font-family: var(--mono);
