@@ -25,7 +25,7 @@ const mono = IBM_Plex_Mono({
   display: "swap",
 });
 
-const siteUrl = process.env.NEXT_PUBLIC_APP_URL || "https://optimaloffshore.com";
+const siteUrl = process.env.NEXT_PUBLIC_APP_URL || "https://optimaloffshoresolutions.com";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),

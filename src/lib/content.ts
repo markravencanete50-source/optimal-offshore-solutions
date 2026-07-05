@@ -5,7 +5,10 @@ export const company = {
   name: "Optimal Offshore Solutions",
   short: "Optimal Offshore",
   tagline: "Scalable operations. Trusted expertise. A KPO delivery team that runs to the number.",
-  email: "hello@optimaloffshore.com",
+  domain: "optimaloffshoresolutions.com",
+  email: "hello@optimaloffshoresolutions.com",
+  salesEmail: "sales@optimaloffshoresolutions.com",
+  careersEmail: "careers@optimaloffshoresolutions.com",
   location: "Bohol, Philippines",
   serving: "Serving US & APAC",
 };

@@ -77,7 +77,7 @@ export default function OpengraphImage() {
             <div style={{ color: MUTED, fontSize: 24 }}>
               Scalable, SLA-accountable customer &amp; back-office operations.
             </div>
-            <div style={{ color: GOLD_DEEP, fontSize: 22, letterSpacing: 2 }}>optimaloffshore.com</div>
+            <div style={{ color: GOLD_DEEP, fontSize: 22, letterSpacing: 2 }}>optimaloffshoresolutions.com</div>
           </div>
         </div>
       </div>
