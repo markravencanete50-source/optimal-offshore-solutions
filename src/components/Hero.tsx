@@ -19,9 +19,11 @@ export default function Hero() {
         </Reveal>
         <Reveal delay={0.16}>
           <p className="lead">
-            Optimal Offshore Solutions is a KPO delivery team built by BPO operators. We stand up,
-            recover, and scale customer and back-office operations that stay in SLA — and prove it
-            on a dashboard you can actually see.
+            We are a specialized KPO (Knowledge Process Outsourcing) delivery unit composed of
+            professionals with experience across telecommunications, technical support, travel,
+            healthcare, and digital platforms. Our team combines operational leadership, KPI-driven
+            performance management, and customer experience excellence. We deliver scalable, reliable
+            customer support operations designed to improve service quality and efficiency.
           </p>
         </Reveal>
         <Reveal delay={0.24}>

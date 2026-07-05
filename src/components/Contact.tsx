@@ -2,7 +2,7 @@
 
 import { useState, type FormEvent } from "react";
 import Reveal from "./Reveal";
-import { company, industries } from "@/lib/content";
+import { industries } from "@/lib/content";
 
 type Status = "idle" | "submitting" | "ok" | "error";
 
@@ -51,15 +51,6 @@ export default function Contact() {
               Tell us the program you&apos;re worried about. We&apos;ll come back with how a low-risk
               pilot would work, and the exact metrics we&apos;d hold ourselves to.
             </p>
-            <div className="contact">
-              <div>
-                <b>{company.email}</b>
-              </div>
-              <div>
-                {company.location} &nbsp;·&nbsp; {company.serving}
-              </div>
-              <div>Response within one business day</div>
-            </div>
           </Reveal>
 
           <Reveal className="form" delay={0.1}>
