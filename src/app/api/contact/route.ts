@@ -3,6 +3,7 @@ import { FieldValue } from "firebase-admin/firestore";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { getAdminDb } from "@/lib/firebaseAdmin";
 import { getClientDb } from "@/lib/firebaseClient";
+import { sendLeadEmails } from "@/lib/email";
 
 export const runtime = "nodejs";
 
@@ -56,31 +57,24 @@ export async function POST(req: Request) {
     createdAt: new Date().toISOString(),
   };
 
+  let stored = false;
   try {
     // Preferred: Admin SDK (most spam-resistant) when a service account is set.
     const adminDb = getAdminDb();
     if (adminDb) {
-      await adminDb.collection("leads").add({
-        ...lead,
-        createdAt: FieldValue.serverTimestamp(),
-      });
-      return NextResponse.json({ success: true, stored: true });
+      await adminDb.collection("leads").add({ ...lead, createdAt: FieldValue.serverTimestamp() });
+      stored = true;
+    } else {
+      // Fallback: client SDK using the public web config. Requires Firestore
+      // rules that allow validated `create` on the `leads` collection.
+      const clientDb = getClientDb();
+      if (clientDb) {
+        await addDoc(collection(clientDb, "leads"), { ...lead, createdAt: serverTimestamp() });
+        stored = true;
+      } else {
+        console.warn("[contact] Firebase not configured. Lead (unstored):", lead);
+      }
     }
-
-    // Fallback: client SDK using the public web config. Requires Firestore
-    // rules that allow validated `create` on the `leads` collection.
-    const clientDb = getClientDb();
-    if (clientDb) {
-      await addDoc(collection(clientDb, "leads"), {
-        ...lead,
-        createdAt: serverTimestamp(),
-      });
-      return NextResponse.json({ success: true, stored: true });
-    }
-
-    // Nothing configured — don't lose the lead: log it so it's recoverable.
-    console.warn("[contact] Firebase not configured. Lead (unstored):", lead);
-    return NextResponse.json({ success: true, stored: false });
   } catch (err) {
     console.error("[contact] Failed to store lead:", err);
     return NextResponse.json(
@@ -88,4 +82,10 @@ export async function POST(req: Request) {
       { status: 500 },
     );
   }
+
+  // Email the lead out (best-effort; never throws). No-op until RESEND_API_KEY is set.
+  const emailResult = await sendLeadEmails(lead);
+  if (emailResult.error) console.error("[contact] Email send failed:", emailResult.error);
+
+  return NextResponse.json({ success: true, stored, notified: emailResult.notified });
 }
