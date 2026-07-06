@@ -30,7 +30,7 @@ export default function Differentiators() {
               </span>
             </div>
             <div className="scorecard-chart">
-              <svg viewBox="0 0 480 190" width="100%" height="auto">
+              <svg viewBox="0 0 480 190" width="100%" height="auto" aria-hidden focusable={false}>
                 <line x1="20" y1="40" x2="460" y2="40" stroke="#22303A" strokeWidth="1" />
                 <line x1="20" y1="90" x2="460" y2="90" stroke="#22303A" strokeWidth="1" />
                 <line x1="20" y1="140" x2="460" y2="140" stroke="#22303A" strokeWidth="1" />

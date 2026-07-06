@@ -12,6 +12,8 @@ const vizProps = {
   width: "100%",
   height: "100%",
   style: { display: "block" as const },
+  "aria-hidden": true,
+  focusable: false,
 };
 
 export const serviceMotifs: Record<string, ReactNode> = {
@@ -129,7 +131,7 @@ export const serviceMotifs: Record<string, ReactNode> = {
 export const coreValueIcons: Record<string, ReactNode> = {
   // concentric target + center dot
   excellence: (
-    <svg width="40" height="40" viewBox="0 0 40 40" style={{ flex: "none" }}>
+    <svg width="40" height="40" viewBox="0 0 40 40" style={{ flex: "none" }} aria-hidden focusable={false}>
       <circle cx="20" cy="20" r="15" fill="none" stroke="#94700F" strokeWidth="2" />
       <circle cx="20" cy="20" r="8" fill="none" stroke="#E6C04B" strokeWidth="2" />
       <circle cx="20" cy="20" r="2.5" fill="#94700F" />
@@ -137,14 +139,14 @@ export const coreValueIcons: Record<string, ReactNode> = {
   ),
   // check inside a ring
   integrity: (
-    <svg width="40" height="40" viewBox="0 0 40 40" style={{ flex: "none" }}>
+    <svg width="40" height="40" viewBox="0 0 40 40" style={{ flex: "none" }} aria-hidden focusable={false}>
       <circle cx="20" cy="20" r="15" fill="none" stroke="#94700F" strokeWidth="2" />
       <polyline points="13,20 18,25 27,14" fill="none" stroke="#E6C04B" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   ),
   // 4-point spark + center dot
   innovation: (
-    <svg width="40" height="40" viewBox="0 0 40 40" style={{ flex: "none" }}>
+    <svg width="40" height="40" viewBox="0 0 40 40" style={{ flex: "none" }} aria-hidden focusable={false}>
       <line x1="20" y1="8" x2="20" y2="32" stroke="#94700F" strokeWidth="2" />
       <line x1="8" y1="20" x2="32" y2="20" stroke="#94700F" strokeWidth="2" />
       <line x1="12" y1="12" x2="28" y2="28" stroke="#E6C04B" strokeWidth="2" />

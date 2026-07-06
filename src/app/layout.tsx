@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Newsreader, IBM_Plex_Sans, IBM_Plex_Mono } from "next/font/google";
 import { ScrollProgress } from "@/components/motion";
+import { company } from "@/lib/content";
 import "./globals.css";
 
 const serif = Newsreader({
@@ -57,10 +58,48 @@ export const metadata: Metadata = {
   },
 };
 
+// Organization structured data (JSON-LD) so search engines can associate the
+// name, logo, location and contact details — eligible for rich results.
+const organizationSchema = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: company.name,
+  alternateName: company.short,
+  url: siteUrl,
+  logo: `${siteUrl}/opengraph-image`,
+  image: `${siteUrl}/opengraph-image`,
+  description:
+    "A KPO delivery team built by BPO operators. We stand up, recover, and scale customer and back-office operations that stay in SLA — and prove it on a dashboard you can see.",
+  email: company.email,
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: "Bohol",
+    addressCountry: "PH",
+  },
+  areaServed: ["US", "APAC"],
+  knowsAbout: [
+    "Knowledge Process Outsourcing",
+    "Business Process Outsourcing",
+    "Customer support outsourcing",
+    "Program recovery",
+    "Workforce management",
+    "Healthcare operations",
+  ],
+  contactPoint: {
+    "@type": "ContactPoint",
+    contactType: "sales",
+    email: company.salesEmail,
+  },
+};
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${serif.variable} ${sans.variable} ${mono.variable}`}>
       <body>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+        />
         <ScrollProgress />
         {children}
       </body>
