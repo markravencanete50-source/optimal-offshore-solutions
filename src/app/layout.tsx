@@ -66,7 +66,7 @@ const organizationSchema = {
   name: company.name,
   alternateName: company.short,
   url: siteUrl,
-  logo: `${siteUrl}/opengraph-image`,
+  logo: `${siteUrl}/logo.svg`,
   image: `${siteUrl}/opengraph-image`,
   description:
     "A KPO delivery team built by BPO operators. We stand up, recover, and scale customer and back-office operations that stay in SLA — and prove it on a dashboard you can see.",
