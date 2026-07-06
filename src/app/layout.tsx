@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Newsreader, IBM_Plex_Sans, IBM_Plex_Mono } from "next/font/google";
+import { ScrollProgress } from "@/components/motion";
 import "./globals.css";
 
 const serif = Newsreader({
@@ -59,7 +60,10 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${serif.variable} ${sans.variable} ${mono.variable}`}>
-      <body>{children}</body>
+      <body>
+        <ScrollProgress />
+        {children}
+      </body>
     </html>
   );
 }

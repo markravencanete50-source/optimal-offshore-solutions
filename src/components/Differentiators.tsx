@@ -1,4 +1,5 @@
 import Reveal from "./Reveal";
+import { StaggerGroup, StaggerItem } from "@/components/motion";
 import { differentiators } from "@/lib/content";
 
 export default function Differentiators() {
@@ -14,17 +15,17 @@ export default function Differentiators() {
         <Reveal>
           <h2 style={{ maxWidth: 560 }}>A delivery partner that behaves like an owner.</h2>
         </Reveal>
-        <Reveal className="diffs">
+        <StaggerGroup className="diffs">
           {differentiators.map((d) => (
-            <div className="diff" key={d.title}>
+            <StaggerItem className="diff" key={d.title}>
               <div className="k">
                 <span className="dot" />
                 <h3>{d.title}</h3>
               </div>
               <p>{d.body}</p>
-            </div>
+            </StaggerItem>
           ))}
-        </Reveal>
+        </StaggerGroup>
       </div>
     </section>
   );

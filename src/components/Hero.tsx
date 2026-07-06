@@ -1,4 +1,5 @@
 import Reveal from "./Reveal";
+import { WordRise } from "@/components/motion";
 
 export default function Hero() {
   return (
@@ -10,13 +11,13 @@ export default function Hero() {
             <span className="tick">▸</span> KPO Delivery &nbsp;//&nbsp; Operations Accountability
           </p>
         </Reveal>
-        <Reveal delay={0.08}>
-          <h1>
-            Offshore operations,
-            <br />
-            held to <em>the number.</em>
-          </h1>
-        </Reveal>
+        <WordRise
+          lines={[
+            ["Offshore", "operations,"],
+            ["held", "to", "the", "number."],
+          ]}
+          italicWords={["the", "number."]}
+        />
         <Reveal delay={0.16}>
           <p className="lead">
             We are a specialized KPO (Knowledge Process Outsourcing) delivery unit composed of

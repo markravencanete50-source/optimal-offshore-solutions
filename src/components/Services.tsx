@@ -1,4 +1,5 @@
 import Reveal from "./Reveal";
+import { StaggerGroup, StaggerItem } from "@/components/motion";
 import { services } from "@/lib/content";
 
 export default function Services() {
@@ -14,16 +15,16 @@ export default function Services() {
         <Reveal>
           <h2>Eight ways we take work off your floor.</h2>
         </Reveal>
-        <Reveal className="svc-grid">
+        <StaggerGroup className="svc-grid">
           {services.map((s) => (
-            <div className="svc" key={s.id}>
+            <StaggerItem className="svc" key={s.id}>
               <span className="idx">{s.id}</span>
               <h3>{s.title}</h3>
               <p>{s.body}</p>
               <span className="arrow">{s.tag} →</span>
-            </div>
+            </StaggerItem>
           ))}
-        </Reveal>
+        </StaggerGroup>
       </div>
     </section>
   );
