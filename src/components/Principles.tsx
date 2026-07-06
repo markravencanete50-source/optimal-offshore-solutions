@@ -1,5 +1,7 @@
 import Reveal from "./Reveal";
-import { principles } from "@/lib/content";
+import { StaggerGroup, StaggerItem } from "@/components/motion";
+import { principles, coreValues } from "@/lib/content";
+import { coreValueIcons } from "./graphics";
 
 export default function Principles() {
   return (
@@ -26,6 +28,27 @@ export default function Principles() {
               </li>
             ))}
           </Reveal>
+        </div>
+
+        {/* Core values */}
+        <div className="core-values">
+          <Reveal>
+            <p className="eyebrow">
+              <span className="tick">▸</span> Core values
+            </p>
+            <h3>The three things every engagement is built on.</h3>
+          </Reveal>
+          <StaggerGroup className="values-grid">
+            {coreValues.map((v) => (
+              <StaggerItem className="value-cell" key={v.key}>
+                {coreValueIcons[v.key]}
+                <div>
+                  <h3>{v.title}</h3>
+                  <p>{v.body}</p>
+                </div>
+              </StaggerItem>
+            ))}
+          </StaggerGroup>
         </div>
       </div>
     </section>

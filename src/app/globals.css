@@ -412,19 +412,49 @@ section {
   margin-top: 52px;
 }
 .svc {
-  padding: 30px 26px 34px;
   border-right: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
   position: relative;
   transition: background 0.25s, box-shadow 0.25s;
-  min-height: 214px;
   display: flex;
   flex-direction: column;
   background: var(--paper);
+  overflow: hidden;
 }
 .svc:hover {
   background: var(--card);
   box-shadow: 0 14px 30px -22px rgba(27, 36, 44, 0.3);
+}
+.service-viz {
+  height: 152px;
+  background: #141b21;
+  position: relative;
+  overflow: hidden;
+  background-image: linear-gradient(#1e2b34 1px, transparent 1px),
+    linear-gradient(90deg, #1e2b34 1px, transparent 1px);
+  background-size: 26px 26px;
+}
+.service-viz svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.viz-cap {
+  position: absolute;
+  top: 12px;
+  left: 14px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #7c8f9c;
+  z-index: 2;
+}
+.service-body {
+  padding: 22px 24px 26px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 }
 .svc .idx {
   font-family: var(--mono);
@@ -545,6 +575,184 @@ section {
   color: var(--muted);
   font-size: 15px;
   margin-top: 2px;
+}
+
+/* ---- why us (expanded) ---- */
+.why-lead {
+  max-width: 620px;
+}
+.why-grid {
+  display: grid;
+  grid-template-columns: 1.02fr 1fr;
+  gap: 56px;
+  align-items: center;
+  margin-top: 56px;
+}
+.scorecard {
+  border: 1px solid var(--pnl-line);
+  border-radius: 6px;
+  background: var(--pnl);
+  overflow: hidden;
+  box-shadow: 0 26px 64px -32px rgba(23, 30, 36, 0.55);
+}
+.scorecard-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 13px 18px;
+  border-bottom: 1px solid var(--pnl-line);
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #8fa3b2;
+}
+.scorecard-head .live {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--signal);
+}
+.scorecard-head .live-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--signal);
+  animation: pulse 2.4s infinite;
+}
+.scorecard-chart {
+  padding: 20px 18px 8px;
+}
+.scorecard-chart svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.scorecard-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border-top: 1px solid var(--pnl-line);
+}
+.sc-metric {
+  padding: 16px 18px;
+  border-right: 1px solid var(--pnl-line);
+}
+.sc-metric:last-child {
+  border-right: none;
+}
+.sc-metric .k {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #7c8f9c;
+}
+.sc-metric .v {
+  font-family: var(--serif);
+  font-size: 26px;
+  color: var(--signal);
+  margin-top: 6px;
+  font-variant-numeric: tabular-nums;
+}
+.why-row {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--line);
+}
+.why-row:last-child {
+  border-bottom: none;
+}
+.why-row .n {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--signal-ink);
+  flex: none;
+  margin-top: 4px;
+  letter-spacing: 0.06em;
+}
+.why-row h3 {
+  font-family: var(--serif);
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+.why-row p {
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.5;
+}
+.why-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+  margin-top: 56px;
+}
+.why-stat {
+  background: var(--card);
+  padding: 28px 26px;
+}
+.why-stat .v {
+  font-family: var(--serif);
+  font-size: clamp(32px, 4vw, 46px);
+  color: var(--signal-ink);
+  line-height: 1;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+.why-stat .k {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-top: 12px;
+}
+
+/* ---- core values ---- */
+.core-values {
+  margin-top: 66px;
+  padding-top: 46px;
+  border-top: 1px solid var(--line-2);
+}
+.core-values .eyebrow {
+  margin-bottom: 8px;
+}
+.core-values > h3 {
+  font-family: var(--serif);
+  font-size: clamp(24px, 3vw, 32px);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  margin-bottom: 30px;
+  max-width: 520px;
+}
+.values-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+}
+.value-cell {
+  background: var(--card);
+  padding: 32px 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.value-cell h3 {
+  font-family: var(--serif);
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+.value-cell p {
+  color: var(--muted);
+  font-size: 14.5px;
+  line-height: 1.55;
 }
 
 /* ---- team ---- */
@@ -865,7 +1073,8 @@ footer.site {
   }
   .split,
   .cta-grid,
-  .prin-grid {
+  .prin-grid,
+  .why-grid {
     grid-template-columns: 1fr;
     gap: 40px;
   }
@@ -925,6 +1134,12 @@ footer.site {
   .diffs,
   .team-grid {
     grid-template-columns: 1fr;
+  }
+  .why-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .values-grid {
+    grid-template-columns: repeat(2, 1fr);
   }
   .form .row {
     grid-template-columns: 1fr;
