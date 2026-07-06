@@ -25,7 +25,8 @@ export default function Nav() {
     <header className={`site${scrolled ? " scrolled" : ""}`}>
       <div className="wrap nav">
         <a href="#top" className="brand">
-          <span className="glyph" />
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img className="mark" src="/logo-mark.png" alt="Optimal Offshore Solutions" />
           {company.short}
         </a>
         <nav className={`navlinks${open ? " open" : ""}`}>

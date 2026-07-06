@@ -162,6 +162,12 @@ header.site.scrolled {
   border-radius: 50%;
   border-color: var(--signal-ink);
 }
+.brand .mark {
+  height: 28px;
+  width: auto;
+  flex: none;
+  display: block;
+}
 .navlinks {
   display: flex;
   align-items: center;
@@ -1054,6 +1060,9 @@ footer.site {
 }
 .foot .brand {
   margin-bottom: 16px;
+}
+.foot .brand .mark {
+  height: 34px;
 }
 .foot .tag {
   color: var(--muted);

@@ -7,7 +7,8 @@ export default function Footer() {
         <div className="foot">
           <div>
             <a href="#top" className="brand">
-              <span className="glyph" />
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img className="mark" src="/logo-mark.png" alt="Optimal Offshore Solutions" />
               {company.short}
             </a>
             <p className="tag">{company.tagline}</p>
