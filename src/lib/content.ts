@@ -155,7 +155,7 @@ export const team = [
     role: "Co-Founder",
     name: "Karl Ivan David “KID” Cañeda",
     position: "Service Delivery & Quality",
-    photo: "/images/team/kid-caneda.png",
+    photo: "/images/team/kid-caneda.jpg",
     bio: "13+ years of operations leadership across BPO, healthcare and tech — Concentrix, Tech Mahindra, Foundever and UnitedHealth's Optum. KID translates client objectives into processes that exceed SLA targets (CSAT, AHT, FCR), backed by Lean/Six Sigma and a background in HR and org development.",
   },
 ];
