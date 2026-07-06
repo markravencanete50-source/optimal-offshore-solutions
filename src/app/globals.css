@@ -286,6 +286,38 @@ section {
   flex-wrap: wrap;
 }
 
+/* ---- hero two-column layout (copy left, scorecard right) ---- */
+.hero-grid {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 56px;
+  align-items: center;
+}
+.hero-copy {
+  max-width: 640px;
+}
+.hero-copy h1 {
+  font-size: clamp(40px, 6vw, 76px);
+}
+/* the scorecard readout sits beside the copy — drop its stacked top margin */
+.hero-grid .readout {
+  margin-top: 0;
+}
+.hero .gauges {
+  grid-template-columns: repeat(2, 1fr);
+}
+.hero .gauge {
+  border-right: none;
+}
+.hero .gauge:nth-child(odd) {
+  border-right: 1px solid var(--pnl-line);
+}
+.hero .gauge:nth-child(1),
+.hero .gauge:nth-child(2) {
+  border-bottom: 1px solid var(--pnl-line);
+}
+
 /* ---- readout strip (charcoal instrument panel) ---- */
 .readout {
   margin-top: 64px;
@@ -1074,7 +1106,8 @@ footer.site {
   .split,
   .cta-grid,
   .prin-grid,
-  .why-grid {
+  .why-grid,
+  .hero-grid {
     grid-template-columns: 1fr;
     gap: 40px;
   }
