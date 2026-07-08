@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Newsreader, IBM_Plex_Sans, IBM_Plex_Mono } from "next/font/google";
 import { ScrollProgress } from "@/components/motion";
+import Tracker from "@/components/Tracker";
 import { company } from "@/lib/content";
 import { siteUrl } from "@/lib/site";
 import "./globals.css";
@@ -103,6 +104,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
         />
         <ScrollProgress />
+        <Tracker />
         {children}
       </body>
     </html>

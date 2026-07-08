@@ -23,6 +23,28 @@ service cloud.firestore {
       allow read, update, delete: if false;
     }
 
+    // Anonymous analytics beacons (pageviews / CTA clicks) written via the
+    // website's /api/track route. Create-only, size-bounded; reads happen
+    // exclusively through the Admin SDK on the /admin dashboard.
+    match /events/{doc} {
+      allow create: if
+        request.resource.data.type is string
+        && request.resource.data.type.size() < 40
+        && request.resource.data.path is string
+        && request.resource.data.path.size() < 300
+        && request.resource.data.label is string
+        && request.resource.data.label.size() < 100
+        && request.resource.data.ref is string
+        && request.resource.data.ref.size() < 500
+        && request.resource.data.sid is string
+        && request.resource.data.sid.size() < 100
+        && request.resource.data.device is string
+        && request.resource.data.device.size() < 20
+        && request.resource.data.country is string
+        && request.resource.data.country.size() < 10;
+      allow read, update, delete: if false;
+    }
+
     match /{document=**} {
       allow read, write: if false;
     }

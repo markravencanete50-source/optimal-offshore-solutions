@@ -35,7 +35,12 @@ export default function Nav() {
               {l.label}
             </a>
           ))}
-          <a href="#contact" className="btn btn-primary" onClick={() => setOpen(false)}>
+          <a
+            href="#contact"
+            className="btn btn-primary"
+            data-track="nav_book_pilot"
+            onClick={() => setOpen(false)}
+          >
             Book a pilot →
           </a>
         </nav>

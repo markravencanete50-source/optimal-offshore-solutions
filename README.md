@@ -58,6 +58,32 @@ Deploy `firestore.rules` (client access locked; Admin SDK bypasses rules):
 firebase deploy --only firestore:rules
 ```
 
+## Admin dashboard (`/admin`)
+
+Password-protected console for monitoring site activity and working leads:
+
+- **KPIs** — pilot calls booked, total leads, visitors, visitor→lead conversion.
+- **Funnel (30 days)** — visitors → CTA clicks → leads submitted → pilots booked.
+- **Charts** — leads/day and page views/day, plus breakdowns by industry,
+  traffic source, country and device.
+- **Lead pipeline** — search/filter, per-lead status (`new → contacted →
+  qualified → booked → won/lost`), private notes, delete, CSV export.
+
+Analytics are first-party and cookie-free: a tiny beacon (`src/components/Tracker.tsx`)
+posts pageviews, "book a pilot" CTA clicks and form submissions to `/api/track`,
+which stores them in the `events` Firestore collection.
+
+Setup:
+
+1. Set `ADMIN_PASSWORD` (and optionally `ADMIN_SESSION_SECRET`) — locally in
+   `.env.local` and in Vercel env vars.
+2. Set the `FIREBASE_*` service-account vars (above) — the dashboard reads
+   Firestore through the Admin SDK.
+3. Redeploy `firestore.rules` (adds create-only rules for `events`):
+   `firebase deploy --only firestore:rules`
+4. Visit `/admin`, sign in, done. Sessions last 7 days (HMAC-signed, httpOnly
+   cookie); `/admin` is excluded from robots.txt and indexed by nobody.
+
 ## Deploy to Vercel
 
 1. Push this repo to GitHub.

@@ -2,6 +2,7 @@
 
 import { useState, type FormEvent } from "react";
 import Reveal from "./Reveal";
+import { track } from "./Tracker";
 import { industries } from "@/lib/content";
 
 type Status = "idle" | "submitting" | "ok" | "error";
@@ -28,6 +29,7 @@ export default function Contact() {
       if (!res.ok) throw new Error(json.error || "Submission failed.");
 
       setStatus("ok");
+      track("lead_submitted", "contact_form");
       setMessage(
         `Thanks, ${data.firstName || "there"} — we've got it. Expect a reply within one business day.`,
       );
