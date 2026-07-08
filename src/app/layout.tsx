@@ -27,13 +27,20 @@ const mono = IBM_Plex_Mono({
   display: "swap",
 });
 
-const siteUrl = process.env.NEXT_PUBLIC_APP_URL || "https://optimaloffshoresolutions.com";
+// Canonical host. The Vercel domain redirects the apex (non-www) and http to
+// https://www.optimaloffshoresolutions.com, so www IS the canonical origin —
+// every advertised URL (metadata, sitemap, robots, JSON-LD) must match it, or
+// Google reports "Page with redirect" and rejects the sitemap.
+const siteUrl = process.env.NEXT_PUBLIC_APP_URL || "https://www.optimaloffshoresolutions.com";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: "Optimal Offshore Solutions — Offshore operations, held to the number",
   description:
     "A KPO delivery team built by BPO operators. We stand up, recover, and scale customer and back-office operations that stay in SLA — and prove it on a dashboard you can see.",
+  alternates: {
+    canonical: "/",
+  },
   keywords: [
     "KPO",
     "BPO",

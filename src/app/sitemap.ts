@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next";
 
 // Same origin convention as layout.tsx. Set NEXT_PUBLIC_APP_URL in the
 // environment (Vercel) to the canonical production URL.
-const siteUrl = process.env.NEXT_PUBLIC_APP_URL || "https://optimaloffshoresolutions.com";
+const siteUrl = process.env.NEXT_PUBLIC_APP_URL || "https://www.optimaloffshoresolutions.com";
 
 /**
  * Generates /sitemap.xml. The site is a single-page homepage — its sections
