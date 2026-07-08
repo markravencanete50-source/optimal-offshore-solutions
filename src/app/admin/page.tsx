@@ -81,65 +81,287 @@ const IC = {
   x: "M18 6L6 18M6 6l12 12",
 };
 
-/* ── tiny inline SVG bar chart ── */
-function BarChart({ data, color = "var(--chart-2)" }: { data: DayPoint[]; color?: string }) {
-  const W = 600;
-  const H = 150;
-  const PAD = 4;
-  const max = Math.max(1, ...data.map((d) => d.count));
-  const bw = (W - PAD * 2) / Math.max(1, data.length);
+/* ════════ charts ════════ */
+
+const PALETTE = ["#E4B04A", "#60A5FA", "#34C98A", "#A78BFA", "#F07362", "#7BC0CE", "#D98CB3", "#9AA3B2"];
+
+function fmtDay(iso: string): string {
+  const d = new Date(`${iso}T00:00:00Z`);
+  if (isNaN(d.getTime())) return iso;
+  return d.toLocaleDateString("en-US", { month: "short", day: "numeric", timeZone: "UTC" });
+}
+
+/** Round a max up to a clean axis ceiling (1, 2, 5, 10, 20, 25, 50 …). */
+function niceCeil(n: number): number {
+  if (n <= 5) return Math.max(1, Math.ceil(n));
+  const pow = Math.pow(10, Math.floor(Math.log10(n)));
+  for (const m of [1, 2, 2.5, 5, 10]) if (n <= m * pow) return Math.ceil(m * pow);
+  return 10 * pow;
+}
+
+/** Catmull-Rom smoothing, with control points clamped so the curve never
+ *  overshoots past its endpoints (keeps spiky 0→1→0 data above the baseline). */
+function smoothPath(pts: [number, number][]): string {
+  if (!pts.length) return "";
+  let d = `M${pts[0][0]},${pts[0][1]}`;
+  for (let i = 0; i < pts.length - 1; i++) {
+    const p0 = pts[Math.max(0, i - 1)];
+    const p1 = pts[i];
+    const p2 = pts[i + 1];
+    const p3 = pts[Math.min(pts.length - 1, i + 2)];
+    const lo = Math.min(p1[1], p2[1]);
+    const hi = Math.max(p1[1], p2[1]);
+    const clamp = (y: number) => Math.max(lo, Math.min(hi, y));
+    d += ` C${p1[0] + (p2[0] - p0[0]) / 6},${clamp(p1[1] + (p2[1] - p0[1]) / 6)} ${
+      p2[0] - (p3[0] - p1[0]) / 6
+    },${clamp(p2[1] - (p3[1] - p1[1]) / 6)} ${p2[0]},${p2[1]}`;
+  }
+  return d;
+}
+
+/**
+ * Dual-axis comparison line chart: page views (left axis, blue) vs leads
+ * (right axis, gold), smooth curves with gradient area fills, gridlines and
+ * a hover crosshair + tooltip.
+ */
+function TrendChart({ views, leads }: { views: DayPoint[]; leads: DayPoint[] }) {
+  const [hover, setHover] = useState<number | null>(null);
+  const W = 760;
+  const H = 210;
+  const L = 34;
+  const R = 30;
+  const T = 14;
+  const B = 24;
+  const iw = W - L - R;
+  const ih = H - T - B;
+  const n = Math.max(views.length, leads.length);
+
+  const maxV = niceCeil(Math.max(1, ...views.map((d) => d.count)));
+  const maxL = niceCeil(Math.max(1, ...leads.map((d) => d.count)));
+
+  const x = (i: number) => L + (n <= 1 ? iw / 2 : (i / (n - 1)) * iw);
+  const yV = (c: number) => T + ih - (c / maxV) * ih;
+  const yL = (c: number) => T + ih - (c / maxL) * ih;
+
+  const vPts: [number, number][] = views.map((d, i) => [x(i), yV(d.count)]);
+  const lPts: [number, number][] = leads.map((d, i) => [x(i), yL(d.count)]);
+  const vLine = smoothPath(vPts);
+  const lLine = smoothPath(lPts);
+  const vArea = vLine ? `${vLine} L${x(n - 1)},${T + ih} L${x(0)},${T + ih} Z` : "";
+
+  const gridYs = [0, 0.25, 0.5, 0.75, 1];
+
+  const onMove = (e: React.MouseEvent<SVGSVGElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const fx = ((e.clientX - rect.left) / rect.width) * W;
+    const idx = Math.round(((fx - L) / iw) * (n - 1));
+    setHover(Math.max(0, Math.min(n - 1, idx)));
+  };
+
+  const hv = hover !== null ? views[hover] : null;
+  const hl = hover !== null ? leads[hover] : null;
+
   return (
-    <div className="adm-chart">
-      <svg viewBox={`0 0 ${W} ${H + 22}`} role="img" aria-label="Daily counts, last 30 days">
-        {data.map((d, i) => {
-          const h = Math.max(d.count > 0 ? 3 : 1, (d.count / max) * H);
-          return (
-            <g key={d.day}>
-              <rect
-                x={PAD + i * bw + 1}
-                y={H - h}
-                width={Math.max(1, bw - 2)}
-                height={h}
-                rx={2}
-                fill={d.count > 0 ? color : "var(--border)"}
-              >
-                <title>{`${d.day}: ${d.count}`}</title>
-              </rect>
-            </g>
-          );
-        })}
-        <text x={PAD} y={H + 16} fontSize="10" fill="var(--text-3)" fontFamily="var(--mono)">
-          {data[0]?.day}
-        </text>
-        <text
-          x={W - PAD}
-          y={H + 16}
-          fontSize="10"
-          fill="var(--text-3)"
-          fontFamily="var(--mono)"
-          textAnchor="end"
+    <div className="adm-trend">
+      <div className="adm-legend">
+        <span className="key">
+          <span className="dot" style={{ background: "var(--chart-2)" }} />
+          Page views
+        </span>
+        <span className="key">
+          <span className="dot" style={{ background: "var(--chart-1)" }} />
+          Leads
+        </span>
+      </div>
+      <div className="adm-trend-plot">
+        <svg
+          viewBox={`0 0 ${W} ${H}`}
+          role="img"
+          aria-label="Page views vs leads per day, last 30 days"
+          onMouseMove={onMove}
+          onMouseLeave={() => setHover(null)}
         >
-          {data[data.length - 1]?.day}
-        </text>
-      </svg>
+          <defs>
+            <linearGradient id="tv-area" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="var(--chart-2)" stopOpacity="0.22" />
+              <stop offset="100%" stopColor="var(--chart-2)" stopOpacity="0" />
+            </linearGradient>
+          </defs>
+
+          {gridYs.map((g) => {
+            const gy = T + ih - g * ih;
+            return (
+              <g key={g}>
+                <line x1={L} y1={gy} x2={W - R} y2={gy} stroke="var(--border)" strokeWidth="1" />
+                <text x={L - 6} y={gy + 3} fontSize="9" fill="var(--text-3)" fontFamily="var(--mono)" textAnchor="end">
+                  {Math.round(g * maxV)}
+                </text>
+                <text x={W - R + 6} y={gy + 3} fontSize="9" fill="var(--chart-1)" fontFamily="var(--mono)" opacity="0.85">
+                  {Math.round(g * maxL)}
+                </text>
+              </g>
+            );
+          })}
+
+          {vArea && <path d={vArea} fill="url(#tv-area)" />}
+          {vLine && <path d={vLine} fill="none" stroke="var(--chart-2)" strokeWidth="2" strokeLinecap="round" />}
+          {lLine && (
+            <path d={lLine} fill="none" stroke="var(--chart-1)" strokeWidth="2" strokeLinecap="round" />
+          )}
+          {lPts.map(([px, py], i) => (leads[i]?.count ?? 0) > 0 && (
+            <circle key={`l${i}`} cx={px} cy={py} r="2.6" fill="var(--chart-1)" />
+          ))}
+
+          {hover !== null && (
+            <g>
+              <line x1={x(hover)} y1={T} x2={x(hover)} y2={T + ih} stroke="var(--border-2)" strokeWidth="1" />
+              {hv && <circle cx={x(hover)} cy={yV(hv.count)} r="4" fill="var(--chart-2)" stroke="var(--surface)" strokeWidth="1.5" />}
+              {hl && <circle cx={x(hover)} cy={yL(hl.count)} r="4" fill="var(--chart-1)" stroke="var(--surface)" strokeWidth="1.5" />}
+            </g>
+          )}
+
+          <text x={L} y={H - 6} fontSize="9.5" fill="var(--text-3)" fontFamily="var(--mono)">
+            {views[0] ? fmtDay(views[0].day) : ""}
+          </text>
+          <text x={W - R} y={H - 6} fontSize="9.5" fill="var(--text-3)" fontFamily="var(--mono)" textAnchor="end">
+            {views[n - 1] ? fmtDay(views[n - 1].day) : ""}
+          </text>
+        </svg>
+
+        {hover !== null && (hv || hl) && (
+          <div
+            className="adm-tip"
+            style={{ left: `${((x(hover) - 0) / W) * 100}%` }}
+          >
+            <div className="d">{fmtDay((hv ?? hl)!.day)}</div>
+            <div className="r">
+              <span className="dot" style={{ background: "var(--chart-2)" }} />
+              {hv?.count ?? 0} views
+            </div>
+            <div className="r">
+              <span className="dot" style={{ background: "var(--chart-1)" }} />
+              {hl?.count ?? 0} {(hl?.count ?? 0) === 1 ? "lead" : "leads"}
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
 
-function Breakdown({ items }: { items: NameCount[] }) {
+/** Donut with center total + legend. */
+function Donut({ items, unit }: { items: NameCount[]; unit: string }) {
+  const total = items.reduce((s, i) => s + i.count, 0);
+  if (!total) return <div className="adm-empty">No data yet.</div>;
+  const r = 44;
+  const C = 2 * Math.PI * r;
+  let acc = 0;
+  return (
+    <div className="adm-donut-wrap">
+      <div className="adm-donut">
+        <svg viewBox="0 0 120 120" role="img" aria-label={`${unit} breakdown`}>
+          {items.map((it, i) => {
+            const frac = it.count / total;
+            const seg = Math.max(0, frac * C - (items.length > 1 ? 2.5 : 0));
+            const off = -acc * C;
+            acc += frac;
+            return (
+              <circle
+                key={it.name}
+                cx="60"
+                cy="60"
+                r={r}
+                fill="none"
+                stroke={PALETTE[i % PALETTE.length]}
+                strokeWidth="13"
+                strokeDasharray={`${seg} ${C}`}
+                strokeDashoffset={off}
+                transform="rotate(-90 60 60)"
+                strokeLinecap="butt"
+              >
+                <title>{`${it.name}: ${it.count}`}</title>
+              </circle>
+            );
+          })}
+        </svg>
+        <div className="center">
+          <div className="t">{total}</div>
+          <div className="u">{unit}</div>
+        </div>
+      </div>
+      <div className="adm-donut-legend">
+        {items.map((it, i) => (
+          <div className="lr" key={it.name}>
+            <span className="dot" style={{ background: PALETTE[i % PALETTE.length] }} />
+            <span className="name">{it.name}</span>
+            <span className="n">
+              {it.count} <em>· {Math.round((it.count / total) * 100)}%</em>
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/** Ranked bar list with share %, gradient fills and row hover. */
+function BarList({ items, flags = false }: { items: NameCount[]; flags?: boolean }) {
+  const total = items.reduce((s, i) => s + i.count, 0);
   const max = Math.max(1, ...items.map((i) => i.count));
   if (!items.length) return <div className="adm-empty">No data yet.</div>;
   return (
-    <div className="adm-rows">
-      {items.map((i) => (
-        <div className="adm-row" key={i.name}>
-          <span className="name">{i.name}</span>
-          <span className="n">{i.count}</span>
-          <span className="track">
-            <span className="fill" style={{ width: `${(i.count / max) * 100}%`, display: "block" }} />
-          </span>
+    <div className="adm-bl">
+      {items.map((it, i) => (
+        <div className="bl-row" key={it.name}>
+          <div className="bl-head">
+            <span className="rank">{i + 1}</span>
+            <span className="name">
+              {flags && <span className="flag">{flagEmoji(it.name)}</span>}
+              {it.name}
+            </span>
+            <span className="n">
+              {it.count} <em>· {total ? Math.round((it.count / total) * 100) : 0}%</em>
+            </span>
+          </div>
+          <div className="bl-track">
+            <span className="bl-fill" style={{ width: `${(it.count / max) * 100}%` }} />
+          </div>
         </div>
       ))}
+    </div>
+  );
+}
+
+function flagEmoji(code: string): string {
+  if (!/^[A-Za-z]{2}$/.test(code)) return "🌐";
+  return String.fromCodePoint(
+    ...[...code.toUpperCase()].map((c) => 0x1f1e6 + c.charCodeAt(0) - 65),
+  );
+}
+
+/** Single stacked split bar (device share). */
+function SplitBar({ items }: { items: NameCount[] }) {
+  const total = items.reduce((s, i) => s + i.count, 0);
+  if (!total) return <div className="adm-empty">No data yet.</div>;
+  return (
+    <div className="adm-split">
+      <div className="bar">
+        {items.map((it, i) => (
+          <span
+            key={it.name}
+            style={{ width: `${(it.count / total) * 100}%`, background: PALETTE[(i + 1) % PALETTE.length] }}
+            title={`${it.name}: ${it.count}`}
+          />
+        ))}
+      </div>
+      <div className="keys">
+        {items.map((it, i) => (
+          <span className="key" key={it.name}>
+            <span className="dot" style={{ background: PALETTE[(i + 1) % PALETTE.length] }} />
+            {it.name} <em>{Math.round((it.count / total) * 100)}%</em>
+          </span>
+        ))}
+      </div>
     </div>
   );
 }
@@ -255,6 +477,20 @@ export default function AdminDashboard() {
     load();
   }, [load]);
 
+  /** Quietly re-pull the aggregate numbers (KPIs, funnel, charts) so the
+   *  whole dashboard reflects lead edits/deletes — not just the table. */
+  const refreshStats = useCallback(async () => {
+    try {
+      const res = await fetch("/api/admin/stats", { cache: "no-store" });
+      if (res.ok) {
+        const json: Stats = await res.json();
+        if (json.configured !== false) setStats(json);
+      }
+    } catch {
+      /* keep showing the last good stats */
+    }
+  }, []);
+
   async function updateLead(id: string, patch: { status?: LeadStatus; notes?: string }) {
     const prev = leads;
     setLeads((ls) => ls.map((l) => (l.id === id ? { ...l, ...patch } : l)));
@@ -266,6 +502,8 @@ export default function AdminDashboard() {
     if (!res.ok) {
       setLeads(prev); // roll back optimistic update
       alert("Update failed — please try again.");
+    } else if (patch.status) {
+      refreshStats(); // booked KPI, funnel and status counts shift with the pipeline
     }
   }
 
@@ -276,8 +514,12 @@ export default function AdminDashboard() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ id }),
     });
-    if (res.ok) setLeads((ls) => ls.filter((l) => l.id !== id));
-    else alert("Delete failed — please try again.");
+    if (res.ok) {
+      setLeads((ls) => ls.filter((l) => l.id !== id));
+      refreshStats(); // totals, funnel, industry donut and daily series all change
+    } else {
+      alert("Delete failed — please try again.");
+    }
   }
 
   async function logout() {
@@ -480,29 +722,28 @@ export default function AdminDashboard() {
               <p className="adm-h">
                 Analytics <span className="hint">Last 30 days</span>
               </p>
-              <div className="adm-grid2">
-                <div className="adm-panel">
-                  <h4>Leads per day</h4>
-                  <BarChart data={stats.leadsByDay ?? []} color="var(--chart-1)" />
-                </div>
-                <div className="adm-panel">
-                  <h4>Page views per day</h4>
-                  <BarChart data={stats.viewsByDay ?? []} />
-                </div>
+              <div className="adm-panel">
+                <h4>Traffic vs leads</h4>
+                <TrendChart views={stats.viewsByDay ?? []} leads={stats.leadsByDay ?? []} />
               </div>
 
               <div className="adm-grid3" style={{ marginTop: 14 }}>
                 <div className="adm-panel">
                   <h4>Leads by industry</h4>
-                  <Breakdown items={stats.byIndustry ?? []} />
+                  <Donut items={stats.byIndustry ?? []} unit="leads" />
                 </div>
                 <div className="adm-panel">
                   <h4>Traffic sources</h4>
-                  <Breakdown items={stats.referrers ?? []} />
+                  <BarList items={stats.referrers ?? []} />
                 </div>
                 <div className="adm-panel">
-                  <h4>Visitors by country / device</h4>
-                  <Breakdown items={[...(stats.countries ?? []), ...(stats.devices ?? [])]} />
+                  <h4>Audience</h4>
+                  <p className="adm-minicap">Country</p>
+                  <BarList items={stats.countries ?? []} flags />
+                  <p className="adm-minicap" style={{ marginTop: 16 }}>
+                    Device
+                  </p>
+                  <SplitBar items={stats.devices ?? []} />
                 </div>
               </div>
             </section>

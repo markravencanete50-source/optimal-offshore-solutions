@@ -445,47 +445,233 @@ html[data-adm-theme="dark"] .adm {
   color: var(--text);
   margin: 0 0 14px;
 }
-.adm-chart svg {
+
+/* ---- trend chart (views vs leads) ---- */
+.adm-trend {
+  position: relative;
+}
+.adm-legend {
+  position: absolute;
+  top: -30px;
+  right: 0;
+  display: flex;
+  gap: 16px;
+}
+.adm-legend .key,
+.adm-split .key {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--text-2);
+}
+.adm-legend .dot,
+.adm-tip .dot,
+.adm-split .dot,
+.adm-donut-legend .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex: 0 0 auto;
+}
+.adm-trend-plot {
+  position: relative;
+}
+.adm-trend-plot svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  cursor: crosshair;
+}
+.adm-tip {
+  position: absolute;
+  top: 4px;
+  transform: translateX(-50%);
+  background: var(--surface);
+  border: 1px solid var(--border-2);
+  border-radius: 10px;
+  box-shadow: var(--shadow-pop);
+  padding: 8px 11px;
+  pointer-events: none;
+  z-index: 5;
+  min-width: 108px;
+}
+.adm-tip .d {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  margin-bottom: 5px;
+}
+.adm-tip .r {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1.5;
+  white-space: nowrap;
+}
+
+/* ---- donut ---- */
+.adm-donut-wrap {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+.adm-donut {
+  position: relative;
+  width: 128px;
+  flex: 0 0 128px;
+}
+.adm-donut svg {
   display: block;
   width: 100%;
   height: auto;
 }
-
-/* ---- breakdown bars ---- */
-.adm-rows {
+.adm-donut .center {
+  position: absolute;
+  inset: 0;
   display: flex;
   flex-direction: column;
-  gap: 9px;
-}
-.adm-row {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 10px;
   align-items: center;
-  font-size: 13px;
+  justify-content: center;
+  pointer-events: none;
 }
-.adm-row .name {
+.adm-donut .center .t {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+.adm-donut .center .u {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+.adm-donut-legend {
+  flex: 1;
+  min-width: 130px;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+.adm-donut-legend .lr {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12.5px;
+}
+.adm-donut-legend .name {
+  color: var(--text-2);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  color: var(--text-2);
 }
-.adm-row .n {
+.adm-donut-legend .n {
+  margin-left: auto;
   font-family: var(--mono);
-  font-size: 11.5px;
+  font-size: 11px;
+  color: var(--text);
+  white-space: nowrap;
+}
+.adm-donut-legend .n em,
+.adm-bl .n em,
+.adm-split .key em {
+  font-style: normal;
   color: var(--text-3);
 }
-.adm-row .track {
-  grid-column: 1 / -1;
-  height: 5px;
+
+/* ---- ranked bar list ---- */
+.adm-bl {
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+}
+.bl-row {
+  border-radius: 8px;
+  padding: 2px 4px;
+  margin: -2px -4px;
+  transition: background 0.12s ease;
+}
+.bl-row:hover {
   background: var(--surface-2);
-  border-radius: 3px;
+}
+.bl-head {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-size: 13px;
+  margin-bottom: 5px;
+}
+.bl-head .rank {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--text-3);
+  width: 14px;
+  flex: 0 0 auto;
+}
+.bl-head .name {
+  color: var(--text-2);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.bl-head .flag {
+  margin-right: 6px;
+}
+.bl-head .n {
+  margin-left: auto;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--text);
+  white-space: nowrap;
+}
+.bl-track {
+  height: 6px;
+  background: var(--surface-2);
+  border-radius: 4px;
   overflow: hidden;
 }
-.adm-row .fill {
+.bl-fill {
+  display: block;
   height: 100%;
-  background: var(--chart-2);
-  border-radius: 3px;
+  border-radius: 4px;
+  background: linear-gradient(90deg, var(--chart-2), color-mix(in srgb, var(--chart-2) 55%, var(--accent)));
+  transition: width 0.5s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+/* ---- split bar (devices) ---- */
+.adm-split .bar {
+  display: flex;
+  height: 12px;
+  border-radius: 6px;
+  overflow: hidden;
+  gap: 2px;
+}
+.adm-split .bar span {
+  display: block;
+  height: 100%;
+  min-width: 3px;
+}
+.adm-split .keys {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-top: 9px;
+}
+.adm-minicap {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  margin: 0 0 8px;
 }
 
 /* ---- leads toolbar ---- */
