@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Newsreader, IBM_Plex_Sans, IBM_Plex_Mono } from "next/font/google";
 import { ScrollProgress } from "@/components/motion";
 import { company } from "@/lib/content";
+import { siteUrl } from "@/lib/site";
 import "./globals.css";
 
 const serif = Newsreader({
@@ -26,12 +27,6 @@ const mono = IBM_Plex_Mono({
   variable: "--font-mono",
   display: "swap",
 });
-
-// Canonical host. The Vercel domain redirects the apex (non-www) and http to
-// https://www.optimaloffshoresolutions.com, so www IS the canonical origin —
-// every advertised URL (metadata, sitemap, robots, JSON-LD) must match it, or
-// Google reports "Page with redirect" and rejects the sitemap.
-const siteUrl = process.env.NEXT_PUBLIC_APP_URL || "https://www.optimaloffshoresolutions.com";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
