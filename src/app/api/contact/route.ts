@@ -15,9 +15,34 @@ type Payload = {
   challenge?: string;
   // honeypot — real users leave this empty
   website?: string;
+  // Cloudflare Turnstile response token
+  turnstileToken?: string;
 };
 
 const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+/**
+ * Verify a Cloudflare Turnstile token. Skipped (returns true) until
+ * TURNSTILE_SECRET_KEY is set, so the form works before Turnstile is
+ * configured. Fails closed once the secret exists.
+ */
+async function verifyTurnstile(token: string | undefined, ip: string | null): Promise<boolean> {
+  const secret = process.env.TURNSTILE_SECRET_KEY;
+  if (!secret) return true;
+  if (!token) return false;
+  try {
+    const res = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ secret, response: token, ...(ip ? { remoteip: ip } : {}) }),
+    });
+    const json = await res.json();
+    return json?.success === true;
+  } catch (err) {
+    console.error("[contact] Turnstile verification errored:", err);
+    return false;
+  }
+}
 
 export async function POST(req: Request) {
   let body: Payload;
@@ -44,6 +69,14 @@ export async function POST(req: Request) {
   }
   if (!emailRe.test(email)) {
     return NextResponse.json({ error: "Please enter a valid work email." }, { status: 400 });
+  }
+
+  const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || null;
+  if (!(await verifyTurnstile(body.turnstileToken, ip))) {
+    return NextResponse.json(
+      { error: "Human verification failed — please try the checkbox again." },
+      { status: 400 },
+    );
   }
 
   const lead = {

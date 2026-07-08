@@ -2,6 +2,7 @@
 
 import { useState, type FormEvent } from "react";
 import Reveal from "./Reveal";
+import Turnstile, { turnstileEnabled } from "./Turnstile";
 import { track } from "./Tracker";
 import { company, industries } from "@/lib/content";
 
@@ -10,9 +11,18 @@ type Status = "idle" | "submitting" | "ok" | "error";
 export default function Contact() {
   const [status, setStatus] = useState<Status>("idle");
   const [message, setMessage] = useState("");
+  const [captchaToken, setCaptchaToken] = useState("");
+  const [captchaEpoch, setCaptchaEpoch] = useState(0); // remount widget for a fresh challenge
 
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
+
+    if (turnstileEnabled() && !captchaToken) {
+      setStatus("error");
+      setMessage("Please complete the verification below, then submit again.");
+      return;
+    }
+
     setStatus("submitting");
     setMessage("");
 
@@ -23,7 +33,7 @@ export default function Contact() {
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
+        body: JSON.stringify({ ...data, turnstileToken: captchaToken }),
       });
       const json = await res.json();
       if (!res.ok) throw new Error(json.error || "Submission failed.");
@@ -37,6 +47,10 @@ export default function Contact() {
     } catch (err) {
       setStatus("error");
       setMessage(err instanceof Error ? err.message : "Something went wrong. Please try again.");
+    } finally {
+      // Tokens are single-use — issue a fresh challenge either way.
+      setCaptchaToken("");
+      setCaptchaEpoch((n) => n + 1);
     }
   }
 
@@ -120,6 +134,7 @@ export default function Contact() {
                   placeholder="e.g. Our support queue keeps breaking SLA during peak…"
                 />
               </div>
+              <Turnstile key={captchaEpoch} onToken={setCaptchaToken} />
               <button className="btn btn-primary" type="submit" disabled={status === "submitting"}>
                 {status === "submitting"
                   ? "Sending…"

@@ -978,6 +978,12 @@ header.site.scrolled {
   color: var(--faint);
   text-align: center;
 }
+.turnstile-slot:empty {
+  display: none;
+}
+.turnstile-slot {
+  min-height: 65px; /* reserve the widget's height so the form doesn't jump */
+}
 
 /* ============================================================
    Footer
