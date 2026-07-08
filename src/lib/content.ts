@@ -139,7 +139,7 @@ export const team = [
     role: "Co-Founder",
     name: "Rizzie Lynne Larios",
     position: "Healthcare Operations",
-    photo: "/images/team/rizzie-larios.png",
+    photo: "/images/team/rizzie-larios.jpg",
     bio: "15+ years of contact-centre and healthcare operations leadership, including account management at Optum Global Solutions and Fusion BPO's US Healthcare division. A licensed Registered Nurse by training — a rare pairing of clinical depth and operations expertise on every healthcare account.",
   },
   {
