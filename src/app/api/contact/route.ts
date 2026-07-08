@@ -11,13 +11,22 @@ type Payload = {
   firstName?: string;
   email?: string;
   company?: string;
+  phone?: string;
+  availability?: string;
+  contactMethod?: string;
   industry?: string;
+  interest?: string;
+  budget?: string;
   challenge?: string;
   // honeypot — real users leave this empty
   website?: string;
   // Cloudflare Turnstile response token
   turnstileToken?: string;
 };
+
+// Trim + hard cap so a malicious client can't store huge blobs.
+const clean = (v: unknown, max = 200): string =>
+  typeof v === "string" ? v.trim().slice(0, max) : "";
 
 const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -57,13 +66,14 @@ export async function POST(req: Request) {
     return NextResponse.json({ success: true });
   }
 
-  const firstName = body.firstName?.trim();
-  const email = body.email?.trim();
-  const company = body.company?.trim();
+  const firstName = clean(body.firstName, 120);
+  const email = clean(body.email, 200);
+  const company = clean(body.company, 160);
+  const phone = clean(body.phone, 40);
 
-  if (!firstName || !email || !company) {
+  if (!firstName || !email || !company || !phone) {
     return NextResponse.json(
-      { error: "Please fill in your name, work email, and company." },
+      { error: "Please fill in your name, work email, company, and best contact number." },
       { status: 400 },
     );
   }
@@ -83,8 +93,13 @@ export async function POST(req: Request) {
     firstName,
     email,
     company,
-    industry: body.industry?.trim() || "Not specified",
-    challenge: body.challenge?.trim() || "",
+    phone,
+    availability: clean(body.availability, 120),
+    contactMethod: clean(body.contactMethod, 40) || "Email",
+    industry: clean(body.industry, 80) || "Not specified",
+    interest: clean(body.interest, 80) || "Not specified",
+    budget: clean(body.budget, 40) || "Not specified",
+    challenge: clean(body.challenge, 2000),
     source: "website-contact",
     status: "new",
     createdAt: new Date().toISOString(),

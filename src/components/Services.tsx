@@ -10,7 +10,7 @@ export default function Services() {
       </Reveal>
       <Reveal delay={0.08}>
         <h2 className="sec-title" style={{ maxWidth: 720 }}>
-          Eight ways we take work off your floor.
+          Nine ways we take work off your floor.
         </h2>
       </Reveal>
 

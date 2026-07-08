@@ -4,15 +4,18 @@ import { useState, type FormEvent } from "react";
 import Reveal from "./Reveal";
 import Turnstile, { turnstileEnabled } from "./Turnstile";
 import { track } from "./Tracker";
-import { company, industries } from "@/lib/content";
+import { company, industries, interestAreas, contactMethods, budgetRanges } from "@/lib/content";
 
 type Status = "idle" | "submitting" | "ok" | "error";
 
 export default function Contact() {
   const [status, setStatus] = useState<Status>("idle");
   const [message, setMessage] = useState("");
+  const [interest, setInterest] = useState("");
   const [captchaToken, setCaptchaToken] = useState("");
   const [captchaEpoch, setCaptchaEpoch] = useState(0); // remount widget for a fresh challenge
+
+  const isOther = interest === "Others";
 
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -44,6 +47,7 @@ export default function Contact() {
         `Thanks, ${data.firstName || "there"} — we've got it. Expect a reply within one business day.`,
       );
       form.reset();
+      setInterest("");
     } catch (err) {
       setStatus("error");
       setMessage(err instanceof Error ? err.message : "Something went wrong. Please try again.");
@@ -82,69 +86,134 @@ export default function Contact() {
         </div>
 
         <Reveal className="form" delay={0.16}>
-            <form onSubmit={onSubmit} noValidate>
-              {status === "ok" && <div className="notice ok">{message}</div>}
-              {status === "error" && <div className="notice err">{message}</div>}
+          <form onSubmit={onSubmit} noValidate>
+            {status === "ok" && <div className="notice ok">{message}</div>}
+            {status === "error" && <div className="notice err">{message}</div>}
 
-              {/* honeypot — hidden from real users */}
-              <input
-                type="text"
-                name="website"
-                tabIndex={-1}
-                autoComplete="off"
-                style={{ position: "absolute", left: "-9999px", width: 1, height: 1 }}
-                aria-hidden="true"
-              />
+            {/* honeypot — hidden from real users */}
+            <input
+              type="text"
+              name="website"
+              tabIndex={-1}
+              autoComplete="off"
+              style={{ position: "absolute", left: "-9999px", width: 1, height: 1 }}
+              aria-hidden="true"
+            />
 
-              <div className="row">
-                <div className="field">
-                  <label htmlFor="firstName">First name</label>
-                  <input id="firstName" name="firstName" type="text" placeholder="Jordan" required />
-                </div>
-                <div className="field">
-                  <label htmlFor="email">Work email</label>
-                  <input
-                    id="email"
-                    name="email"
-                    type="email"
-                    placeholder="you@company.com"
-                    required
-                  />
-                </div>
-              </div>
-              <div className="row">
-                <div className="field">
-                  <label htmlFor="company">Company</label>
-                  <input id="company" name="company" type="text" placeholder="Acme Corp" required />
-                </div>
-                <div className="field">
-                  <label htmlFor="industry">Industry</label>
-                  <select id="industry" name="industry" defaultValue={industries[0]}>
-                    {industries.map((i) => (
-                      <option key={i}>{i}</option>
-                    ))}
-                  </select>
-                </div>
+            <div className="row">
+              <div className="field">
+                <label htmlFor="firstName">First name</label>
+                <input id="firstName" name="firstName" type="text" placeholder="Jordan" required />
               </div>
               <div className="field">
-                <label htmlFor="challenge">What are you trying to fix or scale?</label>
+                <label htmlFor="email">Work email</label>
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  placeholder="you@company.com"
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="row">
+              <div className="field">
+                <label htmlFor="company">Company</label>
+                <input id="company" name="company" type="text" placeholder="Acme Corp" required />
+              </div>
+              <div className="field">
+                <label htmlFor="phone">Best contact number</label>
+                <input
+                  id="phone"
+                  name="phone"
+                  type="tel"
+                  placeholder="+1 555 123 4567"
+                  autoComplete="tel"
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="row">
+              <div className="field">
+                <label htmlFor="contactMethod">Preferred way to connect</label>
+                <select id="contactMethod" name="contactMethod" defaultValue={contactMethods[0]}>
+                  {contactMethods.map((m) => (
+                    <option key={m}>{m}</option>
+                  ))}
+                </select>
+              </div>
+              <div className="field">
+                <label htmlFor="availability">Best time to reach you</label>
+                <input
+                  id="availability"
+                  name="availability"
+                  type="text"
+                  placeholder="e.g. Weekdays 9am–12pm EST"
+                />
+              </div>
+            </div>
+
+            <div className="row">
+              <div className="field">
+                <label htmlFor="industry">Industry</label>
+                <select id="industry" name="industry" defaultValue={industries[0]}>
+                  {industries.map((i) => (
+                    <option key={i}>{i}</option>
+                  ))}
+                </select>
+              </div>
+              <div className="field">
+                <label htmlFor="budget">Budget</label>
+                <select id="budget" name="budget" defaultValue="">
+                  <option value="" disabled>
+                    Select a range…
+                  </option>
+                  {budgetRanges.map((b) => (
+                    <option key={b}>{b}</option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            <div className="field">
+              <label htmlFor="interest">What can we help with?</label>
+              <select
+                id="interest"
+                name="interest"
+                value={interest}
+                onChange={(e) => setInterest(e.target.value)}
+                required
+              >
+                <option value="" disabled>
+                  Select an area…
+                </option>
+                {interestAreas.map((a) => (
+                  <option key={a}>{a}</option>
+                ))}
+              </select>
+            </div>
+
+            {isOther && (
+              <div className="field">
+                <label htmlFor="challenge">Tell us more</label>
                 <textarea
                   id="challenge"
                   name="challenge"
                   placeholder="e.g. Our support queue keeps breaking SLA during peak…"
+                  required
                 />
               </div>
-              <Turnstile key={captchaEpoch} onToken={setCaptchaToken} />
-              <button className="btn btn-primary" type="submit" disabled={status === "submitting"}>
-                {status === "submitting"
-                  ? "Sending…"
-                  : "Schedule a pilot consultation →"}
-              </button>
-              <p className="fineprint">
-                We reply within one business day. No spam, ever.
-              </p>
-            </form>
-          </Reveal>
+            )}
+
+            <Turnstile key={captchaEpoch} onToken={setCaptchaToken} />
+            <button className="btn btn-primary" type="submit" disabled={status === "submitting"}>
+              {status === "submitting" ? "Sending…" : "Schedule a pilot consultation →"}
+            </button>
+            <p className="fineprint">We reply within one business day. No spam, ever.</p>
+          </form>
+        </Reveal>
       </div>
     </section>
   );

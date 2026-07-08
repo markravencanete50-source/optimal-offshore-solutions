@@ -180,4 +180,21 @@ export const serviceMotifs: Record<string, ReactNode> = {
       <path d="M266 80 h24 M278 68 v24" stroke={GOLD_DEEP} strokeWidth="2" strokeLinecap="round" />
     </svg>
   ),
+
+  // S9 — Sales & Lead Generation: funnel narrowing to a rising conversion arrow
+  S9: (
+    <svg {...vizProps}>
+      <Grid />
+      <path d="M40 34 H 176 L 138 74 V 108 L 96 122 V 74 Z" fill={GOLD} opacity="0.18" stroke={GOLD_DEEP} strokeWidth="1.5" strokeLinejoin="round" />
+      {[
+        { y: 34, w: 136 }, { y: 52, w: 108 }, { y: 70, w: 74 },
+      ].map((s, i) => (
+        <line key={i} x1={108 - s.w / 2} y1={s.y} x2={108 + s.w / 2} y2={s.y} stroke={GOLD_DEEP} strokeWidth="1" opacity="0.4" />
+      ))}
+      <circle cx="108" cy="122" r="6" fill={GREEN} />
+      <path d="M210 108 L 246 108 L 246 78 L 282 78 L 282 44" fill="none" stroke={GOLD_DEEP} strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M272 50 L 282 40 L 292 50" fill="none" stroke={GOLD_DEEP} strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+      <circle cx="210" cy="108" r="4" fill={GOLD} />
+    </svg>
+  ),
 };

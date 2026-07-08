@@ -5,7 +5,12 @@ export type Lead = {
   firstName: string;
   email: string;
   company: string;
+  phone?: string;
+  availability?: string;
+  contactMethod?: string;
   industry: string;
+  interest?: string;
+  budget?: string;
   challenge: string;
 };
 
@@ -56,9 +61,14 @@ export async function sendLeadEmails(
           <h2 style="margin:0 0 12px">New pilot inquiry</h2>
           <p style="margin:4px 0"><strong>Name:</strong> ${esc(lead.firstName)}</p>
           <p style="margin:4px 0"><strong>Email:</strong> ${esc(lead.email)}</p>
+          <p style="margin:4px 0"><strong>Phone:</strong> ${esc(lead.phone || "—")}</p>
+          <p style="margin:4px 0"><strong>Preferred contact:</strong> ${esc(lead.contactMethod || "—")}</p>
+          <p style="margin:4px 0"><strong>Best time:</strong> ${esc(lead.availability || "—")}</p>
           <p style="margin:4px 0"><strong>Company:</strong> ${esc(lead.company)}</p>
           <p style="margin:4px 0"><strong>Industry:</strong> ${esc(lead.industry)}</p>
-          <p style="margin:12px 0 4px"><strong>What they want to fix or scale:</strong></p>
+          <p style="margin:4px 0"><strong>Looking for help with:</strong> ${esc(lead.interest || "—")}</p>
+          <p style="margin:4px 0"><strong>Budget:</strong> ${esc(lead.budget || "—")}</p>
+          <p style="margin:12px 0 4px"><strong>Details:</strong></p>
           <p style="margin:0;white-space:pre-wrap">${esc(lead.challenge) || "—"}</p>
         </div>`,
     });

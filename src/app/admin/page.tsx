@@ -9,7 +9,12 @@ type Lead = {
   firstName: string;
   email: string;
   company: string;
+  phone: string;
+  availability: string;
+  contactMethod: string;
   industry: string;
+  interest: string;
+  budget: string;
   challenge: string;
   status: LeadStatus;
   notes: string;
@@ -418,9 +423,15 @@ function fmtDate(iso: string): string {
 
 function exportCsv(leads: Lead[]) {
   const esc = (v: string) => `"${String(v ?? "").replace(/"/g, '""')}"`;
-  const header = ["Date", "Name", "Email", "Company", "Industry", "Status", "Challenge", "Notes"];
+  const header = [
+    "Date", "Name", "Email", "Phone", "Preferred contact", "Best time",
+    "Company", "Industry", "Interest", "Budget", "Status", "Details", "Notes",
+  ];
   const rows = leads.map((l) =>
-    [l.createdAt, l.firstName, l.email, l.company, l.industry, l.status, l.challenge, l.notes]
+    [
+      l.createdAt, l.firstName, l.email, l.phone, l.contactMethod, l.availability,
+      l.company, l.industry, l.interest, l.budget, l.status, l.challenge, l.notes,
+    ]
       .map(esc)
       .join(","),
   );
@@ -787,8 +798,8 @@ export default function AdminDashboard() {
                         <th>Received</th>
                         <th>Contact</th>
                         <th>Company</th>
-                        <th>Industry</th>
-                        <th>Challenge</th>
+                        <th>Interest</th>
+                        <th>Budget</th>
                         <th>Status</th>
                         <th>Notes</th>
                         <th aria-label="Delete" />
@@ -804,12 +815,31 @@ export default function AdminDashboard() {
                               <div>
                                 <div className="nm">{l.firstName}</div>
                                 <a href={`mailto:${l.email}`}>{l.email}</a>
+                                {l.phone && <a href={`tel:${l.phone}`}>{l.phone}</a>}
+                                {(l.contactMethod || l.availability) && (
+                                  <span className="meta">
+                                    {[l.contactMethod, l.availability].filter(Boolean).join(" · ")}
+                                  </span>
+                                )}
                               </div>
                             </div>
                           </td>
-                          <td className="co">{l.company}</td>
-                          <td>{l.industry}</td>
-                          <td className="challenge">{l.challenge || "—"}</td>
+                          <td className="co">
+                            {l.company}
+                            {l.industry && l.industry !== "Not specified" && (
+                              <span className="sub">{l.industry}</span>
+                            )}
+                          </td>
+                          <td className="challenge">
+                            {l.interest && l.interest !== "Not specified" && (
+                              <span className="tagline">{l.interest}</span>
+                            )}
+                            {l.challenge && <span className="detail">{l.challenge}</span>}
+                            {(!l.interest || l.interest === "Not specified") && !l.challenge && "—"}
+                          </td>
+                          <td className="budget">
+                            {l.budget && l.budget !== "Not specified" ? l.budget : "—"}
+                          </td>
                           <td>
                             <select
                               className={`status s-${l.status}`}

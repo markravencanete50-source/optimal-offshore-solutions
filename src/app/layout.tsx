@@ -88,7 +88,11 @@ const organizationSchema = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${sans.variable} ${mono.variable}`}>
+    <html
+      lang="en"
+      className={`${sans.variable} ${mono.variable}`}
+      suppressHydrationWarning /* admin theme script sets data-adm-theme on <html> pre-hydration */
+    >
       <body>
         <script
           type="application/ld+json"

@@ -70,6 +70,13 @@ export const services = [
     tag: "Process",
     body: "Every workflow captured as a clear, auditable SOP so performance survives attrition and scales cleanly.",
   },
+  {
+    id: "S9",
+    caption: "Growth",
+    title: "Sales & Lead Generation",
+    tag: "Growth",
+    body: "Outbound prospecting, LinkedIn sourcing and appointment setting run as a measured pipeline — led by operators who have carried sales targets and opened new markets.",
+  },
 ];
 
 export const gauges = [
@@ -154,9 +161,9 @@ export const team = [
     initials: "KC",
     role: "Co-Founder",
     name: "Karl Ivan David “KID” Cañeda",
-    position: "Service Delivery & Quality",
+    position: "Operations & Growth",
     photo: "/images/team/kid-caneda.jpg",
-    bio: "13+ years of operations leadership across BPO, healthcare and tech — Concentrix, Tech Mahindra, Foundever and UnitedHealth's Optum. KID translates client objectives into processes that exceed SLA targets (CSAT, AHT, FCR), backed by Lean/Six Sigma and a background in HR and org development.",
+    bio: "Strategic operations leader with 13+ years across BPO, healthcare and tech — currently running a major US streaming account at Concentrix, with prior leadership at Tech Mahindra, Foundever and UnitedHealth's Optum. KID pairs LEAN operational rigour with hands-on HR and business-development experience: he drives CSAT, AHT and FCR against contractual SLAs, manages program budgets and attrition, and builds the sales pipelines that open new markets.",
   },
 ];
 
@@ -174,6 +181,36 @@ export const industries = [
   "Tech support",
   "Logistics",
   "Other",
+];
+
+// ---- Contact-form option lists ----
+// Area the prospect wants help with. "Others" reveals a free-text detail field.
+export const interestAreas = [
+  "KPI performance",
+  "Sales",
+  "Leads / lead generation",
+  "Management & operations",
+  "CRM efficiency",
+  "Others",
+];
+
+// Preferred way to be contacted.
+export const contactMethods = [
+  "Zoom meeting",
+  "Google Meet",
+  "Email",
+  "WhatsApp",
+  "Viber",
+];
+
+// Rough engagement budget (monthly). Ranges keep it easy + comparable.
+export const budgetRanges = [
+  "Under $1,000 / mo",
+  "$1,000 – $3,000 / mo",
+  "$3,000 – $7,500 / mo",
+  "$7,500 – $15,000 / mo",
+  "$15,000+ / mo",
+  "Not sure yet",
 ];
 
 // Scrolling industry strip under the hero.
