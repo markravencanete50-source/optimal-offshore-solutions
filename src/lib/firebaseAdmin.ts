@@ -6,6 +6,7 @@ import {
   type App,
 } from "firebase-admin/app";
 import { getFirestore, type Firestore } from "firebase-admin/firestore";
+import { getAuth, type Auth } from "firebase-admin/auth";
 
 /**
  * Lazily initialise the Firebase Admin SDK (server-side only) from env vars.
@@ -17,26 +18,43 @@ import { getFirestore, type Firestore } from "firebase-admin/firestore";
  *   FIREBASE_CLIENT_EMAIL
  *   FIREBASE_PRIVATE_KEY   (with literal "\n" escaped, or real newlines)
  */
-let cachedDb: Firestore | null | undefined;
+let cachedApp: App | null | undefined;
 
-export function getAdminDb(): Firestore | null {
-  if (cachedDb !== undefined) return cachedDb;
+function getAdminApp(): App | null {
+  if (cachedApp !== undefined) return cachedApp;
 
   const projectId = process.env.FIREBASE_PROJECT_ID;
   const clientEmail = process.env.FIREBASE_CLIENT_EMAIL;
   const privateKey = process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, "\n");
 
   if (!projectId || !clientEmail || !privateKey) {
-    cachedDb = null;
-    return cachedDb;
+    cachedApp = null;
+    return cachedApp;
   }
 
-  const app: App =
+  cachedApp =
     getApps()[0] ??
     initializeApp({
       credential: cert({ projectId, clientEmail, privateKey }),
     });
+  return cachedApp;
+}
 
-  cachedDb = getFirestore(app);
+let cachedDb: Firestore | null | undefined;
+
+export function getAdminDb(): Firestore | null {
+  if (cachedDb !== undefined) return cachedDb;
+  const app = getAdminApp();
+  cachedDb = app ? getFirestore(app) : null;
   return cachedDb;
+}
+
+let cachedAuth: Auth | null | undefined;
+
+/** Firebase Authentication (Admin) — used to verify admin sign-in ID tokens. */
+export function getAdminAuth(): Auth | null {
+  if (cachedAuth !== undefined) return cachedAuth;
+  const app = getAdminApp();
+  cachedAuth = app ? getAuth(app) : null;
+  return cachedAuth;
 }

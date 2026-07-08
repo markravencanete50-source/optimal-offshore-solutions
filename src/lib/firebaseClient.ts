@@ -4,6 +4,7 @@
 // future client-side reads (e.g. surfacing case studies) without extra setup.
 import { getApps, initializeApp, type FirebaseApp } from "firebase/app";
 import { getFirestore, type Firestore } from "firebase/firestore";
+import { getAuth, type Auth } from "firebase/auth";
 
 const config = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -14,10 +15,26 @@ const config = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
+/** True when the public web config is present (so client auth/db can init). */
+export function hasClientConfig(): boolean {
+  return Boolean(config.apiKey && config.projectId);
+}
+
 let app: FirebaseApp | null = null;
 
-export function getClientDb(): Firestore | null {
-  if (!config.apiKey || !config.projectId) return null;
+function getClientApp(): FirebaseApp | null {
+  if (!hasClientConfig()) return null;
   app = getApps()[0] ?? initializeApp(config);
-  return getFirestore(app);
+  return app;
+}
+
+export function getClientDb(): Firestore | null {
+  const a = getClientApp();
+  return a ? getFirestore(a) : null;
+}
+
+/** Firebase Authentication (client) — used for admin email/password sign-in. */
+export function getClientAuth(): Auth | null {
+  const a = getClientApp();
+  return a ? getAuth(a) : null;
 }

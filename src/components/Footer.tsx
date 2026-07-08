@@ -42,8 +42,11 @@ export default function Footer() {
           <span>
             © {new Date().getFullYear()} {company.name}
           </span>
-          <span>
+          <span className="foot-base-end">
             {company.location} · {company.serving}
+            <a href="/admin" className="foot-admin">
+              Admin
+            </a>
           </span>
         </div>
       </div>

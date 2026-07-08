@@ -1,5 +1,22 @@
 /* ── Admin console — same brand system as the site, denser instrument voice ── */
 
+/* Admin-scoped tokens. The public site's redesign trimmed its :root palette, so
+   the console defines the extra instrument-panel + accent vars it needs here,
+   mapped onto the current warm-neutral + gold system. */
+.adm,
+.adm-login {
+  --panel: #f3efe6; /* warm tinted band */
+  --body: #3a4852; /* long-form body text */
+  --blue: #2f80ed; /* chart accent */
+  --blue-deep: #1e5fb8;
+  --signal: #e4b04a; /* bright gold — accents + focus */
+  --signal-ink: #96700f; /* deep gold — text on light */
+  --pnl: #1c2434; /* dark instrument panel */
+  --pnl-line: #2a3547;
+  --pnl-muted: #94a7b5;
+  --serif: var(--sans);
+}
+
 .adm {
   min-height: 100vh;
   background: var(--paper);
