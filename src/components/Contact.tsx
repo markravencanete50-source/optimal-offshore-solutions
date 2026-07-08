@@ -3,7 +3,7 @@
 import { useState, type FormEvent } from "react";
 import Reveal from "./Reveal";
 import { track } from "./Tracker";
-import { industries } from "@/lib/content";
+import { company, industries } from "@/lib/content";
 
 type Status = "idle" | "submitting" | "ok" | "error";
 
@@ -41,21 +41,33 @@ export default function Contact() {
   }
 
   return (
-    <section className="sec" id="contact">
-      <div className="wrap">
-        <div className="cta-grid">
-          <Reveal className="cta-copy">
-            <p className="eyebrow">
-              <span className="tick">▸</span> Get started
-            </p>
+    <section className="contact-band" id="contact">
+      <div className="cta-grid">
+        <div className="cta-copy">
+          <Reveal>
+            <p className="eyebrow">▸ Get started</p>
+          </Reveal>
+          <Reveal delay={0.08}>
             <h2>Your pilot starts with a conversation.</h2>
+          </Reveal>
+          <Reveal delay={0.14}>
             <p className="lead">
               Tell us the program you&apos;re worried about. We&apos;ll come back with how a low-risk
               pilot would work, and the exact metrics we&apos;d hold ourselves to.
             </p>
           </Reveal>
+          <Reveal delay={0.2}>
+            <div className="contact-lines">
+              <span>{company.email}</span>
+              <span>
+                {company.location} · {company.serving}
+              </span>
+              <span className="ok-line">{"// We reply within one business day. No spam, ever."}</span>
+            </div>
+          </Reveal>
+        </div>
 
-          <Reveal className="form" delay={0.1}>
+        <Reveal className="form" delay={0.16}>
             <form onSubmit={onSubmit} noValidate>
               {status === "ok" && <div className="notice ok">{message}</div>}
               {status === "error" && <div className="notice err">{message}</div>}
@@ -118,7 +130,6 @@ export default function Contact() {
               </p>
             </form>
           </Reveal>
-        </div>
       </div>
     </section>
   );

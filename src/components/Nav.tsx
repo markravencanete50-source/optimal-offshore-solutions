@@ -6,8 +6,8 @@ import { company } from "@/lib/content";
 const links = [
   { href: "#services", label: "Services" },
   { href: "#approach", label: "Approach" },
+  { href: "#why", label: "Why us" },
   { href: "#team", label: "Team" },
-  { href: "#contact", label: "Contact" },
 ];
 
 export default function Nav() {

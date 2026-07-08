@@ -3,62 +3,43 @@ import { team } from "@/lib/content";
 
 export default function Team() {
   return (
-    <section className="sec" id="team" style={{ paddingTop: 0 }}>
-      <div className="wrap">
-        <div className="team-lead">
-          <Reveal>
-            <div className="sec-head">
-              <span className="sec-index">04</span>
-              <p className="eyebrow">
-                <span className="tick">▸</span> Meet the team
-              </p>
-            </div>
-            <h2 style={{ maxWidth: 560 }}>
-              Led by operators who have run the numbers you care about.
-            </h2>
-          </Reveal>
-          <Reveal className="team-stat" delay={0.1}>
-            <div className="v">
-              50<span style={{ fontSize: "0.5em" }}>+</span>
-            </div>
-            <div className="k">Years combined ops leadership</div>
-          </Reveal>
-        </div>
+    <section className="band" id="team">
+      <div className="inner">
+        <Reveal>
+          <p className="eyebrow">04 ▸ Meet the team</p>
+        </Reveal>
+        <Reveal delay={0.08}>
+          <h2 className="sec-title" style={{ maxWidth: 800 }}>
+            Led by operators who have run the numbers you care about.
+          </h2>
+        </Reveal>
 
         <div className="team-grid">
           {team.map((m, i) => (
-            <Reveal className="member" key={m.name} delay={(i % 3) * 0.07}>
-              {m.photo ? (
-                <div className="portrait">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={m.photo} alt={m.name} loading="lazy" />
+            <Reveal key={m.name} delay={(i % 3) * 0.06}>
+              <div className="team-card">
+                {m.photo && (
+                  <div className="team-photo">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={m.photo} alt={m.name} loading="lazy" />
+                  </div>
+                )}
+                <div className="team-body">
+                  <p className="team-role">
+                    {m.role} · {m.position}
+                  </p>
+                  <h3>{m.name}</h3>
+                  <p className="bio">{m.bio}</p>
                 </div>
-              ) : (
-                <div className="portrait placeholder">
-                  <span>Photo soon</span>
-                </div>
-              )}
-              <div className="content">
-                <div className="role">{m.role}</div>
-                <h3>{m.name}</h3>
-                <div className="pos">{m.position}</div>
-                <p>{m.bio}</p>
               </div>
             </Reveal>
           ))}
 
-          {/* Open seat — assigned per engagement */}
-          <Reveal className="member" delay={0.14}>
-            <div className="portrait placeholder">
-              <span>Growing</span>
-            </div>
-            <div className="content">
-              <div className="role" style={{ color: "var(--faint)" }}>
-                Growing
-              </div>
-              <h3 style={{ color: "var(--muted)" }}>Your account lead</h3>
-              <div className="pos">Assigned per engagement</div>
-              <p>
+          <Reveal delay={0.12}>
+            <div className="team-card lead-slot">
+              <p className="team-role">Assigned per engagement</p>
+              <h3>Your account lead</h3>
+              <p className="bio">
                 Every pilot gets a named operations lead accountable for your scorecard — a single
                 point of ownership from day one through scale.
               </p>

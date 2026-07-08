@@ -3,26 +3,25 @@ import { steps } from "@/lib/content";
 
 export default function Approach() {
   return (
-    <section className="sec approach" id="approach">
-      <div className="wrap">
-        <Reveal className="sec-head">
-          <span className="sec-index">02</span>
-          <p className="eyebrow">
-            <span className="tick">▸</span> How engagements work
-          </p>
-        </Reveal>
+    <section className="band" id="approach">
+      <div className="inner">
         <Reveal>
-          <h2 style={{ maxWidth: 640 }}>
+          <p className="eyebrow">02 ▸ How engagements work</p>
+        </Reveal>
+        <Reveal delay={0.08}>
+          <h2 className="sec-title" style={{ marginBottom: 64 }}>
             Every engagement starts with a pilot — small, low-risk, and measured.
           </h2>
         </Reveal>
+
         <div className="steps">
           {steps.map((s, i) => (
-            <Reveal className="step" key={s.num} delay={i * 0.08}>
-              <span className="num">{s.num}</span>
-              <div className="rail" />
-              <h3>{s.title}</h3>
-              <p>{s.body}</p>
+            <Reveal key={s.title} delay={i * 0.12}>
+              <div className="step">
+                <div className="step-num">{String(i + 1).padStart(2, "0")}</div>
+                <h3>{s.title}</h3>
+                <p>{s.body}</p>
+              </div>
             </Reveal>
           ))}
         </div>

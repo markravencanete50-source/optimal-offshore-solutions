@@ -176,6 +176,17 @@ export const industries = [
   "Other",
 ];
 
+// Scrolling industry strip under the hero.
+export const marqueeIndustries = [
+  "Healthcare",
+  "Telecom",
+  "Financial services",
+  "Tech support",
+  "Travel",
+  "Logistics",
+  "Digital platforms",
+];
+
 // ---- "Why us" (expanded differentiators) ----
 export const whyLead =
   "Most outsourcers sell seats. We sell a number you can watch — run by operators who have carried the queue themselves, on a scorecard that stays open every day of the engagement.";
@@ -215,7 +226,7 @@ export const whyReasons = [
 
 export const whyStats = [
   { to: 50, suffix: "+", label: "Years combined ops leadership" },
-  { to: 15, suffix: "+", label: "Avg years per team lead" },
+  { to: 13, suffix: "+", label: "Avg years per team lead" },
   { to: 5, suffix: "", label: "Core industries served" },
   { to: 99, suffix: "%", label: "In-SLA delivery target" },
 ];

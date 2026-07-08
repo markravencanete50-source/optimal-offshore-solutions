@@ -1,5 +1,6 @@
 import Nav from "@/components/Nav";
 import Hero from "@/components/Hero";
+import Marquee from "@/components/Marquee";
 import ProblemSolution from "@/components/ProblemSolution";
 import Services from "@/components/Services";
 import Approach from "@/components/Approach";
@@ -15,6 +16,7 @@ export default function Home() {
       <Nav />
       <main id="top">
         <Hero />
+        <Marquee />
         <ProblemSolution />
         <Services />
         <Approach />
