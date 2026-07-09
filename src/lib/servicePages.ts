@@ -940,3 +940,23 @@ export const serviceFamilies = [
 export function getServicePage(slug: string): ServicePage | undefined {
   return servicePages.find((s) => s.slug === slug);
 }
+
+// ── Service imagery ───────────────────────────────────────────────────
+// Branded mockup photos live in /public/images/services/<slug>.webp (plus a
+// -sm variant for srcset). S6 (data-analysis-and-reporting) has no image yet —
+// callers fall back to its SVG motif until the client supplies one.
+const MISSING_IMAGES = new Set(["data-analysis-and-reporting"]);
+// These two mockups are portrait infographics — crop from the top, where the
+// title block sits, when shown in a landscape frame.
+const PORTRAIT_IMAGES = new Set(["process-documentation-and-sops", "sales-and-lead-generation"]);
+
+export type ServiceImage = { src: string; srcSm: string; portrait: boolean };
+
+export function getServiceImage(slug: string): ServiceImage | null {
+  if (MISSING_IMAGES.has(slug)) return null;
+  return {
+    src: `/images/services/${slug}.webp`,
+    srcSm: `/images/services/${slug}-sm.webp`,
+    portrait: PORTRAIT_IMAGES.has(slug),
+  };
+}

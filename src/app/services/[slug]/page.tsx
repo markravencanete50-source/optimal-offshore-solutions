@@ -6,7 +6,7 @@ import Footer from "@/components/Footer";
 import PageHero from "@/components/PageHero";
 import CtaBand from "@/components/CtaBand";
 import Reveal from "@/components/Reveal";
-import { servicePages, getServicePage } from "@/lib/servicePages";
+import { servicePages, getServicePage, getServiceImage } from "@/lib/servicePages";
 import { company } from "@/lib/content";
 import { siteUrl } from "@/lib/site";
 
@@ -38,6 +38,7 @@ export default function ServiceDetail({ params }: { params: Params }) {
   const page = getServicePage(params.slug);
   if (!page) notFound();
 
+  const image = getServiceImage(page.slug);
   const related = page.related
     .map((slug) => getServicePage(slug))
     .filter((s): s is NonNullable<typeof s> => Boolean(s));
@@ -105,6 +106,24 @@ export default function ServiceDetail({ params }: { params: Params }) {
             </div>
           </Reveal>
         </PageHero>
+
+        {/* Branded service visual */}
+        {image && (
+          <section className="svc-media-wrap">
+            <Reveal y={32}>
+              <figure className={`svc-media${image.portrait ? " portrait" : ""}`}>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={image.src}
+                  srcSet={`${image.srcSm} 640w, ${image.src} 1200w`}
+                  sizes="(min-width: 1280px) 1200px, 92vw"
+                  alt={`${page.title} — Optimal Offshore Solutions`}
+                  decoding="async"
+                />
+              </figure>
+            </Reveal>
+          </section>
+        )}
 
         {/* The problem */}
         <section className="band">

@@ -6,7 +6,7 @@ import PageHero from "@/components/PageHero";
 import CtaBand from "@/components/CtaBand";
 import Reveal from "@/components/Reveal";
 import { serviceMotifs } from "@/components/graphics";
-import { servicePages, serviceFamilies } from "@/lib/servicePages";
+import { servicePages, serviceFamilies, getServiceImage } from "@/lib/servicePages";
 import { siteUrl } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -65,10 +65,27 @@ export default function ServicesIndex() {
                   <p className="family-blurb">{f.blurb}</p>
                 </Reveal>
                 <div className="svc-grid three">
-                  {members.map((s, i) => (
+                  {members.map((s, i) => {
+                    const img = getServiceImage(s.slug);
+                    return (
                     <Reveal key={s.slug} delay={(i % 3) * 0.06}>
                       <Link href={`/services/${s.slug}`} className="svc-card svc-card-link">
-                        <div className="svc-art">{serviceMotifs[s.id]}</div>
+                        <div className={`svc-art${img?.portrait ? " portrait" : ""}`}>
+                          {img ? (
+                            // eslint-disable-next-line @next/next/no-img-element
+                            <img
+                              src={img.srcSm}
+                              srcSet={`${img.srcSm} 640w, ${img.src} 1200w`}
+                              sizes="(min-width: 1024px) 400px, 90vw"
+                              alt={s.title}
+                              loading="lazy"
+                              decoding="async"
+                              className="svc-art-img"
+                            />
+                          ) : (
+                            serviceMotifs[s.id]
+                          )}
+                        </div>
                         <div className="svc-body">
                           <span className="svc-tag">
                             {s.id} {"//"} {s.caption}
@@ -80,7 +97,8 @@ export default function ServicesIndex() {
                         </div>
                       </Link>
                     </Reveal>
-                  ))}
+                    );
+                  })}
                 </div>
               </div>
             );

@@ -1,9 +1,23 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
+import { motion, useReducedMotion, type Variants } from "framer-motion";
 import Reveal from "./Reveal";
 import CountUp from "./CountUp";
 import { gauges } from "@/lib/content";
+
+/* Word-by-word headline rise. Entrances start at 0.02 (not 0) opacity so the
+   browser counts the H1 as painted immediately — it's the page's LCP element. */
+const headlineStagger: Variants = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.055, delayChildren: 0.12 } },
+};
+const wordRise: Variants = {
+  hidden: { opacity: 0.02, y: 26 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.65, ease: [0.2, 0.7, 0.2, 1] } },
+};
+
+const LINE_A = "Offshore operations,".split(" ");
+const LINE_B = "held to the number.".split(" ");
 
 /** Which scorecard tiles read gold vs neutral, and their bar fill. */
 const tileStyle: Record<string, { valClass: string; barClass: string; barPct: number }> = {
@@ -36,6 +50,7 @@ function Meter({ pct, green }: { pct: number; green?: boolean }) {
 }
 
 export default function Hero() {
+  const reduce = useReducedMotion();
   return (
     <section className="hero">
       <div className="hero-grid-bg" aria-hidden />
@@ -45,11 +60,26 @@ export default function Hero() {
           <Reveal>
             <p className="eyebrow">▸ KPO delivery // Operations accountability</p>
           </Reveal>
-          <Reveal delay={0.08}>
+          {reduce ? (
             <h1>
               Offshore operations, <span className="gold">held to the number.</span>
             </h1>
-          </Reveal>
+          ) : (
+            <motion.h1 initial="hidden" animate="visible" variants={headlineStagger}>
+              {LINE_A.map((w, i) => (
+                <motion.span key={`a${i}`} variants={wordRise} className="hero-word">
+                  {w}&nbsp;
+                </motion.span>
+              ))}
+              <span className="gold">
+                {LINE_B.map((w, i) => (
+                  <motion.span key={`b${i}`} variants={wordRise} className="hero-word">
+                    {w}&nbsp;
+                  </motion.span>
+                ))}
+              </span>
+            </motion.h1>
+          )}
           <Reveal delay={0.16}>
             <p className="sub">
               A KPO delivery team built by BPO operators. We stand up, recover, and scale customer
