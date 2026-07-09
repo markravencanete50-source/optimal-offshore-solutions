@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { company } from "@/lib/content";
 
 export default function Footer() {
@@ -6,33 +7,34 @@ export default function Footer() {
       <div className="wrap">
         <div className="foot">
           <div className="brand-blurb">
-            <a href="#top" className="brand">
+            <Link href="/" className="brand">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img className="mark" src="/logo-mark.png" alt="Optimal Offshore Solutions" />
               {company.short}
-            </a>
+            </Link>
             <p className="tag">{company.tagline}</p>
           </div>
           <div className="foot-cols">
             <div className="foot-col">
               <h4>Services</h4>
-              <a href="#services">Offshore Setup</a>
-              <a href="#services">Program Recovery</a>
-              <a href="#services">Workforce Strategy</a>
-              <a href="#services">Customer Support</a>
+              <Link href="/services/offshore-setup-and-expansion">Offshore Setup</Link>
+              <Link href="/services/program-recovery">Program Recovery</Link>
+              <Link href="/services/workforce-strategy">Workforce Strategy</Link>
+              <Link href="/services/customer-support-outsourcing">Customer Support</Link>
+              <Link href="/services">All nine services →</Link>
             </div>
             <div className="foot-col">
               <h4>Company</h4>
-              <a href="#approach">Approach</a>
-              <a href="#why">Why us</a>
-              <a href="#team">Team</a>
-              <a href="#contact">Contact</a>
+              <Link href="/approach">Approach</Link>
+              <Link href="/why-us">Why us</Link>
+              <Link href="/team">Team</Link>
+              <Link href="/book-a-pilot">Contact</Link>
             </div>
             <div className="foot-col">
               <h4>Get started</h4>
-              <a href="#contact" className="gold">
+              <Link href="/book-a-pilot" className="gold">
                 Book a pilot →
-              </a>
+              </Link>
               <p>{company.email}</p>
               <p>{company.location}</p>
             </div>

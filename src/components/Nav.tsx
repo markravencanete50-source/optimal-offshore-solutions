@@ -1,13 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { company } from "@/lib/content";
 
 const links = [
-  { href: "#services", label: "Services" },
-  { href: "#approach", label: "Approach" },
-  { href: "#why", label: "Why us" },
-  { href: "#team", label: "Team" },
+  { href: "/services", label: "Services" },
+  { href: "/approach", label: "Approach" },
+  { href: "/why-us", label: "Why us" },
+  { href: "/team", label: "Team" },
 ];
 
 export default function Nav() {
@@ -24,25 +25,25 @@ export default function Nav() {
   return (
     <header className={`site${scrolled ? " scrolled" : ""}`}>
       <div className="wrap nav">
-        <a href="#top" className="brand">
+        <Link href="/" className="brand">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img className="mark" src="/logo-mark.png" alt="Optimal Offshore Solutions" />
           {company.short}
-        </a>
+        </Link>
         <nav className={`navlinks${open ? " open" : ""}`}>
           {links.map((l) => (
-            <a key={l.href} href={l.href} onClick={() => setOpen(false)}>
+            <Link key={l.href} href={l.href} onClick={() => setOpen(false)}>
               {l.label}
-            </a>
+            </Link>
           ))}
-          <a
-            href="#contact"
+          <Link
+            href="/book-a-pilot"
             className="btn btn-primary"
             data-track="nav_book_pilot"
             onClick={() => setOpen(false)}
           >
             Book a pilot →
-          </a>
+          </Link>
         </nav>
         <button
           className="navtoggle"

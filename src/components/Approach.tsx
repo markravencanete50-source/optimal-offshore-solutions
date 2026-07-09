@@ -1,3 +1,4 @@
+import Link from "next/link";
 import Reveal from "./Reveal";
 import { steps } from "@/lib/content";
 
@@ -25,6 +26,14 @@ export default function Approach() {
             </Reveal>
           ))}
         </div>
+
+        <Reveal delay={0.1}>
+          <div className="sec-foot-link">
+            <Link href="/approach" className="btn btn-ghost">
+              See the full delivery system →
+            </Link>
+          </div>
+        </Reveal>
       </div>
     </section>
   );

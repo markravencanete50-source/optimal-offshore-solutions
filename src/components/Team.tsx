@@ -1,3 +1,4 @@
+import Link from "next/link";
 import Reveal from "./Reveal";
 import { team } from "@/lib/content";
 
@@ -46,6 +47,14 @@ export default function Team() {
             </div>
           </Reveal>
         </div>
+
+        <Reveal delay={0.1}>
+          <div className="sec-foot-link">
+            <Link href="/team" className="btn btn-ghost">
+              Meet the full team →
+            </Link>
+          </div>
+        </Reveal>
       </div>
     </section>
   );

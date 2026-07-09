@@ -1222,3 +1222,623 @@ footer.site {
     transform: none;
   }
 }
+
+/* ============================================================
+   Standalone pages (services, approach, why-us, team, pilot)
+   ============================================================ */
+
+/* ---- page hero ---- */
+.page-hero {
+  position: relative;
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 150px var(--pad-x) 72px;
+}
+.page-hero-inner {
+  position: relative;
+  max-width: 880px;
+}
+.page-hero h1 {
+  font-size: clamp(38px, 5vw, 68px);
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  font-weight: 700;
+  margin: 0 0 24px;
+}
+.page-hero h1 .gold {
+  color: var(--gold-ink);
+}
+.page-hero .sub {
+  font-size: 18px;
+  line-height: 1.65;
+  color: var(--muted);
+  max-width: 640px;
+  margin: 0;
+}
+.page-hero .hero-ctas {
+  margin-top: 36px;
+}
+.crumbs {
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--faint);
+  margin-bottom: 22px;
+}
+.crumbs a {
+  color: var(--faint);
+  transition: color 0.2s ease;
+}
+.crumbs a:hover {
+  color: var(--gold-ink);
+}
+.crumb-sep {
+  margin: 0 10px;
+  color: var(--line-2);
+}
+
+/* ---- section footer links (homepage to subpages) ---- */
+.sec-foot-link {
+  margin-top: 48px;
+  display: flex;
+  justify-content: center;
+}
+
+/* ---- service cards as links ---- */
+.svc-card-link {
+  cursor: pointer;
+}
+.svc-more {
+  margin-top: auto;
+  padding-top: 8px;
+  font-family: var(--mono);
+  font-size: 11.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--gold-ink);
+  opacity: 0;
+  transform: translateX(-4px);
+  transition: opacity 0.25s ease, transform 0.25s var(--ease-out);
+}
+.svc-card-link:hover .svc-more {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* ---- numbered gap rows (deck: five gaps / five reasons) ---- */
+.gap-rows {
+  max-width: 860px;
+}
+.gap-row {
+  display: grid;
+  grid-template-columns: 64px 1fr;
+  gap: 24px;
+  padding: 26px 8px;
+  border-bottom: 1px solid var(--line);
+}
+.gap-row:last-child {
+  border-bottom: none;
+}
+.gap-row .num {
+  font-family: var(--mono);
+  font-size: 15px;
+  color: var(--gold-ink);
+}
+.gap-row .num::before {
+  content: "";
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--gold);
+  margin-right: 10px;
+}
+.gap-row h3 {
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin: 0 0 6px;
+}
+.gap-row p {
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--muted);
+}
+
+/* ---- reframe statement (deck: you do not need X, you need Y) ---- */
+.reframe {
+  max-width: 900px;
+  margin: 0 auto;
+  text-align: left;
+}
+.reframe .rag-dots {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 34px;
+}
+.reframe .rag-dots span {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+}
+.reframe .rag-dots span:nth-child(1) { background: #E5484D; }
+.reframe .rag-dots span:nth-child(2) { background: var(--gold); }
+.reframe .rag-dots span:nth-child(3) { background: var(--green); }
+.reframe h2 {
+  font-size: clamp(32px, 4.4vw, 56px);
+  line-height: 1.12;
+  letter-spacing: -0.025em;
+  font-weight: 700;
+  margin: 0 0 28px;
+}
+.reframe h2 .dim {
+  color: var(--muted);
+  display: block;
+}
+.reframe h2 .gold {
+  color: var(--gold-ink);
+}
+.reframe .lead {
+  max-width: 640px;
+}
+.reframe .mono-note {
+  margin-top: 34px;
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold-ink);
+}
+
+/* ---- phase cards (deck: DIAGNOSE / BUILD / SUSTAIN / ENABLE) ---- */
+.phase-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+.phase-card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--r-card);
+  padding: 28px;
+  position: relative;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+.phase-card:hover {
+  border-color: rgba(150, 112, 15, 0.5);
+  box-shadow: var(--shadow-hover);
+}
+.phase-card .phase-idx {
+  position: absolute;
+  top: 22px;
+  right: 26px;
+  font-family: var(--mono);
+  font-size: 26px;
+  color: var(--line-2);
+}
+.phase-card h3 {
+  font-family: var(--mono);
+  font-size: 15px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--gold-ink);
+  margin: 0 0 12px;
+}
+.phase-card p {
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--muted);
+}
+.benchmark-note {
+  margin-top: 26px;
+  font-size: 13.5px;
+  color: var(--faint);
+}
+.benchmark-note strong {
+  font-family: var(--mono);
+  font-size: 11.5px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gold-ink);
+  font-weight: 500;
+  margin-right: 8px;
+}
+
+/* ---- outcome checklist (deck: what you get) ---- */
+.check-rows {
+  max-width: 860px;
+}
+.check-row {
+  display: grid;
+  grid-template-columns: 40px 1fr;
+  gap: 18px;
+  padding: 22px 4px;
+  border-bottom: 1px solid var(--line);
+  align-items: start;
+}
+.check-row:last-child {
+  border-bottom: none;
+}
+.check-row .tick {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: rgba(23, 138, 91, 0.12);
+  color: var(--green);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  margin-top: 2px;
+}
+.check-row h3 {
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin: 0 0 4px;
+}
+.check-row p {
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: var(--muted);
+}
+
+/* ---- metric cards (deck: the numbers we hold ourselves to) ---- */
+.metric-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+.metric-card {
+  background: var(--tile);
+  border: 1px solid var(--line-soft);
+  border-radius: var(--r-card);
+  padding: 26px;
+}
+.metric-card .k {
+  font-family: var(--mono);
+  font-size: 16px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gold-ink);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+.metric-card .k .dir {
+  color: var(--green);
+  font-size: 15px;
+}
+.metric-card p {
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: var(--muted);
+}
+
+/* ---- closing CTA band ---- */
+.cta-band {
+  background: var(--card);
+  border-top: 1px solid var(--line-soft);
+}
+.cta-band-inner {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 100px var(--pad-x);
+}
+.cta-band h2 {
+  font-size: clamp(32px, 4vw, 50px);
+  line-height: 1.1;
+  letter-spacing: -0.025em;
+  font-weight: 700;
+  margin: 0 0 20px;
+  max-width: 760px;
+}
+.cta-band .lead {
+  max-width: 620px;
+  margin-bottom: 36px;
+}
+.cta-band-actions {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  flex-wrap: wrap;
+  margin-bottom: 30px;
+}
+.cta-band-note {
+  color: var(--green);
+}
+.cta-band .contact-lines {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 14.5px;
+  color: var(--muted);
+}
+
+/* ---- services index: family groups ---- */
+.family-head {
+  display: flex;
+  align-items: baseline;
+  gap: 18px;
+  flex-wrap: wrap;
+  margin: 72px 0 28px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--line-2);
+}
+.family-head:first-of-type {
+  margin-top: 0;
+}
+.family-head h2 {
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+}
+.family-head .mono {
+  color: var(--gold-ink);
+}
+.family-blurb {
+  font-size: 15px;
+  color: var(--muted);
+  max-width: 640px;
+  margin: 0 0 28px;
+}
+.svc-grid.three {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+/* ---- related services ---- */
+.related-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+.related-card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--r-card);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: border-color 0.25s ease, transform 0.25s var(--ease-out), box-shadow 0.25s ease;
+}
+.related-card:hover {
+  border-color: rgba(150, 112, 15, 0.5);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-hover);
+}
+.related-card .svc-tag {
+  margin-bottom: 2px;
+}
+.related-card h3 {
+  font-size: 17.5px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.related-card p {
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--muted);
+}
+
+/* ---- cadence / escalation / next-steps rows ---- */
+.cadence-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+.cadence-card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--r-card);
+  padding: 26px;
+}
+.cadence-card .k {
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold-ink);
+  margin-bottom: 10px;
+}
+.cadence-card h3 {
+  font-size: 19px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin: 0 0 8px;
+}
+.cadence-card p {
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: var(--muted);
+}
+
+/* ---- why-us: result bands + sigma ladder ---- */
+.bands-list {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--line-2);
+  border-radius: var(--r-card);
+  overflow: hidden;
+}
+.band-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 22px;
+  background: var(--card);
+  border-bottom: 1px solid var(--line-soft);
+  font-size: 15px;
+}
+.band-row:last-child {
+  border-bottom: none;
+}
+.band-row .v {
+  font-family: var(--mono);
+  font-size: 13.5px;
+  color: var(--muted);
+}
+.band-row.crit {
+  background: rgba(229, 72, 77, 0.05);
+}
+.band-row.crit .v {
+  color: #C33A3F;
+}
+.override-card {
+  margin-top: 26px;
+  background: var(--gold-tint);
+  border: 1px solid var(--gold-line);
+  border-radius: var(--r-card);
+  padding: 26px;
+}
+.override-card h3 {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0 0 8px;
+}
+.override-card p {
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: var(--muted);
+}
+.sigma-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.sigma-row {
+  display: grid;
+  grid-template-columns: 90px 160px 1fr;
+  gap: 18px;
+  align-items: center;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 16px 22px;
+}
+.sigma-row .s {
+  font-family: var(--mono);
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--gold-ink);
+}
+.sigma-row .d {
+  font-family: var(--mono);
+  font-size: 12.5px;
+  color: var(--muted);
+}
+.sigma-row .l {
+  font-size: 14.5px;
+  color: var(--muted);
+}
+.sigma-row.highlight {
+  border-color: var(--gold-line-strong);
+  background: var(--gold-tint);
+}
+
+/* ---- FAQ ---- */
+.faq-list {
+  max-width: 800px;
+}
+.faq-item {
+  border-bottom: 1px solid var(--line);
+}
+.faq-item summary {
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  padding: 22px 4px;
+  font-size: 17.5px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.faq-item summary::-webkit-details-marker {
+  display: none;
+}
+.faq-item summary::after {
+  content: "+";
+  font-family: var(--mono);
+  font-size: 20px;
+  color: var(--gold-ink);
+  transition: transform 0.25s var(--ease-out);
+}
+.faq-item[open] summary::after {
+  transform: rotate(45deg);
+}
+.faq-item .faq-a {
+  padding: 0 4px 24px;
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--muted);
+  max-width: 700px;
+}
+
+/* ---- pilot page layout ---- */
+.pilot-grid {
+  display: grid;
+  grid-template-columns: 5fr 7fr;
+  gap: 64px;
+  align-items: start;
+}
+.pilot-grid .form form {
+  background: var(--card);
+  border: 1px solid var(--line-2);
+  border-radius: var(--r-panel);
+}
+
+/* ---- subpage responsive ---- */
+@media (max-width: 1024px) {
+  .phase-grid,
+  .metric-grid,
+  .cadence-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .svc-grid.three,
+  .related-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .pilot-grid {
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
+}
+@media (max-width: 640px) {
+  .page-hero {
+    padding-top: 120px;
+    padding-bottom: 52px;
+  }
+  .phase-grid,
+  .metric-grid,
+  .cadence-grid,
+  .svc-grid.three,
+  .related-grid {
+    grid-template-columns: 1fr;
+  }
+  .gap-row {
+    grid-template-columns: 1fr;
+    gap: 8px;
+    padding: 20px 0;
+  }
+  .sigma-row {
+    grid-template-columns: 70px 1fr;
+  }
+  .sigma-row .l {
+    grid-column: 1 / -1;
+  }
+  .cta-band-inner {
+    padding-top: 72px;
+    padding-bottom: 72px;
+  }
+  .cta-band-actions .btn {
+    width: 100%;
+  }
+  .family-head {
+    margin-top: 56px;
+  }
+}

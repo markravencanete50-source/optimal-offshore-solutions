@@ -1,3 +1,4 @@
+import Link from "next/link";
 import Reveal from "./Reveal";
 import CountUp from "./CountUp";
 import { whyLead, whyReasons, whyStats, scorecardMetrics } from "@/lib/content";
@@ -58,6 +59,14 @@ export default function Differentiators() {
           ))}
         </div>
       </div>
+
+      <Reveal delay={0.1}>
+        <div className="sec-foot-link">
+          <Link href="/why-us" className="btn btn-ghost">
+            How we hold ourselves to it →
+          </Link>
+        </div>
+      </Reveal>
 
       <Reveal>
         <div className="stats-band">
