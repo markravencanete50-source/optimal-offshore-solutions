@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Optimal Offshore Solutions — Operators, not middlemen</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600;700&amp;family=Inter:wght@400;500;600&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+  <style>
+    html { scroll-behavior: smooth; }
+    body { margin: 0; background: #101820; color: #F4F7FA; font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; }
+    a { color: #4FB3E8; text-decoration: none; }
+    a:hover { color: #E8B54D; }
+    input::placeholder, textarea::placeholder { color: #5E7285; }
+    @keyframes oosMarquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+    @keyframes oosPulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.35; transform: scale(0.8); } }
+    @keyframes oosBlink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+  </style>
+</helmet>
+
+<div ref="{{ rootRef }}" style="background: #101820; color: #F4F7FA; font-family: 'Inter', sans-serif; min-height: 100vh;">
+
+  <!-- ======================= NAV ======================= -->
+  <header data-screen-label="Nav" style="position: sticky; top: 0; z-index: 50; background: rgba(16,24,32,0.92); backdrop-filter: blur(12px); border-bottom: 1px solid #2C3B48;">
+    <div style="max-width: 1160px; margin: 0 auto; padding: 0 32px; height: 64px; display: flex; align-items: center; justify-content: space-between; gap: 24px;">
+      <a href="#top" style="font-family: 'IBM Plex Mono', monospace; font-size: 0.9rem; font-weight: 500; letter-spacing: 0.06em; color: #F4F7FA; display: flex; align-items: center; gap: 10px;">
+        <span style="color: var(--gold, #E8B54D);">▸</span>
+        <span>OOS<span style="color: #8CA0B3;"> // OPTIMAL OFFSHORE SOLUTIONS</span></span>
+      </a>
+      <nav style="display: flex; align-items: center; gap: 28px;">
+        <a href="#services" style="font-family: 'IBM Plex Mono', monospace; font-size: 0.8125rem; letter-spacing: 0.08em; text-transform: uppercase; color: #8CA0B3;" style-hover="color: #F4F7FA;">Services</a>
+        <a href="#approach" style="font-family: 'IBM Plex Mono', monospace; font-size: 0.8125rem; letter-spacing: 0.08em; text-transform: uppercase; color: #8CA0B3;" style-hover="color: #F4F7FA;">Approach</a>
+        <a href="#why" style="font-family: 'IBM Plex Mono', monospace; font-size: 0.8125rem; letter-spacing: 0.08em; text-transform: uppercase; color: #8CA0B3;" style-hover="color: #F4F7FA;">Why OOS</a>
+        <a href="#team" style="font-family: 'IBM Plex Mono', monospace; font-size: 0.8125rem; letter-spacing: 0.08em; text-transform: uppercase; color: #8CA0B3;" style-hover="color: #F4F7FA;">Team</a>
+        <a href="#faq" style="font-family: 'IBM Plex Mono', monospace; font-size: 0.8125rem; letter-spacing: 0.08em; text-transform: uppercase; color: #8CA0B3;" style-hover="color: #F4F7FA;">FAQ</a>
+        <a href="#contact" style="font-family: 'IBM Plex Mono', monospace; font-size: 0.8125rem; letter-spacing: 0.08em; text-transform: uppercase; color: #4FB3E8; display: inline-flex; align-items: center; gap: 8px; min-height: 44px;" style-hover="color: var(--gold, #E8B54D);"><span>▸</span><span>Book a pilot</span></a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ======================= HERO ======================= -->
+  <section id="top" data-screen-label="Hero" style="border-bottom: 1px solid #2C3B48;">
+    <div style="max-width: 1160px; margin: 0 auto; padding: 96px 32px 88px; display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 72px; align-items: center;">
+      <div>
+        <p style="margin: 0 0 28px; font-family: 'IBM Plex Mono', monospace; font-size: 0.8125rem; letter-spacing: 0.08em; text-transform: uppercase; color: #4FB3E8; min-height: 1.2em;"><span data-type="1">▸ oos --status // live from bohol, ph</span><span data-cursor="1" style="display: none; color: var(--gold, #E8B54D); animation: oosBlink 0.8s step-end infinite;">_</span></p>
+        <h1 style="margin: 0 0 24px; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: clamp(2.4rem, 5vw, 4rem); line-height: 1.05; letter-spacing: -0.02em; color: #F4F7FA;">
+          <span data-hero-line="1" style="display: block;">Operators,</span>
+          <span data-hero-line="2" style="display: block;">not middlemen<span style="color: var(--gold, #E8B54D);">.</span></span>
+        </h1>
+        <p data-hero-line="3" style="margin: 0 0 36px; max-width: 46ch; font-size: 1.0625rem; line-height: 1.65; color: #8CA0B3;">OOS runs pilot-first, SLA-accountable offshore programs from Bohol, Philippines — customer support, back office, and data ops for US &amp; APAC teams. Ninety days, measured weekly, no long contract up front.</p>
+        <div data-hero-line="4" style="display: flex; flex-wrap: wrap; align-items: center; gap: 16px; margin-bottom: 28px;">
+          <a href="#contact" style="display: inline-flex; align-items: center; gap: 10px; min-height: 44px; padding: 12px 26px; background: var(--gold, #E8B54D); color: #101820; font-family: 'Inter', sans-serif; font-weight: 600; font-size: 1rem; border-radius: 3px; transition: filter 150ms ease-out, transform 150ms ease-out;" style-hover="color: #101820; filter: brightness(1.08);" style-active="transform: scale(0.98);" style-focus="outline: 2px solid #4FB3E8; outline-offset: 2px;">Schedule a pilot consultation <span style="display: inline-block;">→</span></a>
+          <a href="#approach" style="display: inline-flex; align-items: center; min-height: 44px; padding: 12px 24px; background: transparent; border: 1px solid #2C3B48; color: #F4F7FA; font-family: 'Inter', sans-serif; font-weight: 500; font-size: 1rem; border-radius: 3px; transition: border-color 200ms ease-out, box-shadow 200ms ease-out;" style-hover="color: #F4F7FA; border-color: #4FB3E8; box-shadow: 0 0 0 1px #4FB3E8;" style-focus="outline: 2px solid #4FB3E8; outline-offset: 2px;">See how a pilot works</a>
+        </div>
+        <p data-hero-line="5" style="margin: 0; font-family: 'IBM Plex Mono', monospace; font-size: 0.8125rem; letter-spacing: 0.08em; text-transform: uppercase; color: #8CA0B3;">▸ reply &lt; 1 business day&nbsp;&nbsp;//&nbsp;&nbsp;no retainers to start</p>
+      </div>
+
+      <!-- Scorecard panel -->
+      <div data-hero-panel="1" style="background: #1A2530; border: 1px solid #2C3B48; border-radius: 4px; overflow: hidden;">
+        <div style="display: flex; align-items: center; justify-content: space-between; padding: 16px 24px; border-bottom: 1px solid #2C3B48;">
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; color: #8CA0B3;">Pilot scorecard // day 90</span>
+          <span style="display: inline-flex; align-items: center; gap: 8px;">
+            <span data-loop="1" style="width: 8px; height: 8px; border-radius: 50%; background: var(--gold, #E8B54D); animation: oosPulse 2s ease-in-out infinite;"></span>
+            <span style="font-family: 'IBM Plex Mono', monospace; font-size: 0.75rem; letter-spacing: 0.1em; color: var(--gold, #E8B54D);">LIVE</span>
+          </span>
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr;">
+          <div style="padding: 26px 24px; border-right: 1px solid #2C3B48; border-bottom: 1px solid #2C3B48;">
+            <p style="margin: 0 0 8px; font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: #8CA0B3;">In-SLA</p>
+            <p style="margin: 0 0 6px; font-family: 'IBM Plex Mono', monospace; font-weight: 500; font-size: 2.3rem; line-height: 1; font-variant-numeric: tabular-nums; color: #F4F7FA;"><span data-count="96.4" data-decimals="1" data-suffix="%">96.4%</span></p>
+            <p style="margin: 0; font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem; letter-spacing: 0.06em; color: #3FBF7F;">▲ above 95% target</p>
+          </div>
+          <div style="padding: 26px 24px; border-bottom: 1px solid #2C3B48;">
+            <p style="margin: 0 0 8px; font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: #8CA0B3;">CSAT</p>
+            <p style="margin: 0 0 6px; font-family: 'IBM Plex Mono', monospace; font-weight: 500; font-size: 2.3rem; line-height: 1; font-variant-numeric: tabular-nums; color: #F4F7FA;"><span data-count="92" data-suffix="%">92%</span></p>
+            <p style="margin: 0; font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem; letter-spacing: 0.06em; color: #3FBF7F;">▲ target 90%</p>
+          </div>
+          <div style="padding: 26px 24px; border-right: 1px solid #2C3B48;">
+            <p style="margin: 0 0 8px; font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: #8CA0B3;">FCR</p>
+            <p style="margin: 0 0 6px; font-family: 'IBM Plex Mono', monospace; font-weight: 500; font-size: 2.3rem; line-height: 1; font-variant-numeric: tabular-nums; color: #F4F7FA;"><span data-count="78" data-suffix="%">78%</span></p>
+            <p style="margin: 0; font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem; letter-spacing: 0.06em; color: #3FBF7F;">▲ +17 pts vs handoff</p>
+          </div>
+          <div style="padding: 26px 24px;">
+            <p style="margin: 0 0 8px; font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: #8CA0B3;">AHT delta</p>
+            <p style="margin: 0 0 6px; font-family: 'IBM Plex Mono', monospace; font-weight: 500; font-size: 2.3rem; line-height: 1; font-variant-numeric: tabular-nums; color: #F4F7FA;"><span data-count="18" data-prefix="−" data-suffix="%">−18%</span></p>
+            <p style="margin: 0; font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem; letter-spacing: 0.06em; color: #3FBF7F;">▲ vs day-0 baseline</p>
+          </div>
+        </div>
+        <div style="padding: 14px 24px;">
+          <p style="margin: 0; font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: #8CA0B3;">▸ updated weekly // shared with every client</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================= MARQUEE ======================= -->
+  <section data-screen-label="Industry marquee" style="border-bottom: 1px solid #2C3B48; overflow: hidden; padding: 18px 0;">
+    <div data-loop="1" style="display: flex; width: max-content; animation: oosMarquee 36s linear infinite;" style-hover="animation-play-state: paused;">
+      <div style="display: flex; gap: 0; white-space: nowrap; font-family: 'IBM Plex Mono', monospace; font-size: 0.8125rem; letter-spacing: 0.12em; text-transform: uppercase; color: #8CA0B3;">
+        <span style="padding: 0 28px;">Telecom</span><span style="color: #2C3B48;">//</span>
+        <span style="padding: 0 28px;">Healthcare</span><span style="color: #2C3B48;">//</span>
+        <span style="padding: 0 28px;">Fintech</span><span style="color: #2C3B48;">//</span>
+        <span style="padding: 0 28px;">E-commerce</span><span style="color: #2C3B48;">//</span>
+        <span style="padding: 0 28px;">SaaS</span><span style="color: #2C3B48;">//</span>
+        <span style="padding: 0 28px;">Logistics</span><span style="color: #2C3B48;">//</span>
+        <span style="padding: 0 28px;">Real estate</span><span style="color: #2C3B48;">//</span>
+        <span style="padding: 0 28px;">Travel</span><span style="color: #2C3B48;">//</span>
+        <span style="padding: 0 28px;">Energy &amp; utilities</span><span style="color: #2C3B48;">//</span>
+      </div>
+      <div aria-hidden="true" style="display: flex; gap: 0; white-space: nowrap; font-family: 'IBM Plex Mono', monospace; font-size: 0.8125rem; letter-spacing: 0.12em; text-transform: uppercase; color: #8CA0B3;">
+        <span style="padding: 0 28px;">Telecom</span><span style="color: #2C3B48;">//</span>
+        <span style="padding: 0 28px;">Healthcare</span><span style="color: #2C3B48;">//</span>
+        <span style="padding: 0 28px;">Fintech</span><span style="color: #2C3B48;">//</span>
+        <span style="padding: 0 28px;">E-commerce</span><span style="color: #2C3B48;">//</span>
+        <span style="padding: 0 28px;">SaaS</span><span style="color: #2C3B48;">//</span>
+        <span style="padding: 0 28px;">Logistics</span><span style="color: #2C3B48;">//</span>
+        <span style="padding: 0 28px;">Real estate</span><span style="color: #2C3B48;">//</span>
+        <span style="padding: 0 28px;">Travel</span><span style="color: #2C3B48;">//</span>
+        <span style="padding: 0 28px;">Energy &amp; utilities</span><span style="color: #2C3B48;">//</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================= SERVICES ======================= -->
+  <section id="services" data-screen-label="Services" style="border-bottom: 1px solid #2C3B48;">
+    <div style="max-width: 1160px; margin: 0 auto; padding: 96px 32px;">
+      <div data-reveal="1">
+        <p style="margin: 0 0 16px; font-family: 'IBM Plex Mono', monospace; font-size: 0.8125rem; letter-spacing: 0.08em; text-transform: uppercase; color: #4FB3E8;">▸ 01 // Services</p>
+        <h2 style="margin: 0 0 16px; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: clamp(1.8rem, 3.5vw, 2.6rem); letter-spacing: -0.01em; color: #F4F7FA;">Nine services. Three jobs.</h2>
+        <p style="margin: 0 0 56px; max-width: 58ch; font-size: 1.0625rem; line-height: 1.65; color: #8CA0B3;">Build the program, run it to SLA, prove it with data. Every service lives inside one of those jobs — and every one reports the same way.</p>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px;">
+
+        <div data-reveal="1" data-delay="0">
+          <p style="margin: 0 0 6px; font-family: 'IBM Plex Mono', monospace; font-size: 0.9rem; font-weight: 500; letter-spacing: 0.1em; color: #4FB3E8;">▸ BUILD //</p>
+          <p style="margin: 0 0 20px; font-size: 0.95rem; color: #F4F7FA;">Stand up the operation.</p>
+          <div style="display: flex; flex-direction: column; gap: 14px;">
+            <div style="background: #1A2530; border: 1px solid #2C3B48; border-radius: 4px; padding: 20px 22px; transition: border-color 200ms ease-out; cursor: pointer;" style-hover="border-color: #4FB3E8;">
+              <h3 style="margin: 0 0 8px; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 1.15rem; color: #F4F7FA;">Offshore Setup &amp; Expansion</h3>
+              <p style="margin: 0; font-size: 0.9rem; line-height: 1.55; color: #8CA0B3;">Entity-light launch in Bohol — space, hardware, compliance, payroll.</p>
+            </div>
+            <div style="background: #1A2530; border: 1px solid #2C3B48; border-radius: 4px; padding: 20px 22px; transition: border-color 200ms ease-out; cursor: pointer;" style-hover="border-color: #4FB3E8;">
+              <h3 style="margin: 0 0 8px; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 1.15rem; color: #F4F7FA;">HR &amp; Workforce Strategy</h3>
+              <p style="margin: 0; font-size: 0.9rem; line-height: 1.55; color: #8CA0B3;">Sourcing, training pipelines, and retention built for BPO reality.</p>
+            </div>
+            <div style="background: #1A2530; border: 1px solid #2C3B48; border-radius: 4px; padding: 20px 22px; transition: border-color 200ms ease-out; cursor: pointer;" style-hover="border-color: #4FB3E8;">
+              <h3 style="margin: 0 0 8px; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 1.15rem; color: #F4F7FA;">Process Documentation &amp; SOPs</h3>
+              <p style="margin: 0; font-size: 0.9rem; line-height: 1.55; color: #8CA0B3;">Your tribal knowledge, written down, versioned, and owned by you.</p>
+            </div>
+          </div>
+        </div>
+
+        <div data-reveal="1" data-delay="80">
+          <p style="margin: 0 0 6px; font-family: 'IBM Plex Mono', monospace; font-size: 0.9rem; font-weight: 500; letter-spacing: 0.1em; color: #4FB3E8;">▸ RUN //</p>
+          <p style="margin: 0 0 20px; font-size: 0.95rem; color: #F4F7FA;">Hold it to SLA.</p>
+          <div style="display: flex; flex-direction: column; gap: 14px;">
+            <div style="background: #1A2530; border: 1px solid #2C3B48; border-radius: 4px; padding: 20px 22px; transition: border-color 200ms ease-out; cursor: pointer;" style-hover="border-color: #4FB3E8;">
+              <h3 style="margin: 0 0 8px; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 1.15rem; color: #F4F7FA;">Multichannel Customer Support</h3>
+              <p style="margin: 0; font-size: 0.9rem; line-height: 1.55; color: #8CA0B3;">Voice, chat, email — staffed to your SLA, not our roster.</p>
+            </div>
+            <div style="background: #1A2530; border: 1px solid #2C3B48; border-radius: 4px; padding: 20px 22px; transition: border-color 200ms ease-out; cursor: pointer;" style-hover="border-color: #4FB3E8;">
+              <h3 style="margin: 0 0 8px; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 1.15rem; color: #F4F7FA;">Technical &amp; Healthcare Ops</h3>
+              <p style="margin: 0; font-size: 0.9rem; line-height: 1.55; color: #8CA0B3;">Tier-1/2 technical support and HIPAA-aware back office.</p>
+            </div>
+            <div style="background: #1A2530; border: 1px solid #2C3B48; border-radius: 4px; padding: 20px 22px; transition: border-color 200ms ease-out; cursor: pointer;" style-hover="border-color: #4FB3E8;">
+              <h3 style="margin: 0 0 8px; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 1.15rem; color: #F4F7FA;">Program Recovery &amp; Optimization</h3>
+              <p style="margin: 0; font-size: 0.9rem; line-height: 1.55; color: #8CA0B3;">We take over out-of-SLA programs and turn them around.</p>
+            </div>
+          </div>
+        </div>
+
+        <div data-reveal="1" data-delay="160">
+          <p style="margin: 0 0 6px; font-family: 'IBM Plex Mono', monospace; font-size: 0.9rem; font-weight: 500; letter-spacing: 0.1em; color: #4FB3E8;">▸ PROVE //</p>
+          <p style="margin: 0 0 20px; font-size: 0.95rem; color: #F4F7FA;">Show the numbers.</p>
+          <div style="display: flex; flex-direction: column; gap: 14px;">
+            <div style="background: #1A2530; border: 1px solid #2C3B48; border-radius: 4px; padding: 20px 22px; transition: border-color 200ms ease-out; cursor: pointer;" style-hover="border-color: #4FB3E8;">
+              <h3 style="margin: 0 0 8px; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 1.15rem; color: #F4F7FA;">Data Analysis &amp; Reporting</h3>
+              <p style="margin: 0; font-size: 0.9rem; line-height: 1.55; color: #8CA0B3;">Weekly scorecards and dashboards clients actually read.</p>
+            </div>
+            <div style="background: #1A2530; border: 1px solid #2C3B48; border-radius: 4px; padding: 20px 22px; transition: border-color 200ms ease-out; cursor: pointer;" style-hover="border-color: #4FB3E8;">
+              <h3 style="margin: 0 0 8px; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 1.15rem; color: #F4F7FA;">Research &amp; Insights</h3>
+              <p style="margin: 0; font-size: 0.9rem; line-height: 1.55; color: #8CA0B3;">Market, lead, and ops research with sourced, checkable data.</p>
+            </div>
+            <div style="background: #1A2530; border: 1px solid #2C3B48; border-radius: 4px; padding: 20px 22px; transition: border-color 200ms ease-out; cursor: pointer;" style-hover="border-color: #4FB3E8;">
+              <h3 style="margin: 0 0 8px; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 1.15rem; color: #F4F7FA;">Sales &amp; Lead Generation</h3>
+              <p style="margin: 0; font-size: 0.9rem; line-height: 1.55; color: #8CA0B3;">Outbound pods measured on qualified pipeline, not dials.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================= APPROACH (light) ======================= -->
+  <section id="approach" data-screen-label="Approach" style="background: #F4F7FA; color: #101820;">
+    <div style="max-width: 1160px; margin: 0 auto; padding: 96px 32px;">
+      <div data-reveal="1" style="display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 72px;">
+        <div>
+          <p style="margin: 0 0 16px; font-family: 'IBM Plex Mono', monospace; font-size: 0.8125rem; letter-spacing: 0.08em; text-transform: uppercase; color: #2A7FB8;">▸ 02 // Approach</p>
+          <h2 style="margin: 0 0 16px; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: clamp(1.8rem, 3.5vw, 2.6rem); letter-spacing: -0.01em; color: #101820;">The pilot, start to scale.</h2>
+          <p style="margin: 0 0 28px; max-width: 44ch; font-size: 1.0625rem; line-height: 1.65; color: #47596A;">One program, ninety days, targets in writing. Day 90 is a decision point — not a renewal trap.</p>
+          <a href="#contact" style="font-family: 'IBM Plex Mono', monospace; font-size: 0.8125rem; letter-spacing: 0.08em; text-transform: uppercase; color: #2A7FB8; display: inline-flex; align-items: center; gap: 8px; min-height: 44px;" style-hover="color: #B8860B;"><span>▸</span><span>Scope your pilot</span></a>
+        </div>
+        <div data-connector="1" style="position: relative; display: flex; flex-direction: column; gap: 44px; padding-left: 0;">
+          <div style="position: absolute; left: 23px; top: 24px; bottom: 24px; width: 2px; background: #D5DEE6;">
+            <div data-connector-fill="1" style="width: 100%; height: 100%; background: #2A7FB8; transform: scaleY(0); transform-origin: top;"></div>
+          </div>
+          <div data-reveal="1" data-delay="0" style="display: grid; grid-template-columns: 48px 1fr; gap: 24px;">
+            <div style="width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; background: #F4F7FA; border: 2px solid #2A7FB8; border-radius: 4px; font-family: 'IBM Plex Mono', monospace; font-weight: 500; font-size: 0.9rem; color: #2A7FB8; position: relative; z-index: 1;">01</div>
+            <div>
+              <h3 style="margin: 2px 0 8px; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 1.35rem; color: #101820;">Scope <span style="font-family: 'IBM Plex Mono', monospace; font-size: 0.78rem; font-weight: 400; letter-spacing: 0.08em; text-transform: uppercase; color: #7A8B9A;">// 2 weeks</span></h3>
+              <p style="margin: 0; font-size: 1rem; line-height: 1.65; color: #47596A;">Pick the one program that hurts. We baseline it, agree SLA / CSAT / AHT / FCR targets in writing, and staff a dedicated pod — no blended teams.</p>
+            </div>
+          </div>
+          <div data-reveal="1" data-delay="80" style="display: grid; grid-template-columns: 48px 1fr; gap: 24px;">
+            <div style="width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; background: #F4F7FA; border: 2px solid #2A7FB8; border-radius: 4px; font-family: 'IBM Plex Mono', monospace; font-weight: 500; font-size: 0.9rem; color: #2A7FB8; position: relative; z-index: 1;">02</div>
+            <div>
+              <h3 style="margin: 2px 0 8px; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 1.35rem; color: #101820;">Run <span style="font-family: 'IBM Plex Mono', monospace; font-size: 0.78rem; font-weight: 400; letter-spacing: 0.08em; text-transform: uppercase; color: #7A8B9A;">// 90 days</span></h3>
+              <p style="margin: 0; font-size: 1rem; line-height: 1.65; color: #47596A;">Your pod goes live on your tools and SOPs. Every Friday you get the same scorecard we run internally — hits, misses, and what changes on Monday.</p>
+            </div>
+          </div>
+          <div data-reveal="1" data-delay="160" style="display: grid; grid-template-columns: 48px 1fr; gap: 24px;">
+            <div style="width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; background: #F4F7FA; border: 2px solid #2A7FB8; border-radius: 4px; font-family: 'IBM Plex Mono', monospace; font-weight: 500; font-size: 0.9rem; color: #2A7FB8; position: relative; z-index: 1;">03</div>
+            <div>
+              <h3 style="margin: 2px 0 8px; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 1.35rem; color: #101820;">Scale <span style="font-family: 'IBM Plex Mono', monospace; font-size: 0.78rem; font-weight: 400; letter-spacing: 0.08em; text-transform: uppercase; color: #7A8B9A;">// your call</span></h3>
+              <p style="margin: 0; font-size: 1rem; line-height: 1.65; color: #47596A;">Hit targets: expand seats and scope on the same reporting. Miss them: take the SOPs and walk. Either way, you keep the documentation.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================= WHY US ======================= -->
+  <section id="why" data-screen-label="Why us" style="border-bottom: 1px solid #2C3B48;">
+    <div style="max-width: 1160px; margin: 0 auto; padding: 96px 32px; display: grid; grid-template-columns: 1fr 1fr; gap: 72px; align-items: center;">
+      <div data-reveal="1">
+        <p style="margin: 0 0 16px; font-family: 'IBM Plex Mono', monospace; font-size: 0.8125rem; letter-spacing: 0.08em; text-transform: uppercase; color: #4FB3E8;">▸ 03 // Why OOS</p>
+        <h2 style="margin: 0 0 32px; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: clamp(1.8rem, 3.5vw, 2.6rem); letter-spacing: -0.01em; color: #F4F7FA;">You see the numbers we see.</h2>
+        <div style="display: flex; flex-direction: column; gap: 28px;">
+          <div style="display: grid; grid-template-columns: 36px 1fr; gap: 18px;">
+            <span style="font-family: 'IBM Plex Mono', monospace; font-size: 0.8125rem; color: #4FB3E8; padding-top: 3px;">▸ a</span>
+            <div>
+              <h3 style="margin: 0 0 6px; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 1.25rem; color: #F4F7FA;">Operators on the floor</h3>
+              <p style="margin: 0; font-size: 1rem; line-height: 1.65; color: #8CA0B3;">The founders ran these queues before selling them. Escalations go to someone who has taken the calls, not an account manager.</p>
+            </div>
+          </div>
+          <div style="display: grid; grid-template-columns: 36px 1fr; gap: 18px;">
+            <span style="font-family: 'IBM Plex Mono', monospace; font-size: 0.8125rem; color: #4FB3E8; padding-top: 3px;">▸ b</span>
+            <div>
+              <h3 style="margin: 0 0 6px; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 1.25rem; color: #F4F7FA;">SLAs in the contract</h3>
+              <p style="margin: 0; font-size: 1rem; line-height: 1.65; color: #8CA0B3;">Targets are written into the engagement, not the brochure. Miss them and you hear it from us first — with the fix attached.</p>
+            </div>
+          </div>
+          <div style="display: grid; grid-template-columns: 36px 1fr; gap: 18px;">
+            <span style="font-family: 'IBM Plex Mono', monospace; font-size: 0.8125rem; color: #4FB3E8; padding-top: 3px;">▸ c</span>
+            <div>
+              <h3 style="margin: 0 0 6px; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 1.25rem; color: #F4F7FA;">One dashboard, no spin</h3>
+              <p style="margin: 0; font-size: 1rem; line-height: 1.65; color: #8CA0B3;">You get the dashboard we manage by — same numbers, same week. Raw data on request, always.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-reveal="1" data-delay="80" style="background: #1A2530; border: 1px solid #2C3B48; border-radius: 4px;">
+        <div style="padding: 16px 24px; border-bottom: 1px solid #2C3B48; display: flex; justify-content: space-between; align-items: center;">
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; color: #8CA0B3;">90-day trend // active pods</span>
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 0.75rem; letter-spacing: 0.08em; color: #4FB3E8;">wk 13</span>
+        </div>
+        <div style="padding: 8px 0;">
+          <div style="display: grid; grid-template-columns: 90px 1fr auto; gap: 20px; align-items: center; padding: 18px 24px; border-bottom: 1px solid #2C3B48;">
+            <span style="font-family: 'IBM Plex Mono', monospace; font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; color: #8CA0B3;">FCR</span>
+            <svg viewBox="0 0 120 28" style="width: 100%; height: 28px; display: block;" preserveAspectRatio="none"><path data-spark="1" d="M2 24 L18 22 L34 23 L50 18 L66 14 L82 10 L102 6 L118 5" fill="none" stroke="#4FB3E8" stroke-width="2" stroke-linecap="round"></path></svg>
+            <span style="font-family: 'IBM Plex Mono', monospace; font-weight: 500; font-size: 1.15rem; font-variant-numeric: tabular-nums; color: #F4F7FA;">78%<span style="font-size: 0.72rem; color: #3FBF7F;"> ▲</span></span>
+          </div>
+          <div style="display: grid; grid-template-columns: 90px 1fr auto; gap: 20px; align-items: center; padding: 18px 24px; border-bottom: 1px solid #2C3B48;">
+            <span style="font-family: 'IBM Plex Mono', monospace; font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; color: #8CA0B3;">AHT</span>
+            <svg viewBox="0 0 120 28" style="width: 100%; height: 28px; display: block;" preserveAspectRatio="none"><path data-spark="1" d="M2 5 L18 7 L34 6 L50 11 L66 14 L82 18 L102 21 L118 22" fill="none" stroke="#4FB3E8" stroke-width="2" stroke-linecap="round"></path></svg>
+            <span style="font-family: 'IBM Plex Mono', monospace; font-weight: 500; font-size: 1.15rem; font-variant-numeric: tabular-nums; color: #F4F7FA;">5:42<span style="font-size: 0.72rem; color: #3FBF7F;"> ▼ −18%</span></span>
+          </div>
+          <div style="display: grid; grid-template-columns: 90px 1fr auto; gap: 20px; align-items: center; padding: 18px 24px;">
+            <span style="font-family: 'IBM Plex Mono', monospace; font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; color: #8CA0B3;">In-SLA</span>
+            <svg viewBox="0 0 120 28" style="width: 100%; height: 28px; display: block;" preserveAspectRatio="none"><path data-spark="1" d="M2 18 L18 14 L34 16 L50 10 L66 11 L82 7 L102 8 L118 6" fill="none" stroke="#4FB3E8" stroke-width="2" stroke-linecap="round"></path></svg>
+            <span style="font-family: 'IBM Plex Mono', monospace; font-weight: 500; font-size: 1.15rem; font-variant-numeric: tabular-nums; color: #F4F7FA;">96.4%<span style="font-size: 0.72rem; color: #3FBF7F;"> ▲</span></span>
+          </div>
+        </div>
+        <div style="padding: 14px 24px; border-top: 1px solid #2C3B48;">
+          <p style="margin: 0; font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: #8CA0B3;">▸ every client sees this view</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================= PROOF ======================= -->
+  <section data-screen-label="Proof" style="border-bottom: 1px solid #2C3B48;">
+    <div style="max-width: 1160px; margin: 0 auto; padding: 72px 32px;">
+      <div data-reveal="1" style="background: #1A2530; border: 1px solid #2C3B48; border-radius: 4px; padding: 40px 44px;">
+        <p style="margin: 0 0 10px; font-family: 'IBM Plex Mono', monospace; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold, #E8B54D);">From our operators' prior accounts</p>
+        <p style="margin: 0 0 30px; font-family: 'IBM Plex Mono', monospace; font-size: 1.05rem; letter-spacing: 0.04em; color: #F4F7FA;">TELECOM ACCOUNT // 90 DAYS</p>
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px;">
+          <div style="border-left: 1px solid #2C3B48; padding-left: 24px;">
+            <p style="margin: 0 0 6px; font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: #8CA0B3;">First-contact resolution</p>
+            <p style="margin: 0; font-family: 'IBM Plex Mono', monospace; font-weight: 500; font-size: 1.9rem; font-variant-numeric: tabular-nums; color: #F4F7FA;">61% <span style="color: #3FBF7F;">→ 78%</span></p>
+          </div>
+          <div style="border-left: 1px solid #2C3B48; padding-left: 24px;">
+            <p style="margin: 0 0 6px; font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: #8CA0B3;">Average handle time</p>
+            <p style="margin: 0; font-family: 'IBM Plex Mono', monospace; font-weight: 500; font-size: 1.9rem; font-variant-numeric: tabular-nums; color: #F4F7FA;"><span style="color: #3FBF7F;">−18%</span></p>
+          </div>
+          <div style="border-left: 1px solid #2C3B48; padding-left: 24px;">
+            <p style="margin: 0 0 6px; font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: #8CA0B3;">Tickets in SLA</p>
+            <p style="margin: 0; font-family: 'IBM Plex Mono', monospace; font-weight: 500; font-size: 1.9rem; font-variant-numeric: tabular-nums; color: #F4F7FA;">96%</p>
+          </div>
+        </div>
+        <p style="margin: 30px 0 0; font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem; letter-spacing: 0.06em; color: #8CA0B3;">▸ Results from programs our founders ran before OOS, labeled as such. Your pilot gets the same reporting from day one.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================= TEAM (light) ======================= -->
+  <section id="team" data-screen-label="Team" style="background: #F4F7FA; color: #101820;">
+    <div style="max-width: 1160px; margin: 0 auto; padding: 96px 32px;">
+      <div data-reveal="1">
+        <p style="margin: 0 0 16px; font-family: 'IBM Plex Mono', monospace; font-size: 0.8125rem; letter-spacing: 0.08em; text-transform: uppercase; color: #2A7FB8;">▸ 04 // Operators</p>
+        <h2 style="margin: 0 0 16px; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: clamp(1.8rem, 3.5vw, 2.6rem); letter-spacing: -0.01em; color: #101820;">Run by people who ran the floor.</h2>
+        <p style="margin: 0 0 56px; max-width: 56ch; font-size: 1.0625rem; line-height: 1.65; color: #47596A;">No layers between you and the people accountable for your numbers. Full histories are on LinkedIn.</p>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px;">
+        <div data-reveal="1" data-delay="0" style="background: #FFFFFF; border: 1px solid #D5DEE6; border-radius: 4px; overflow: hidden;">
+          <div style="width: 100%; aspect-ratio: 4 / 5; filter: grayscale(1); transition: filter 300ms ease;" style-hover="filter: grayscale(0);">
+            <x-import component-from-global-scope="image-slot" from="./image-slot.js" id="founder-karl" shape="rect" placeholder="Portrait — Karl" hint-size="100%,420px"></x-import>
+          </div>
+          <div style="padding: 22px 24px 24px;">
+            <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 12px;">
+              <h3 style="margin: 0 0 4px; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 1.2rem; color: #101820;">Karl Ian Martin Cañeda</h3>
+              <a href="https://www.linkedin.com/" target="_blank" rel="noopener" aria-label="Karl on LinkedIn" style="flex: none; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border: 1px solid #D5DEE6; border-radius: 3px; font-family: 'IBM Plex Mono', monospace; font-size: 0.8rem; color: #2A7FB8; transition: border-color 200ms ease;" style-hover="border-color: #2A7FB8; color: #2A7FB8;">in</a>
+            </div>
+            <p style="margin: 0 0 12px; font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: #7A8B9A;">Co-founder // Client operations</p>
+            <p style="margin: 0; font-size: 0.92rem; line-height: 1.6; color: #47596A;">15+ years in telecom and healthcare BPO. Recovered out-of-SLA programs for US carriers. Owns every pilot scorecard personally.</p>
+          </div>
+        </div>
+        <div data-reveal="1" data-delay="80" style="background: #FFFFFF; border: 1px solid #D5DEE6; border-radius: 4px; overflow: hidden;">
+          <div style="width: 100%; aspect-ratio: 4 / 5; filter: grayscale(1); transition: filter 300ms ease;" style-hover="filter: grayscale(0);">
+            <x-import component-from-global-scope="image-slot" from="./image-slot.js" id="founder-2" shape="rect" placeholder="Portrait — co-founder" hint-size="100%,420px"></x-import>
+          </div>
+          <div style="padding: 22px 24px 24px;">
+            <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 12px;">
+              <h3 style="margin: 0 0 4px; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 1.2rem; color: #101820;">[ Co-founder name ]</h3>
+              <a href="https://www.linkedin.com/" target="_blank" rel="noopener" aria-label="Co-founder on LinkedIn" style="flex: none; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border: 1px solid #D5DEE6; border-radius: 3px; font-family: 'IBM Plex Mono', monospace; font-size: 0.8rem; color: #2A7FB8; transition: border-color 200ms ease;" style-hover="border-color: #2A7FB8; color: #2A7FB8;">in</a>
+            </div>
+            <p style="margin: 0 0 12px; font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: #7A8B9A;">Co-founder // Service delivery</p>
+            <p style="margin: 0; font-size: 0.92rem; line-height: 1.6; color: #47596A;">Built and led 200-seat delivery floors. Hires trainers before agents. Runs QA calibration with clients every week.</p>
+          </div>
+        </div>
+        <div data-reveal="1" data-delay="160" style="background: #FFFFFF; border: 1px solid #D5DEE6; border-radius: 4px; overflow: hidden;">
+          <div style="width: 100%; aspect-ratio: 4 / 5; filter: grayscale(1); transition: filter 300ms ease;" style-hover="filter: grayscale(0);">
+            <x-import component-from-global-scope="image-slot" from="./image-slot.js" id="founder-3" shape="rect" placeholder="Portrait — co-founder" hint-size="100%,420px"></x-import>
+          </div>
+          <div style="padding: 22px 24px 24px;">
+            <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 12px;">
+              <h3 style="margin: 0 0 4px; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 1.2rem; color: #101820;">[ Co-founder name ]</h3>
+              <a href="https://www.linkedin.com/" target="_blank" rel="noopener" aria-label="Co-founder on LinkedIn" style="flex: none; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border: 1px solid #D5DEE6; border-radius: 3px; font-family: 'IBM Plex Mono', monospace; font-size: 0.8rem; color: #2A7FB8; transition: border-color 200ms ease;" style-hover="border-color: #2A7FB8; color: #2A7FB8;">in</a>
+            </div>
+            <p style="margin: 0 0 12px; font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: #7A8B9A;">Co-founder // Growth &amp; partnerships</p>
+            <p style="margin: 0; font-size: 0.92rem; line-height: 1.6; color: #47596A;">Two decades across US &amp; APAC accounts. Scopes every pilot so the targets are honest. Your first call — and your escalation path.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================= FAQ ======================= -->
+  <section id="faq" data-screen-label="FAQ" style="border-bottom: 1px solid #2C3B48;">
+    <div style="max-width: 860px; margin: 0 auto; padding: 96px 32px;">
+      <div data-reveal="1">
+        <p style="margin: 0 0 16px; font-family: 'IBM Plex Mono', monospace; font-size: 0.8125rem; letter-spacing: 0.08em; text-transform: uppercase; color: #4FB3E8;">▸ 05 // FAQ</p>
+        <h2 style="margin: 0 0 40px; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: clamp(1.8rem, 3.5vw, 2.6rem); letter-spacing: -0.01em; color: #F4F7FA;">Asked before every pilot.</h2>
+      </div>
+      <div data-reveal="1" style="border-top: 1px solid #2C3B48;">
+        <sc-for list="{{ faqs }}" as="f" hint-placeholder-count="7">
+          <div style="border-bottom: 1px solid #2C3B48;">
+            <button onClick="{{ f.toggle }}" aria-expanded="{{ f.open }}" style="width: 100%; display: flex; align-items: center; gap: 16px; padding: 22px 4px; background: none; border: none; cursor: pointer; text-align: left; min-height: 44px;" style-focus="outline: 2px solid #4FB3E8; outline-offset: 2px;">
+              <span style="{{ f.markerStyle }}">▸</span>
+              <span style="font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 1.1rem; color: #F4F7FA;">{{ f.q }}</span>
+            </button>
+            <div style="{{ f.bodyStyle }}">
+              <p style="margin: 0; padding: 0 4px 24px 36px; max-width: 64ch; font-size: 1rem; line-height: 1.65; color: #8CA0B3;">{{ f.a }}</p>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================= CONTACT ======================= -->
+  <section id="contact" data-screen-label="Contact">
+    <div style="max-width: 1160px; margin: 0 auto; padding: 96px 32px 104px; display: grid; grid-template-columns: 1fr 1fr; gap: 72px; align-items: start;">
+      <div data-reveal="1">
+        <p style="margin: 0 0 16px; font-family: 'IBM Plex Mono', monospace; font-size: 0.8125rem; letter-spacing: 0.08em; text-transform: uppercase; color: #4FB3E8;">▸ 06 // Contact</p>
+        <h2 style="margin: 0 0 16px; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: clamp(1.8rem, 3.5vw, 2.6rem); letter-spacing: -0.01em; color: #F4F7FA;">Tell us what's out of SLA.</h2>
+        <p style="margin: 0 0 28px; max-width: 44ch; font-size: 1.0625rem; line-height: 1.65; color: #8CA0B3;">One conversation, no deck. Bring the program that's missing its targets — we'll tell you honestly whether a pilot fits.</p>
+        <p style="margin: 0; font-family: 'IBM Plex Mono', monospace; font-size: 0.8125rem; letter-spacing: 0.06em; color: #8CA0B3;">▸ <a href="mailto:hello@optimaloffshoresolutions.com" style="color: #4FB3E8;" style-hover="color: var(--gold, #E8B54D);">hello@optimaloffshoresolutions.com</a></p>
+      </div>
+      <div data-reveal="1" data-delay="80" style="background: #1A2530; border: 1px solid #2C3B48; border-radius: 4px; padding: 32px;">
+        <sc-if value="{{ showForm }}" hint-placeholder-val="{{ true }}">
+          <form onSubmit="{{ onContact }}" novalidate="novalidate">
+            <div style="display: flex; flex-direction: column; gap: 20px;">
+              <div style="display: flex; flex-direction: column; gap: 8px;">
+                <label for="oos-name" style="font-family: 'IBM Plex Mono', monospace; font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; color: #8CA0B3;">First name <span style="color: var(--gold, #E8B54D);">*</span></label>
+                <input id="oos-name" name="name" type="text" required="required" autocomplete="given-name" style="background: #101820; border: 1px solid #2C3B48; border-radius: 3px; padding: 12px 14px; font-family: 'Inter', sans-serif; font-size: 1rem; color: #F4F7FA; min-height: 44px; box-sizing: border-box; transition: border-color 150ms ease;" style-focus="border-color: #4FB3E8; outline: none; box-shadow: 0 0 0 1px #4FB3E8;">
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 8px;">
+                <label for="oos-email" style="font-family: 'IBM Plex Mono', monospace; font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; color: #8CA0B3;">Work email <span style="color: var(--gold, #E8B54D);">*</span></label>
+                <input id="oos-email" name="email" type="email" required="required" autocomplete="email" onBlur="{{ onBlurEmail }}" style="background: #101820; border: 1px solid #2C3B48; border-radius: 3px; padding: 12px 14px; font-family: 'Inter', sans-serif; font-size: 1rem; color: #F4F7FA; min-height: 44px; box-sizing: border-box; transition: border-color 150ms ease;" style-focus="border-color: #4FB3E8; outline: none; box-shadow: 0 0 0 1px #4FB3E8;">
+                <sc-if value="{{ hasEmailError }}" hint-placeholder-val="{{ false }}">
+                  <p style="margin: 0; font-size: 0.85rem; color: #E86A5C;">{{ emailError }}</p>
+                </sc-if>
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 8px;">
+                <label for="oos-program" style="font-family: 'IBM Plex Mono', monospace; font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; color: #8CA0B3;">What program are you worried about? <span style="color: var(--gold, #E8B54D);">*</span></label>
+                <textarea id="oos-program" name="program" required="required" rows="4" style="background: #101820; border: 1px solid #2C3B48; border-radius: 3px; padding: 12px 14px; font-family: 'Inter', sans-serif; font-size: 1rem; color: #F4F7FA; resize: vertical; box-sizing: border-box; transition: border-color 150ms ease;" style-focus="border-color: #4FB3E8; outline: none; box-shadow: 0 0 0 1px #4FB3E8;"></textarea>
+              </div>
+              <input type="text" name="company_site" tabindex="-1" autocomplete="off" aria-hidden="true" style="position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0;">
+              <button type="submit" style="display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 48px; padding: 12px 26px; background: var(--gold, #E8B54D); color: #101820; border: none; border-radius: 3px; font-family: 'Inter', sans-serif; font-weight: 600; font-size: 1rem; cursor: pointer; transition: filter 150ms ease-out, transform 150ms ease-out;" style-hover="filter: brightness(1.08);" style-active="transform: scale(0.98);" style-focus="outline: 2px solid #4FB3E8; outline-offset: 2px;">Book a pilot →</button>
+              <p style="margin: 0; font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem; letter-spacing: 0.06em; color: #8CA0B3;">▸ We reply within one business day. No spam, ever.</p>
+            </div>
+          </form>
+        </sc-if>
+        <sc-if value="{{ sent }}" hint-placeholder-val="{{ false }}">
+          <div>
+            <p style="margin: 0 0 8px; font-family: 'IBM Plex Mono', monospace; font-size: 0.95rem; letter-spacing: 0.04em; color: #3FBF7F;">▸ Received. We reply within one business day.</p>
+            <p style="margin: 0 0 28px; font-size: 0.95rem; line-height: 1.6; color: #8CA0B3;">Optional: help us prep for the call.</p>
+            <sc-if value="{{ showPrep }}" hint-placeholder-val="{{ true }}">
+              <form onSubmit="{{ onPrep }}">
+                <div style="display: flex; flex-direction: column; gap: 20px;">
+                  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                    <div style="display: flex; flex-direction: column; gap: 8px;">
+                      <label for="oos-industry" style="font-family: 'IBM Plex Mono', monospace; font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; color: #8CA0B3;">Industry</label>
+                      <input id="oos-industry" name="industry" type="text" style="background: #101820; border: 1px solid #2C3B48; border-radius: 3px; padding: 12px 14px; font-family: 'Inter', sans-serif; font-size: 1rem; color: #F4F7FA; min-height: 44px; box-sizing: border-box;" style-focus="border-color: #4FB3E8; outline: none; box-shadow: 0 0 0 1px #4FB3E8;">
+                    </div>
+                    <div style="display: flex; flex-direction: column; gap: 8px;">
+                      <label for="oos-budget" style="font-family: 'IBM Plex Mono', monospace; font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; color: #8CA0B3;">Monthly budget</label>
+                      <input id="oos-budget" name="budget" type="text" placeholder="e.g. $8–15k" style="background: #101820; border: 1px solid #2C3B48; border-radius: 3px; padding: 12px 14px; font-family: 'Inter', sans-serif; font-size: 1rem; color: #F4F7FA; min-height: 44px; box-sizing: border-box;" style-focus="border-color: #4FB3E8; outline: none; box-shadow: 0 0 0 1px #4FB3E8;">
+                    </div>
+                  </div>
+                  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                    <div style="display: flex; flex-direction: column; gap: 8px;">
+                      <label for="oos-channel" style="font-family: 'IBM Plex Mono', monospace; font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; color: #8CA0B3;">Preferred channel</label>
+                      <input id="oos-channel" name="channel" type="text" placeholder="Email / call / video" style="background: #101820; border: 1px solid #2C3B48; border-radius: 3px; padding: 12px 14px; font-family: 'Inter', sans-serif; font-size: 1rem; color: #F4F7FA; min-height: 44px; box-sizing: border-box;" style-focus="border-color: #4FB3E8; outline: none; box-shadow: 0 0 0 1px #4FB3E8;">
+                    </div>
+                    <div style="display: flex; flex-direction: column; gap: 8px;">
+                      <label for="oos-time" style="font-family: 'IBM Plex Mono', monospace; font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; color: #8CA0B3;">Best time (your tz)</label>
+                      <input id="oos-time" name="besttime" type="text" placeholder="e.g. Tue–Thu mornings" style="background: #101820; border: 1px solid #2C3B48; border-radius: 3px; padding: 12px 14px; font-family: 'Inter', sans-serif; font-size: 1rem; color: #F4F7FA; min-height: 44px; box-sizing: border-box;" style-focus="border-color: #4FB3E8; outline: none; box-shadow: 0 0 0 1px #4FB3E8;">
+                    </div>
+                  </div>
+                  <button type="submit" style="display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 44px; padding: 10px 22px; background: transparent; border: 1px solid #2C3B48; border-radius: 3px; color: #F4F7FA; font-family: 'Inter', sans-serif; font-weight: 500; font-size: 0.95rem; cursor: pointer; transition: border-color 200ms ease, box-shadow 200ms ease;" style-hover="border-color: #4FB3E8; box-shadow: 0 0 0 1px #4FB3E8;" style-focus="outline: 2px solid #4FB3E8; outline-offset: 2px;">Send details</button>
+                </div>
+              </form>
+            </sc-if>
+            <sc-if value="{{ prepSent }}" hint-placeholder-val="{{ false }}">
+              <p style="margin: 0; font-family: 'IBM Plex Mono', monospace; font-size: 0.9rem; letter-spacing: 0.04em; color: #3FBF7F;">▸ Details logged. Talk soon.</p>
+            </sc-if>
+          </div>
+        </sc-if>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================= FOOTER ======================= -->
+  <footer data-screen-label="Footer" style="border-top: 1px solid #2C3B48; background: #0C131A;">
+    <div style="max-width: 1160px; margin: 0 auto; padding: 56px 32px 32px;">
+      <div style="display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 48px; padding-bottom: 40px; border-bottom: 1px solid #2C3B48;">
+        <div>
+          <p style="margin: 0 0 12px; font-family: 'IBM Plex Mono', monospace; font-size: 0.9rem; font-weight: 500; letter-spacing: 0.06em; color: #F4F7FA;"><span style="color: var(--gold, #E8B54D);">▸</span> OOS <span style="color: #8CA0B3;">// OPTIMAL OFFSHORE SOLUTIONS</span></p>
+          <p style="margin: 0; max-width: 40ch; font-size: 0.9rem; line-height: 1.6; color: #8CA0B3;">Pilot-first, SLA-accountable offshore operations from Bohol, Philippines — for US &amp; APAC teams.</p>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          <p style="margin: 0 0 4px; font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: #8CA0B3;">Site</p>
+          <a href="#services" style="font-size: 0.9rem; color: #8CA0B3;" style-hover="color: #F4F7FA;">Services</a>
+          <a href="#approach" style="font-size: 0.9rem; color: #8CA0B3;" style-hover="color: #F4F7FA;">Approach</a>
+          <a href="#team" style="font-size: 0.9rem; color: #8CA0B3;" style-hover="color: #F4F7FA;">Team</a>
+          <a href="#faq" style="font-size: 0.9rem; color: #8CA0B3;" style-hover="color: #F4F7FA;">FAQ</a>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          <p style="margin: 0 0 4px; font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: #8CA0B3;">Contact</p>
+          <a href="mailto:hello@optimaloffshoresolutions.com" style="font-size: 0.9rem; color: #8CA0B3;" style-hover="color: #F4F7FA;">hello@optimaloffshoresolutions.com</a>
+          <a href="https://www.linkedin.com/" target="_blank" rel="noopener" style="font-size: 0.9rem; color: #8CA0B3;" style-hover="color: #F4F7FA;">LinkedIn</a>
+          <p style="margin: 0; font-size: 0.9rem; color: #8CA0B3;">Tagbilaran City, Bohol, PH</p>
+        </div>
+      </div>
+      <p style="margin: 24px 0 0; font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: #5E7285;">© 2026 Optimal Offshore Solutions // Bohol, PH // All systems reporting</p>
+    </div>
+  </footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;motion&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Behavior&quot;},&quot;gold&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#E8B54D&quot;,&quot;options&quot;:[&quot;#E8B54D&quot;,&quot;#F2C464&quot;,&quot;#D9952B&quot;,&quot;#4FB3E8&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Brand&quot;}}">
+const FAQS = [
+  { q: 'How does a pilot work?', a: 'Ninety days, one program, a dedicated pod. We baseline your metrics in week one, agree SLA / CSAT / AHT / FCR targets in writing, and report against them every Friday. Day 90 you scale, adjust, or walk.' },
+  { q: "What's the minimum commitment?", a: 'The pilot itself. No annual contract until targets are hit — that is the point of running one.' },
+  { q: 'How is SLA reporting shared?', a: 'You get the same live dashboard we manage by, a weekly summary in your inbox, and raw data on request. No separate "client version" of the numbers.' },
+  { q: 'What time zones do you cover?', a: 'Pods run from Bohol (GMT+8) and staff to your hours — most cover US business hours; 24/7 coverage is available for support programs.' },
+  { q: 'How do you handle data security?', a: 'NDAs before scoping, role-based access, and work inside your systems wherever possible so data never leaves your environment. Controls are ISO-aligned and documented in the pilot agreement.' },
+  { q: "What's the pricing model?", a: 'Per-seat monthly, all-in — salary, facility, management, and reporting. The pilot is priced flat so scope stays honest.' },
+  { q: 'How fast can you ramp?', a: 'First pod live 3–4 weeks from a signed pilot: two weeks of hiring and training on your SOPs, then go-live with daily check-ins for the first fortnight.' }
+];
+
+class Component extends DCLogic {
+  state = { openFaq: 0, sent: false, prepSent: false, emailError: '' };
+  rootRef = React.createRef();
+  observers = [];
+  timers = [];
+
+  renderVals() {
+    const ease = 'cubic-bezier(0.22, 1, 0.36, 1)';
+    return {
+      rootRef: this.rootRef,
+      faqs: FAQS.map((f, i) => {
+        const open = this.state.openFaq === i;
+        return {
+          q: f.q,
+          a: f.a,
+          open: open,
+          toggle: () => this.setState(s => ({ openFaq: s.openFaq === i ? -1 : i })),
+          markerStyle: {
+            flex: 'none', display: 'inline-block', width: '20px',
+            fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.9rem',
+            color: open ? 'var(--gold, #E8B54D)' : '#4FB3E8',
+            transform: open ? 'rotate(90deg)' : 'rotate(0deg)',
+            transition: 'transform 250ms ' + ease + ', color 250ms ease'
+          },
+          bodyStyle: {
+            maxHeight: open ? '260px' : '0px',
+            opacity: open ? 1 : 0,
+            overflow: 'hidden',
+            transition: 'max-height 350ms ' + ease + ', opacity 300ms ease'
+          }
+        };
+      }),
+      showForm: !this.state.sent,
+      sent: this.state.sent,
+      showPrep: !this.state.prepSent,
+      prepSent: this.state.prepSent,
+      emailError: this.state.emailError,
+      hasEmailError: !!this.state.emailError,
+      onBlurEmail: (e) => {
+        const v = e.target.value.trim();
+        if (v && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v)) {
+          this.setState({ emailError: 'Enter a work email like name@company.com' });
+        } else {
+          this.setState({ emailError: '' });
+        }
+      },
+      onContact: (e) => {
+        e.preventDefault();
+        const form = e.target;
+        if (form.company_site && form.company_site.value) return; // honeypot
+        const email = (form.email.value || '').trim();
+        if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+          this.setState({ emailError: 'Enter a work email like name@company.com' });
+          return;
+        }
+        this.setState({ sent: true, emailError: '' });
+      },
+      onPrep: (e) => { e.preventDefault(); this.setState({ prepSent: true }); }
+    };
+  }
+
+  componentDidMount() {
+    this.applyGold();
+    const root = this.rootRef.current;
+    if (!root) return;
+    const reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const motion = (this.props.motion ?? true) && !reduced;
+    if (!motion) {
+      root.querySelectorAll('[data-loop]').forEach(el => { el.style.animation = 'none'; });
+      this.setupConnector(root, false);
+      return;
+    }
+    this.runHero(root);
+    this.setupReveals(root);
+    this.setupCounters(root);
+    this.setupSparks(root);
+    this.setupConnector(root, true);
+  }
+
+  componentDidUpdate() { this.applyGold(); }
+
+  componentWillUnmount() {
+    this.observers.forEach(o => o.disconnect());
+    this.timers.forEach(t => clearTimeout(t));
+    if (this.onScroll) window.removeEventListener('scroll', this.onScroll);
+  }
+
+  applyGold() {
+    const root = this.rootRef.current;
+    if (root) root.style.setProperty('--gold', this.props.gold ?? '#E8B54D');
+  }
+
+  t(fn, ms) { this.timers.push(setTimeout(fn, ms)); }
+
+  runHero(root) {
+    const ease = 'cubic-bezier(0.22, 1, 0.36, 1)';
+    // 1. terminal type-on
+    const typeEl = root.querySelector('[data-type]');
+    const cursor = root.querySelector('[data-cursor]');
+    if (typeEl) {
+      const full = typeEl.textContent;
+      typeEl.textContent = '';
+      if (cursor) cursor.style.display = 'inline';
+      const totalMs = 420, step = 16;
+      const perTick = full.length / (totalMs / step);
+      let shown = 0;
+      const iv = setInterval(() => {
+        shown = Math.min(full.length, shown + perTick);
+        typeEl.textContent = full.slice(0, Math.round(shown));
+        if (shown >= full.length) {
+          clearInterval(iv);
+          this.t(() => { if (cursor) cursor.style.display = 'none'; }, 900);
+        }
+      }, step);
+      this.timers.push(iv);
+    }
+    // 2. H1 + copy per-line rise
+    root.querySelectorAll('[data-hero-line]').forEach((el, i) => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(12px)';
+      el.style.transition = 'opacity 500ms ' + ease + ', transform 500ms ' + ease;
+      this.t(() => { el.style.opacity = '1'; el.style.transform = 'translateY(0)'; }, 260 + i * 90);
+    });
+    // 3. scorecard slides in from right
+    const panel = root.querySelector('[data-hero-panel]');
+    if (panel) {
+      panel.style.opacity = '0';
+      panel.style.transform = 'translateX(24px)';
+      panel.style.transition = 'opacity 500ms ' + ease + ', transform 500ms ' + ease;
+      this.t(() => { panel.style.opacity = '1'; panel.style.transform = 'translateX(0)'; }, 420);
+    }
+  }
+
+  setupReveals(root) {
+    const ease = 'cubic-bezier(0.22, 1, 0.36, 1)';
+    const els = root.querySelectorAll('[data-reveal]');
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(en => {
+        if (!en.isIntersecting) return;
+        en.target.style.opacity = '1';
+        en.target.style.transform = 'translateY(0)';
+        io.unobserve(en.target);
+      });
+    }, { rootMargin: '-80px 0px', threshold: 0.05 });
+    els.forEach(el => {
+      const r = el.getBoundingClientRect();
+      if (r.top < window.innerHeight && r.bottom > 0) return; // already visible on load — leave it
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(16px)';
+      el.style.transition = 'opacity 550ms ' + ease + ', transform 550ms ' + ease;
+      el.style.transitionDelay = (el.dataset.delay || 0) + 'ms';
+      io.observe(el);
+    });
+    this.observers.push(io);
+  }
+
+  setupCounters(root) {
+    const els = root.querySelectorAll('[data-count]');
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(en => {
+        if (!en.isIntersecting) return;
+        const el = en.target;
+        io.unobserve(el);
+        const final = parseFloat(el.dataset.count);
+        const decimals = parseInt(el.dataset.decimals || '0', 10);
+        const prefix = el.dataset.prefix || '';
+        const suffix = el.dataset.suffix || '';
+        const dur = 1200, start = performance.now();
+        const tick = (now) => {
+          const p = Math.min(1, (now - start) / dur);
+          const eased = 1 - Math.pow(1 - p, 3);
+          el.textContent = prefix + (final * eased).toFixed(decimals) + suffix;
+          if (p < 1) requestAnimationFrame(tick);
+        };
+        requestAnimationFrame(tick);
+      });
+    }, { threshold: 0.4 });
+    els.forEach(el => io.observe(el));
+    this.observers.push(io);
+  }
+
+  setupSparks(root) {
+    const paths = root.querySelectorAll('[data-spark]');
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(en => {
+        if (!en.isIntersecting) return;
+        const p = en.target;
+        io.unobserve(p);
+        requestAnimationFrame(() => {
+          p.style.transition = 'stroke-dashoffset 800ms ease-out';
+          p.style.strokeDashoffset = '0';
+        });
+      });
+    }, { threshold: 0.5 });
+    paths.forEach(p => {
+      try {
+        const len = p.getTotalLength();
+        p.style.strokeDasharray = String(len);
+        p.style.strokeDashoffset = String(len);
+        io.observe(p);
+      } catch (err) { /* svg not ready */ }
+    });
+    this.observers.push(io);
+  }
+
+  setupConnector(root, animate) {
+    const wrap = root.querySelector('[data-connector]');
+    const fill = root.querySelector('[data-connector-fill]');
+    if (!wrap || !fill) return;
+    if (!animate) { fill.style.transform = 'scaleY(1)'; return; }
+    let raf = null;
+    const update = () => {
+      raf = null;
+      const r = wrap.getBoundingClientRect();
+      const vh = window.innerHeight;
+      const progress = Math.max(0, Math.min(1, (vh * 0.78 - r.top) / r.height));
+      fill.style.transform = 'scaleY(' + progress + ')';
+    };
+    this.onScroll = () => { if (!raf) raf = requestAnimationFrame(update); };
+    window.addEventListener('scroll', this.onScroll, { passive: true });
+    update();
+  }
+}
+</script>
+</body>
+</html>
