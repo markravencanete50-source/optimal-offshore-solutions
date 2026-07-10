@@ -24,7 +24,17 @@ type Lead = {
 };
 
 type DayPoint = { day: string; count: number };
-type NameCount = { name: string; count: number };
+type NameCount = { name: string; count: number; code?: string };
+
+type Visitor = {
+  when: string;
+  country: string;
+  countryCode: string;
+  device: string;
+  source: string;
+  views: number;
+  paths: string[];
+};
 
 type Stats = {
   configured: boolean;
@@ -39,6 +49,7 @@ type Stats = {
     visitors30: number;
     ctaClicks30: number;
     formSubmits30: number;
+    botHits30?: number;
     visitorToLead: number;
   };
   byStatus?: Record<string, number>;
@@ -46,6 +57,7 @@ type Stats = {
   referrers?: NameCount[];
   devices?: NameCount[];
   countries?: NameCount[];
+  recentVisitors?: Visitor[];
   leadsByDay?: DayPoint[];
   viewsByDay?: DayPoint[];
 };
@@ -321,7 +333,7 @@ function BarList({ items, flags = false }: { items: NameCount[]; flags?: boolean
           <div className="bl-head">
             <span className="rank">{i + 1}</span>
             <span className="name">
-              {flags && <span className="flag">{flagEmoji(it.name)}</span>}
+              {flags && <span className="flag">{flagEmoji(it.code ?? it.name)}</span>}
               {it.name}
             </span>
             <span className="n">
@@ -691,7 +703,10 @@ export default function AdminDashboard() {
                     Visitors — 30 days
                   </div>
                   <div className="value">{t.visitors30}</div>
-                  <div className="sub">{t.pageviews30} page views</div>
+                  <div className="sub">
+                    {t.pageviews30} page views
+                    {t.botHits30 ? ` · ${t.botHits30} bot hits excluded` : ""}
+                  </div>
                 </div>
                 <div className="adm-kpi">
                   <div className="head">
@@ -745,17 +760,62 @@ export default function AdminDashboard() {
                 </div>
                 <div className="adm-panel">
                   <h4>Traffic sources</h4>
+                  <p className="adm-minicap" style={{ marginBottom: 10 }}>
+                    Where visitors came from — search, social, or straight to the site
+                  </p>
                   <BarList items={stats.referrers ?? []} />
                 </div>
                 <div className="adm-panel">
                   <h4>Audience</h4>
-                  <p className="adm-minicap">Country</p>
+                  <p className="adm-minicap">Country (bots &amp; dev visits excluded)</p>
                   <BarList items={stats.countries ?? []} flags />
                   <p className="adm-minicap" style={{ marginTop: 16 }}>
                     Device
                   </p>
                   <SplitBar items={stats.devices ?? []} />
                 </div>
+              </div>
+
+              <div className="adm-panel" style={{ marginTop: 14 }}>
+                <h4>Recent visitors</h4>
+                <p className="adm-minicap" style={{ marginBottom: 10 }}>
+                  Every recent session — one row per person. Analytics are cookie-free, so
+                  visitors stay anonymous until they submit the pilot form (then they appear in
+                  Leads with a name).
+                </p>
+                {(stats.recentVisitors?.length ?? 0) === 0 ? (
+                  <div className="adm-empty">No visits recorded yet.</div>
+                ) : (
+                  <div className="adm-tablewrap">
+                    <table className="adm-table">
+                      <thead>
+                        <tr>
+                          <th>Last seen</th>
+                          <th>Location</th>
+                          <th>Device</th>
+                          <th>Came from</th>
+                          <th>Pages viewed</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {(stats.recentVisitors ?? []).map((v, i) => (
+                          <tr key={`${v.when}-${i}`}>
+                            <td style={{ whiteSpace: "nowrap" }}>{fmtDate(v.when)}</td>
+                            <td style={{ whiteSpace: "nowrap" }}>
+                              {flagEmoji(v.countryCode || v.country)} {v.country}
+                            </td>
+                            <td style={{ textTransform: "capitalize" }}>{v.device}</td>
+                            <td>{v.source}</td>
+                            <td>
+                              {v.views} view{v.views === 1 ? "" : "s"}
+                              <span className="adm-paths"> · {v.paths.join(" · ")}</span>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
               </div>
             </section>
 

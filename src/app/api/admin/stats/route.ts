@@ -38,6 +38,78 @@ function topCounts(counts: Map<string, number>, limit = 8) {
     .map(([name, count]) => ({ name, count }));
 }
 
+// ── traffic-source classification ─────────────────────────────────────
+const OWN_HOSTS = new Set(["optimaloffshoresolutions.com", "www.optimaloffshoresolutions.com"]);
+const LOCAL_HOSTS = new Set(["localhost", "127.0.0.1"]);
+
+/** Friendly names for referrer hostnames the owner will recognize. */
+const SOURCE_NAMES: [RegExp, string][] = [
+  [/(^|\.)google\./i, "Google search"],
+  [/(^|\.)bing\.com$/i, "Bing search"],
+  [/duckduckgo\.com$/i, "DuckDuckGo"],
+  [/search\.yahoo\.com$/i, "Yahoo search"],
+  [/(^|\.)linkedin\.com$|lnkd\.in$/i, "LinkedIn"],
+  [/(^|\.)facebook\.com$|fb\.me$|(^|\.)messenger\.com$/i, "Facebook"],
+  [/(^|\.)instagram\.com$/i, "Instagram"],
+  [/(^|\.)twitter\.com$|(^|\.)x\.com$|t\.co$/i, "X (Twitter)"],
+  [/(^|\.)youtube\.com$|youtu\.be$/i, "YouTube"],
+  [/(^|\.)tiktok\.com$/i, "TikTok"],
+  [/(^|\.)reddit\.com$/i, "Reddit"],
+  [/web\.whatsapp\.com$/i, "WhatsApp"],
+  [/(^|\.)vercel\.app$/i, "Vercel preview"],
+];
+
+/**
+ * Classify a raw document.referrer into a human source.
+ * Returns null when the "visit" shouldn't count as an external source at all
+ * (own-site internal navigation, or a leftover localhost/dev event).
+ */
+function classifySource(ref: unknown): string | null {
+  const raw = typeof ref === "string" ? ref.trim() : "";
+  if (!raw) return "Direct visit (typed URL, bookmark or chat app)";
+  try {
+    const host = new URL(raw).hostname.replace(/^www\./, "");
+    if (LOCAL_HOSTS.has(host)) return null; // dev-server junk — drop
+    if (OWN_HOSTS.has(host) || OWN_HOSTS.has(`www.${host}`)) return "__internal__";
+    for (const [re, name] of SOURCE_NAMES) if (re.test(host)) return name;
+    return host;
+  } catch {
+    return "Direct visit (typed URL, bookmark or chat app)";
+  }
+}
+
+/** True when the event was recorded from a local dev server (historical junk). */
+function isLocalDevEvent(ref: unknown): boolean {
+  const raw = typeof ref === "string" ? ref.trim() : "";
+  if (!raw) return false;
+  try {
+    return LOCAL_HOSTS.has(new URL(raw).hostname);
+  } catch {
+    return false;
+  }
+}
+
+const countryNames = new Intl.DisplayNames(["en"], { type: "region" });
+function countryLabel(code: string): { name: string; code: string } {
+  if (!/^[A-Za-z]{2}$/.test(code)) return { name: "Unknown location", code: "" };
+  try {
+    return { name: countryNames.of(code.toUpperCase()) ?? code.toUpperCase(), code: code.toUpperCase() };
+  } catch {
+    return { name: code.toUpperCase(), code: code.toUpperCase() };
+  }
+}
+
+interface SessionInfo {
+  firstSeen: Date;
+  lastSeen: Date;
+  views: number;
+  paths: string[];
+  country: string;
+  countryCode: string;
+  device: string;
+  source: string;
+}
+
 export async function GET() {
   const db = getAdminDb();
   if (!db) {
@@ -86,14 +158,17 @@ export async function GET() {
     const booked = (byStatus.booked ?? 0) + (byStatus.won ?? 0); // won implies a pilot happened
 
     // ---- traffic events (last 30 days) ----
+    // People-only metrics: bot hits are counted separately, and events recorded
+    // from local dev servers (localhost referrers) are dropped entirely.
     const viewsByDay = emptySeries(now);
-    const sessions = new Set<string>();
+    const sessions = new Map<string, SessionInfo>();
     const referrers = new Map<string, number>();
     const devices = new Map<string, number>();
-    const countries = new Map<string, number>();
+    const countries = new Map<string, { name: string; code: string; count: number }>();
     let pageviews = 0;
     let ctaClicks = 0;
     let formSubmits = 0;
+    let botHits = 0;
 
     for (const doc of eventsSnap.docs) {
       const data = doc.data();
@@ -101,26 +176,55 @@ export async function GET() {
       const created = toDate(data.createdAt);
 
       if (type === "pageview") {
+        if (isLocalDevEvent(data.ref)) continue; // historical dev junk
+        const device = typeof data.device === "string" && data.device ? data.device : "unknown";
+        if (device === "bot") {
+          botHits++;
+          continue; // crawlers are not people — keep them out of every audience number
+        }
+
         pageviews++;
-        if (typeof data.sid === "string" && data.sid) sessions.add(data.sid);
         if (created) {
           const key = dayKey(created);
           if (viewsByDay.has(key)) viewsByDay.set(key, (viewsByDay.get(key) ?? 0) + 1);
         }
-        const ref = typeof data.ref === "string" && data.ref ? data.ref : "Direct / none";
-        let refName = ref;
-        try {
-          if (ref !== "Direct / none") refName = new URL(ref).hostname.replace(/^www\./, "");
-        } catch {
-          /* keep raw value */
-        }
-        referrers.set(refName, (referrers.get(refName) ?? 0) + 1);
 
-        const device = typeof data.device === "string" && data.device ? data.device : "unknown";
+        const source = classifySource(data.ref);
+        if (source && source !== "__internal__") {
+          referrers.set(source, (referrers.get(source) ?? 0) + 1);
+        }
+
         devices.set(device, (devices.get(device) ?? 0) + 1);
 
-        const country = typeof data.country === "string" && data.country ? data.country : "Unknown";
-        countries.set(country, (countries.get(country) ?? 0) + 1);
+        const { name: cName, code: cCode } = countryLabel(String(data.country ?? ""));
+        const cEntry = countries.get(cName) ?? { name: cName, code: cCode, count: 0 };
+        cEntry.count++;
+        countries.set(cName, cEntry);
+
+        // Per-session detail for the "Recent visitors" panel.
+        const sid = typeof data.sid === "string" && data.sid ? data.sid : "";
+        if (sid && created) {
+          const path = String(data.path ?? "/").slice(0, 120);
+          const existing = sessions.get(sid);
+          if (existing) {
+            existing.views++;
+            if (created < existing.firstSeen) existing.firstSeen = created;
+            if (created > existing.lastSeen) existing.lastSeen = created;
+            if (!existing.paths.includes(path) && existing.paths.length < 6) existing.paths.push(path);
+            if (existing.source === "" && source && source !== "__internal__") existing.source = source;
+          } else {
+            sessions.set(sid, {
+              firstSeen: created,
+              lastSeen: created,
+              views: 1,
+              paths: [path],
+              country: cName,
+              countryCode: cCode,
+              device,
+              source: source && source !== "__internal__" ? source : "",
+            });
+          }
+        }
       } else if (type === "cta_click") {
         ctaClicks++;
       } else if (type === "lead_submitted") {
@@ -129,6 +233,18 @@ export async function GET() {
     }
 
     const visitors = sessions.size;
+    const recentVisitors = [...sessions.values()]
+      .sort((a, b) => b.lastSeen.getTime() - a.lastSeen.getTime())
+      .slice(0, 15)
+      .map((s) => ({
+        when: s.lastSeen.toISOString(),
+        country: s.country,
+        countryCode: s.countryCode,
+        device: s.device,
+        source: s.source || "Direct visit (typed URL, bookmark or chat app)",
+        views: s.views,
+        paths: s.paths,
+      }));
 
     return NextResponse.json({
       configured: true,
@@ -142,13 +258,18 @@ export async function GET() {
         visitors30: visitors,
         ctaClicks30: ctaClicks,
         formSubmits30: formSubmits,
+        botHits30: botHits,
         visitorToLead: visitors ? Math.round((leads30 / visitors) * 1000) / 10 : 0,
       },
       byStatus,
       byIndustry: topCounts(byIndustry),
       referrers: topCounts(referrers),
       devices: topCounts(devices, 4),
-      countries: topCounts(countries),
+      countries: [...countries.values()]
+        .sort((a, b) => b.count - a.count)
+        .slice(0, 8)
+        .map(({ name, code, count }) => ({ name, code, count })),
+      recentVisitors,
       leadsByDay: [...leadsByDay.entries()].map(([day, count]) => ({ day, count })),
       viewsByDay: [...viewsByDay.entries()].map(([day, count]) => ({ day, count })),
     });

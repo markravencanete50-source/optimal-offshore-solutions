@@ -23,8 +23,27 @@ function sessionId(): string {
   }
 }
 
+/**
+ * Owner self-exclusion: visit any page with `?notme` once and this browser is
+ * never counted again (persisted in localStorage). `?trackme` re-enables it.
+ * Dev servers (localhost) are never tracked at all.
+ */
+function isExcluded(): boolean {
+  try {
+    const host = window.location.hostname;
+    if (host === "localhost" || host === "127.0.0.1") return true;
+    const params = new URLSearchParams(window.location.search);
+    if (params.has("notme")) localStorage.setItem("oos_notrack", "1");
+    if (params.has("trackme")) localStorage.removeItem("oos_notrack");
+    return localStorage.getItem("oos_notrack") === "1";
+  } catch {
+    return false;
+  }
+}
+
 export function track(type: "pageview" | "cta_click" | "lead_submitted", label = "") {
   try {
+    if (isExcluded()) return;
     const payload = JSON.stringify({
       type,
       label,

@@ -1154,3 +1154,10 @@ select.status option {
     display: none;
   }
 }
+
+/* Recent-visitors panel: muted per-session path list */
+.adm-paths {
+  color: var(--adm-muted, #8ca0b3);
+  font-size: 11.5px;
+  word-break: break-word;
+}
