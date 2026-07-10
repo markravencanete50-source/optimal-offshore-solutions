@@ -4,7 +4,7 @@ import { useState, type FormEvent } from "react";
 import Reveal from "./Reveal";
 import Turnstile, { turnstileEnabled } from "./Turnstile";
 import { track } from "./Tracker";
-import { company, industries, interestAreas, contactMethods, budgetRanges } from "@/lib/content";
+import { company, industries, interestAreas, contactMethods } from "@/lib/content";
 
 type Status = "idle" | "submitting" | "ok" | "error";
 
@@ -155,26 +155,13 @@ export default function Contact() {
               </div>
             </div>
 
-            <div className="row">
-              <div className="field">
-                <label htmlFor="industry">Industry</label>
-                <select id="industry" name="industry" defaultValue={industries[0]}>
-                  {industries.map((i) => (
-                    <option key={i}>{i}</option>
-                  ))}
-                </select>
-              </div>
-              <div className="field">
-                <label htmlFor="budget">Budget</label>
-                <select id="budget" name="budget" defaultValue="">
-                  <option value="" disabled>
-                    Select a range…
-                  </option>
-                  {budgetRanges.map((b) => (
-                    <option key={b}>{b}</option>
-                  ))}
-                </select>
-              </div>
+            <div className="field">
+              <label htmlFor="industry">Industry</label>
+              <select id="industry" name="industry" defaultValue={industries[0]}>
+                {industries.map((i) => (
+                  <option key={i}>{i}</option>
+                ))}
+              </select>
             </div>
 
             <div className="field">
