@@ -943,9 +943,9 @@ export function getServicePage(slug: string): ServicePage | undefined {
 
 // ── Service imagery ───────────────────────────────────────────────────
 // Branded mockup photos live in /public/images/services/<slug>.webp (plus a
-// -sm variant for srcset). S6 (data-analysis-and-reporting) has no image yet —
-// callers fall back to its SVG motif until the client supplies one.
-const MISSING_IMAGES = new Set(["data-analysis-and-reporting"]);
+// -sm variant for srcset). All nine services now have a photo; any slug listed
+// here would fall back to its SVG motif instead.
+const MISSING_IMAGES = new Set<string>([]);
 // These two mockups are portrait infographics — crop from the top, where the
 // title block sits, when shown in a landscape frame.
 const PORTRAIT_IMAGES = new Set(["process-documentation-and-sops", "sales-and-lead-generation"]);
