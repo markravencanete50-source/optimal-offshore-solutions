@@ -44,11 +44,23 @@ export const metadata: Metadata = {
     url: siteUrl,
     siteName: "Optimal Offshore Solutions",
     type: "website",
+    // Static file (not a runtime-generated route) so Facebook/WhatsApp/LinkedIn
+    // scrapers always get the card image. Kept ~100KB — WhatsApp skips large images.
+    images: [
+      {
+        url: "/og-image.jpg",
+        width: 1200,
+        height: 630,
+        type: "image/jpeg",
+        alt: "Optimal Offshore Solutions — Your Growth. Our Expertise. Stronger Together.",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Optimal Offshore Solutions",
     description: "Offshore operations, held to the number.",
+    images: ["/og-image.jpg"],
   },
 };
 
@@ -61,7 +73,7 @@ const organizationSchema = {
   alternateName: company.short,
   url: siteUrl,
   logo: `${siteUrl}/logo.png`,
-  image: `${siteUrl}/opengraph-image`,
+  image: `${siteUrl}/og-image.jpg`,
   description:
     "A KPO delivery team built by BPO operators. We stand up, recover, and scale customer and back-office operations that stay in SLA — and prove it on a dashboard you can see.",
   email: company.email,

@@ -286,6 +286,44 @@ header.site.scrolled {
   margin: 0 auto;
   padding: 170px var(--pad-x) 100px;
 }
+/* Full-bleed brand photo behind the hero. Anchored right so the handshake /
+   skyline shows beside the scorecard; a paper-toned scrim keeps the left column
+   near-solid so the H1 (the LCP element) stays fully readable on top of it. */
+.hero-photo {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 100vw;
+  transform: translateX(-50%);
+  overflow: hidden;
+  pointer-events: none;
+}
+.hero-photo img {
+  object-fit: cover;
+  object-position: right center;
+}
+.hero-photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      90deg,
+      var(--paper) 0%,
+      var(--paper) 34%,
+      rgba(247, 245, 240, 0.88) 52%,
+      rgba(247, 245, 240, 0.45) 74%,
+      rgba(247, 245, 240, 0.22) 100%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(247, 245, 240, 0.85) 0%,
+      rgba(247, 245, 240, 0) 26%,
+      rgba(247, 245, 240, 0) 62%,
+      var(--paper) 100%
+    );
+}
 .hero-grid-bg {
   position: absolute;
   inset: 0;
@@ -1083,6 +1121,18 @@ footer.site {
   .hero-cols {
     grid-template-columns: 1fr;
     gap: 48px;
+  }
+  /* Stacked layout puts text over the full photo — strengthen the veil so the
+     photo reads as texture and copy stays AA-legible. */
+  .hero-photo::after {
+    background:
+      linear-gradient(
+        180deg,
+        rgba(247, 245, 240, 0.94) 0%,
+        rgba(247, 245, 240, 0.88) 45%,
+        rgba(247, 245, 240, 0.7) 72%,
+        var(--paper) 100%
+      );
   }
   .svc-grid {
     grid-template-columns: repeat(2, 1fr);

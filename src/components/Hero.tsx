@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { motion, useReducedMotion, type Variants } from "framer-motion";
 import Reveal from "./Reveal";
 import CountUp from "./CountUp";
@@ -53,6 +54,16 @@ export default function Hero() {
   const reduce = useReducedMotion();
   return (
     <section className="hero">
+      <div className="hero-photo" aria-hidden>
+        <Image
+          src="/images/hero-banner.jpg"
+          alt=""
+          fill
+          priority
+          sizes="100vw"
+          quality={78}
+        />
+      </div>
       <div className="hero-grid-bg" aria-hidden />
       <div className="hero-glow" aria-hidden />
       <div className="hero-cols">
