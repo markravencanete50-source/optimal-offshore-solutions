@@ -53,6 +53,10 @@
 }
 html {
   scroll-behavior: smooth;
+  /* Match body's horizontal clip so decorative bleed (e.g. the hero glow at
+     right:-80px) can't create an 80px window scroll on mobile. `clip` (not
+     hidden) keeps window scrolling + the fixed nav's scrolled state working. */
+  overflow-x: clip;
 }
 body {
   background: var(--paper);
