@@ -43,6 +43,7 @@ export async function GET() {
         notes: data.notes ?? "",
         source: data.source ?? "",
         createdAt: toIso(data.createdAt),
+        updatedAt: toIso(data.updatedAt),
         bookedAt: toIso(data.bookedAt),
       };
     });

@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { LEAD_STATUSES, STATUS_LABELS, type LeadStatus } from "@/lib/leadStatus";
 
@@ -20,6 +20,7 @@ type Lead = {
   notes: string;
   source: string;
   createdAt: string;
+  updatedAt: string;
   bookedAt: string;
 };
 
@@ -96,6 +97,14 @@ const IC = {
   eye: "M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8zM12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z",
   trend: "M23 6l-9.5 9.5-5-5L1 18M17 6h6v6",
   x: "M18 6L6 18M6 6l12 12",
+  mail: "M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zM22 7l-10 6L2 7",
+  phone: "M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2 4.2 2 2 0 0 1 4 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.6a2 2 0 0 1-.5 2.1L8 9.6a16 16 0 0 0 6 6l1.2-1.2a2 2 0 0 1 2.1-.5c.8.3 1.7.6 2.6.7a2 2 0 0 1 1.7 2z",
+  whatsapp: "M20.5 3.5A11 11 0 0 0 3.2 17L2 22l5.2-1.2A11 11 0 1 0 20.5 3.5zM8 8.5c.2-.5.4-.5.6-.5h.5c.2 0 .4 0 .6.5l.7 1.7c.1.2 0 .4-.1.5l-.5.6c-.1.2-.2.3-.1.5a5 5 0 0 0 2.6 2.6c.2.1.4 0 .5-.1l.6-.5c.1-.1.3-.2.5-.1l1.7.7c.5.2.5.4.5.6v.5c0 .2 0 .4-.5.6a3 3 0 0 1-3 .3 9 9 0 0 1-5-5 3 3 0 0 1 .1-3.2z",
+  clock: "M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20zM12 7v5l3 2",
+  arrowUp: "M12 19V5M5 12l7-7 7 7",
+  arrowDown: "M12 5v14M19 12l-7 7-7-7",
+  check: "M20 6L9 17l-5-5",
+  calendar: "M8 2v4M16 2v4M3 10h18M5 4h14a2 2 0 0 1 2 2v13a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z",
 };
 
 /* ════════ charts ════════ */
@@ -457,6 +466,74 @@ function exportCsv(leads: Lead[]) {
   URL.revokeObjectURL(a.href);
 }
 
+/* ── time helpers (action queue, age badges, momentum deltas) ── */
+const HOUR = 3_600_000;
+const DAY = 86_400_000;
+
+function tsOf(iso: string): number {
+  const t = iso ? new Date(iso).getTime() : NaN;
+  return isNaN(t) ? NaN : t;
+}
+
+/** Compact age from an elapsed millisecond span: "4m", "2h", "3d". */
+function fmtAge(ms: number): string {
+  if (!isFinite(ms) || ms < 0) return "";
+  if (ms < HOUR) return `${Math.max(1, Math.floor(ms / 60000))}m`;
+  if (ms < DAY) return `${Math.floor(ms / HOUR)}h`;
+  return `${Math.floor(ms / DAY)}d`;
+}
+
+/** mailto: with a smart, URL-encoded first-touch or nudge template. */
+function mailtoFor(l: Lead, kind: "intro" | "followup"): string {
+  const name = l.firstName || "there";
+  const co = l.company ? ` at ${l.company}` : "";
+  const focus =
+    l.interest && l.interest !== "Not specified"
+      ? l.interest
+      : l.challenge || "your goals";
+  const [subject, body] =
+    kind === "intro"
+      ? [
+          "Your pilot with Optimal Offshore Solutions",
+          `Hi ${name},\n\nThanks for requesting a pilot with Optimal Offshore Solutions. I'd love to learn more about ${focus}${co} and show how our team can support you.\n\nAre you free for a short call this week? Reply with a time that suits and I'll send an invite.\n\n— Optimal Offshore Solutions`,
+        ]
+      : [
+          "Following up on your Optimal Offshore pilot",
+          `Hi ${name},\n\nJust circling back on your pilot with Optimal Offshore Solutions. I'd still love to set up a quick call to walk through how we'd help with ${focus}${co}.\n\nWould later this week work? Happy to fit around your schedule.\n\n— Optimal Offshore Solutions`,
+        ];
+  return `mailto:${l.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+}
+
+/** Small ▲/▼ chip comparing the last 7 days against the previous 7. */
+function DeltaChip({ cur, prev, unit }: { cur: number; prev: number; unit: string }) {
+  const diff = cur - prev;
+  const title = `${cur} ${unit} in the last 7 days vs ${prev} the previous 7`;
+  if (diff === 0)
+    return (
+      <span className="adm-delta flat" title={title}>
+        = {cur} this wk
+      </span>
+    );
+  const up = diff > 0;
+  return (
+    <span className={`adm-delta ${up ? "up" : "down"}`} title={title}>
+      <Icon d={up ? IC.arrowUp : IC.arrowDown} size={11} />
+      {Math.abs(diff)} vs last wk
+    </span>
+  );
+}
+
+/** Colour-coded age pill; `warn` turns it amber for overdue/cold leads. */
+function AgeBadge({ ms, warn = false, title }: { ms: number; warn?: boolean; title?: string }) {
+  const a = fmtAge(ms);
+  if (!a) return null;
+  return (
+    <span className={`adm-age${warn ? " warn" : ""}`} title={title} aria-label={title}>
+      {a}
+    </span>
+  );
+}
+
 export default function AdminDashboard() {
   const router = useRouter();
   const [stats, setStats] = useState<Stats | null>(null);
@@ -469,6 +546,11 @@ export default function AdminDashboard() {
   const [notesOpen, setNotesOpen] = useState<string | null>(null);
   const [notesDraft, setNotesDraft] = useState("");
   const [section, setSection] = useState("overview");
+  const [segment, setSegment] = useState("all");
+  const [selectedLead, setSelectedLead] = useState<string | null>(null);
+  const [drawerNotes, setDrawerNotes] = useState("");
+  const closeBtnRef = useRef<HTMLButtonElement>(null);
+  const restoreFocusRef = useRef<HTMLElement | null>(null);
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -550,9 +632,98 @@ export default function AdminDashboard() {
     router.replace("/admin/login");
   }
 
+  /* Prioritised worklist computed client-side: leads awaiting a first touch,
+   * plus contacted/qualified leads that have gone quiet for 3+ days. */
+  const queue = useMemo(() => {
+    const now = Date.now();
+    type QItem = { lead: Lead; ageMs: number; kind: "new" | "cold"; overdue: boolean };
+    const items: QItem[] = [];
+    for (const l of leads) {
+      if (l.status === "new") {
+        const c = tsOf(l.createdAt);
+        const ageMs = isNaN(c) ? 0 : now - c;
+        items.push({ lead: l, ageMs, kind: "new", overdue: ageMs > 24 * HOUR });
+      } else if (l.status === "contacted" || l.status === "qualified") {
+        const ref = !isNaN(tsOf(l.updatedAt)) ? tsOf(l.updatedAt) : tsOf(l.createdAt);
+        const ageMs = isNaN(ref) ? 0 : now - ref;
+        if (ageMs >= 3 * DAY) items.push({ lead: l, ageMs, kind: "cold", overdue: false });
+      }
+    }
+    // uncontacted first (speed-to-lead), then cold; each oldest-first
+    items.sort((a, b) => {
+      if (a.kind !== b.kind) return a.kind === "new" ? -1 : 1;
+      return b.ageMs - a.ageMs;
+    });
+    return items;
+  }, [leads]);
+
+  const attentionIds = useMemo(() => new Set(queue.map((q) => q.lead.id)), [queue]);
+  const attentionCount = attentionIds.size;
+
+  /* Week-over-week momentum + mean time-to-book, all from the leads array. */
+  const deltas = useMemo(() => {
+    const now = Date.now();
+    const w = 7 * DAY;
+    let leads0 = 0, leads1 = 0, booked0 = 0, booked1 = 0, bookSum = 0, bookN = 0;
+    for (const l of leads) {
+      const c = tsOf(l.createdAt);
+      if (!isNaN(c)) {
+        const age = now - c;
+        if (age < w) leads0++;
+        else if (age < 2 * w) leads1++;
+      }
+      const b = tsOf(l.bookedAt);
+      if (!isNaN(b)) {
+        const age = now - b;
+        if (age < w) booked0++;
+        else if (age < 2 * w) booked1++;
+        if (!isNaN(c) && b >= c) { bookSum += b - c; bookN++; }
+      }
+    }
+    return { leads0, leads1, booked0, booked1, avgBook: bookN ? bookSum / bookN : null, bookN };
+  }, [leads]);
+
+  const selected = useMemo(
+    () => (selectedLead ? leads.find((l) => l.id === selectedLead) ?? null : null),
+    [selectedLead, leads],
+  );
+
+  const openLead = (id: string) => {
+    restoreFocusRef.current = (document.activeElement as HTMLElement) ?? null;
+    const l = leads.find((x) => x.id === id);
+    setDrawerNotes(l?.notes ?? "");
+    setSelectedLead(id);
+  };
+  const closeLead = () => setSelectedLead(null);
+
+  const gotoAttention = () => {
+    setSegment("attention");
+    setStatusFilter("all");
+    setSection("leads");
+  };
+
+  /* Drawer as a dialog: focus the close button, Esc closes, restore focus. */
+  useEffect(() => {
+    if (!selectedLead) return;
+    const restore = restoreFocusRef.current;
+    closeBtnRef.current?.focus();
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setSelectedLead(null);
+    };
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      restore?.focus?.();
+    };
+  }, [selectedLead]);
+
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
     return leads.filter((l) => {
+      if (segment === "attention" && !attentionIds.has(l.id)) return false;
+      if (segment === "new" && l.status !== "new") return false;
+      if (segment === "booked" && l.status !== "booked") return false;
+      if (segment === "won" && l.status !== "won") return false;
       if (statusFilter !== "all" && l.status !== statusFilter) return false;
       if (!q) return true;
       return [l.firstName, l.email, l.company, l.industry, l.challenge, l.notes]
@@ -560,7 +731,7 @@ export default function AdminDashboard() {
         .toLowerCase()
         .includes(q);
     });
-  }, [leads, query, statusFilter]);
+  }, [leads, query, statusFilter, segment, attentionIds]);
 
   const t = stats?.totals;
   const configured = stats?.configured !== false;
@@ -568,7 +739,7 @@ export default function AdminDashboard() {
   const navItems = [
     { id: "overview", label: "Overview", icon: IC.overview },
     { id: "analytics", label: "Analytics", icon: IC.analytics },
-    { id: "leads", label: "Leads", icon: IC.leads, count: leads.length },
+    { id: "leads", label: "Leads", icon: IC.leads },
   ];
 
   return (
@@ -592,8 +763,10 @@ export default function AdminDashboard() {
             >
               <Icon d={n.icon} />
               <span>{n.label}</span>
-              {typeof n.count === "number" && n.count > 0 && (
-                <span className="count">{n.count}</span>
+              {n.id === "leads" && attentionCount > 0 && (
+                <span className="count attention" title={`${attentionCount} need attention`}>
+                  {attentionCount}
+                </span>
               )}
             </a>
           ))}
@@ -670,6 +843,96 @@ export default function AdminDashboard() {
             {/* ── overview ── */}
             <section id="overview" className="adm-section">
               <p className="adm-h">
+                Needs attention{" "}
+                <span className="hint">{attentionCount ? `${attentionCount} waiting` : "All clear"}</span>
+              </p>
+              <div className="adm-panel adm-queue">
+                {queue.length === 0 ? (
+                  <div className="adm-queue-clear">
+                    <span className="ic">
+                      <Icon d={IC.check} size={18} />
+                    </span>
+                    You&apos;re all caught up — no leads waiting on a first touch.
+                  </div>
+                ) : (
+                  <>
+                    <ul className="adm-queue-list">
+                      {queue.slice(0, 8).map(({ lead: l, ageMs, kind, overdue }) => (
+                        <li key={l.id}>
+                          <div
+                            className="adm-q-row"
+                            role="button"
+                            tabIndex={0}
+                            aria-label={`Open ${l.firstName}`}
+                            onClick={() => openLead(l.id)}
+                            onKeyDown={(e) => {
+                              if (e.key === "Enter" || e.key === " ") {
+                                e.preventDefault();
+                                openLead(l.id);
+                              }
+                            }}
+                          >
+                            <span className="chip">{initials(l.firstName)}</span>
+                            <div className="adm-q-main">
+                              <div className="nm">
+                                {l.firstName}
+                                {l.company && <span className="co"> · {l.company}</span>}
+                              </div>
+                              <div className="adm-q-sub">
+                                {l.interest && l.interest !== "Not specified"
+                                  ? l.interest
+                                  : l.challenge
+                                  ? l.challenge.slice(0, 70) + (l.challenge.length > 70 ? "…" : "")
+                                  : "No details provided"}
+                              </div>
+                            </div>
+                            <span
+                              className={`adm-age${overdue || kind === "cold" ? " warn" : ""}`}
+                              title={
+                                kind === "new"
+                                  ? overdue
+                                    ? "Overdue — over 24h without first contact"
+                                    : "Awaiting first contact"
+                                  : "Going cold — no activity in 3+ days"
+                              }
+                            >
+                              {overdue && <Icon d={IC.clock} size={11} />}
+                              {fmtAge(ageMs)}
+                            </span>
+                            <div className="adm-q-actions" onClick={(e) => e.stopPropagation()}>
+                              <a
+                                className="adm-q-act"
+                                href={mailtoFor(l, kind === "new" ? "intro" : "followup")}
+                                title={`Email ${l.firstName}`}
+                                aria-label={`Email ${l.firstName}`}
+                              >
+                                <Icon d={IC.mail} size={14} />
+                              </a>
+                              {l.phone && (
+                                <a
+                                  className="adm-q-act"
+                                  href={`tel:${l.phone}`}
+                                  title={`Call ${l.firstName}`}
+                                  aria-label={`Call ${l.firstName}`}
+                                >
+                                  <Icon d={IC.phone} size={14} />
+                                </a>
+                              )}
+                            </div>
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                    {queue.length > 8 && (
+                      <button className="adm-q-more" onClick={gotoAttention}>
+                        +{queue.length - 8} more need follow-up →
+                      </button>
+                    )}
+                  </>
+                )}
+              </div>
+
+              <p className="adm-h">
                 Key numbers <span className="hint">Live from Firestore</span>
               </p>
               <div className="adm-kpis">
@@ -682,6 +945,7 @@ export default function AdminDashboard() {
                   </div>
                   <div className="value">{t.booked}</div>
                   <div className="sub">{t.bookedRate}% of all leads</div>
+                  <DeltaChip cur={deltas.booked0} prev={deltas.booked1} unit="booked" />
                 </div>
                 <div className="adm-kpi">
                   <div className="head">
@@ -694,6 +958,7 @@ export default function AdminDashboard() {
                   <div className="sub">
                     {t.leads7} this week · {t.leads30} last 30 days
                   </div>
+                  <DeltaChip cur={deltas.leads0} prev={deltas.leads1} unit="leads" />
                 </div>
                 <div className="adm-kpi">
                   <div className="head">
@@ -717,6 +982,23 @@ export default function AdminDashboard() {
                   </div>
                   <div className="value">{t.visitorToLead}%</div>
                   <div className="sub">{t.ctaClicks30} CTA clicks in 30 days</div>
+                </div>
+                <div className="adm-kpi">
+                  <div className="head">
+                    <span className="ic">
+                      <Icon d={IC.clock} size={15} />
+                    </span>
+                    Avg. time to book
+                  </div>
+                  <div className="value">
+                    {deltas.avgBook != null ? (deltas.avgBook / DAY).toFixed(1) : "—"}
+                    {deltas.avgBook != null && <span className="unit">days</span>}
+                  </div>
+                  <div className="sub">
+                    {deltas.bookN
+                      ? `across ${deltas.bookN} booked ${deltas.bookN === 1 ? "lead" : "leads"}`
+                      : "no bookings yet"}
+                  </div>
                 </div>
               </div>
 
@@ -824,6 +1106,29 @@ export default function AdminDashboard() {
               <p className="adm-h">
                 Leads <span className="hint">{filtered.length} shown</span>
               </p>
+              <div className="adm-chips">
+                {(
+                  [
+                    ["all", "All"],
+                    ["attention", "Needs follow-up"],
+                    ["new", "New"],
+                    ["booked", "Booked"],
+                    ["won", "Won"],
+                  ] as [string, string][]
+                ).map(([id, label]) => (
+                  <button
+                    key={id}
+                    className={`adm-chip${segment === id ? " active" : ""}`}
+                    onClick={() => setSegment(id)}
+                    aria-pressed={segment === id}
+                  >
+                    {label}
+                    {id === "attention" && attentionCount > 0 && (
+                      <span className="c">{attentionCount}</span>
+                    )}
+                  </button>
+                ))}
+              </div>
               <div className="adm-toolbar">
                 <div className="searchbox">
                   <Icon d={IC.search} size={14} />
@@ -866,16 +1171,38 @@ export default function AdminDashboard() {
                       </tr>
                     </thead>
                     <tbody>
-                      {filtered.map((l) => (
-                        <tr key={l.id}>
-                          <td className="when">{fmtDate(l.createdAt)}</td>
+                      {filtered.map((l) => {
+                        const ageRef = !isNaN(tsOf(l.updatedAt))
+                          ? tsOf(l.updatedAt)
+                          : tsOf(l.createdAt);
+                        const ageMs = isNaN(ageRef) ? NaN : Date.now() - ageRef;
+                        return (
+                        <tr
+                          key={l.id}
+                          className="adm-row-click"
+                          onClick={() => openLead(l.id)}
+                        >
+                          <td className="when">
+                            <span className="d">{fmtDate(l.createdAt)}</span>
+                            <AgeBadge
+                              ms={ageMs}
+                              warn={attentionIds.has(l.id)}
+                              title={`Last activity ${fmtAge(ageMs)} ago`}
+                            />
+                          </td>
                           <td className="who">
                             <div className="adm-lead-id">
                               <span className="chip">{initials(l.firstName)}</span>
                               <div>
                                 <div className="nm">{l.firstName}</div>
-                                <a href={`mailto:${l.email}`}>{l.email}</a>
-                                {l.phone && <a href={`tel:${l.phone}`}>{l.phone}</a>}
+                                <a href={`mailto:${l.email}`} onClick={(e) => e.stopPropagation()}>
+                                  {l.email}
+                                </a>
+                                {l.phone && (
+                                  <a href={`tel:${l.phone}`} onClick={(e) => e.stopPropagation()}>
+                                    {l.phone}
+                                  </a>
+                                )}
                                 {(l.contactMethod || l.availability) && (
                                   <span className="meta">
                                     {[l.contactMethod, l.availability].filter(Boolean).join(" · ")}
@@ -900,7 +1227,7 @@ export default function AdminDashboard() {
                           <td className="budget">
                             {l.budget && l.budget !== "Not specified" ? l.budget : "—"}
                           </td>
-                          <td>
+                          <td onClick={(e) => e.stopPropagation()}>
                             <select
                               className={`status s-${l.status}`}
                               value={l.status}
@@ -915,7 +1242,7 @@ export default function AdminDashboard() {
                               ))}
                             </select>
                           </td>
-                          <td style={{ minWidth: 180 }}>
+                          <td style={{ minWidth: 180 }} onClick={(e) => e.stopPropagation()}>
                             {notesOpen === l.id ? (
                               <div className="adm-notes">
                                 <textarea
@@ -952,7 +1279,7 @@ export default function AdminDashboard() {
                               </button>
                             )}
                           </td>
-                          <td>
+                          <td onClick={(e) => e.stopPropagation()}>
                             <button
                               className="adm-del"
                               aria-label="Delete lead"
@@ -963,7 +1290,8 @@ export default function AdminDashboard() {
                             </button>
                           </td>
                         </tr>
-                      ))}
+                        );
+                      })}
                     </tbody>
                   </table>
                 )}
@@ -972,6 +1300,191 @@ export default function AdminDashboard() {
           </>
         )}
       </div>
+
+      {/* ── lead detail drawer ── */}
+      {selected && (
+        <>
+          <div className="adm-scrim" onClick={closeLead} />
+          <aside
+            className="adm-drawer"
+            role="dialog"
+            aria-modal="true"
+            aria-label={`Lead detail — ${selected.firstName}`}
+          >
+            <div className="adm-drawer-head">
+              <span className="chip">{initials(selected.firstName)}</span>
+              <div className="who">
+                <div className="nm">{selected.firstName}</div>
+                <div className="co">
+                  {[
+                    selected.company,
+                    selected.industry && selected.industry !== "Not specified"
+                      ? selected.industry
+                      : "",
+                  ]
+                    .filter(Boolean)
+                    .join(" · ") || "—"}
+                </div>
+              </div>
+              <span className={`adm-pill s-${selected.status}`}>
+                {STATUS_LABELS[selected.status]}
+              </span>
+              <button
+                ref={closeBtnRef}
+                className="adm-drawer-close"
+                onClick={closeLead}
+                aria-label="Close panel"
+              >
+                <Icon d={IC.x} size={18} />
+              </button>
+            </div>
+
+            <div className="adm-drawer-body">
+              <div className="adm-dr-actions">
+                <a className="adm-dr-act" href={mailtoFor(selected, "intro")}>
+                  <Icon d={IC.mail} size={15} />
+                  Intro
+                </a>
+                <a className="adm-dr-act" href={mailtoFor(selected, "followup")}>
+                  <Icon d={IC.mail} size={15} />
+                  Follow-up
+                </a>
+                {selected.phone && (
+                  <a className="adm-dr-act" href={`tel:${selected.phone}`}>
+                    <Icon d={IC.phone} size={15} />
+                    Call
+                  </a>
+                )}
+                {selected.phone && (
+                  <a
+                    className="adm-dr-act"
+                    href={`https://wa.me/${selected.phone.replace(/\D/g, "")}`}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <Icon d={IC.whatsapp} size={15} />
+                    WhatsApp
+                  </a>
+                )}
+                {selected.status !== "booked" &&
+                  selected.status !== "won" &&
+                  selected.status !== "lost" && (
+                    <button
+                      className="adm-dr-act gold"
+                      onClick={() => updateLead(selected.id, { status: "booked" })}
+                    >
+                      <Icon d={IC.calendar} size={15} />
+                      Mark booked
+                    </button>
+                  )}
+              </div>
+
+              <div className="adm-dr-section">
+                <h5>Timeline</h5>
+                <div className="adm-dr-timeline">
+                  <div>
+                    <span>Received</span>
+                    <b>{fmtDate(selected.createdAt)}</b>
+                  </div>
+                  <div>
+                    <span>Last activity</span>
+                    <b>{selected.updatedAt ? fmtDate(selected.updatedAt) : "—"}</b>
+                  </div>
+                  <div>
+                    <span>Pilot booked</span>
+                    <b>{selected.bookedAt ? fmtDate(selected.bookedAt) : "—"}</b>
+                  </div>
+                </div>
+              </div>
+
+              <div className="adm-dr-section">
+                <h5>Details</h5>
+                <div className="adm-dr-grid">
+                  <div className="adm-dr-field">
+                    <span>Email</span>
+                    <a href={`mailto:${selected.email}`}>{selected.email || "—"}</a>
+                  </div>
+                  <div className="adm-dr-field">
+                    <span>Phone</span>
+                    {selected.phone ? (
+                      <a href={`tel:${selected.phone}`}>{selected.phone}</a>
+                    ) : (
+                      <b>—</b>
+                    )}
+                  </div>
+                  <div className="adm-dr-field">
+                    <span>Preferred contact</span>
+                    <b>{selected.contactMethod || "—"}</b>
+                  </div>
+                  <div className="adm-dr-field">
+                    <span>Best time</span>
+                    <b>{selected.availability || "—"}</b>
+                  </div>
+                  <div className="adm-dr-field">
+                    <span>Source</span>
+                    <b>{selected.source || "—"}</b>
+                  </div>
+                  <div className="adm-dr-field">
+                    <span>Budget</span>
+                    <b>
+                      {selected.budget && selected.budget !== "Not specified"
+                        ? selected.budget
+                        : "—"}
+                    </b>
+                  </div>
+                  <div className="adm-dr-field wide">
+                    <span>Interest</span>
+                    <b>
+                      {selected.interest && selected.interest !== "Not specified"
+                        ? selected.interest
+                        : "—"}
+                    </b>
+                  </div>
+                  <div className="adm-dr-field wide">
+                    <span>Challenge</span>
+                    <p>{selected.challenge || "—"}</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="adm-dr-section">
+                <h5>Status</h5>
+                <select
+                  className={`status s-${selected.status}`}
+                  value={selected.status}
+                  onChange={(e) =>
+                    updateLead(selected.id, { status: e.target.value as LeadStatus })
+                  }
+                >
+                  {LEAD_STATUSES.map((s) => (
+                    <option key={s} value={s}>
+                      {STATUS_LABELS[s]}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="adm-dr-section">
+                <h5>Notes</h5>
+                <textarea
+                  className="adm-dr-notes"
+                  value={drawerNotes}
+                  onChange={(e) => setDrawerNotes(e.target.value)}
+                  placeholder="Add a note about this lead…"
+                />
+                <div className="adm-dr-notes-row">
+                  <button
+                    className="adm-btn gold"
+                    onClick={() => updateLead(selected.id, { notes: drawerNotes })}
+                  >
+                    Save note
+                  </button>
+                </div>
+              </div>
+            </div>
+          </aside>
+        </>
+      )}
     </div>
   );
 }
