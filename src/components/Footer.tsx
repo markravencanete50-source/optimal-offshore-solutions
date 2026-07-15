@@ -35,7 +35,7 @@ export default function Footer() {
               <Link href="/book-a-pilot" className="gold">
                 Book a pilot →
               </Link>
-              <Link href="/offshore-readiness">Free readiness scorecard</Link>
+              <Link href="/offshore-readiness">Free offshore assessment</Link>
               <p>{company.email}</p>
               <p>{company.location}</p>
             </div>
