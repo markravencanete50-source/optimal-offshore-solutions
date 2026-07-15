@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Space_Grotesk, IBM_Plex_Mono } from "next/font/google";
 import { ScrollProgress } from "@/components/motion";
 import Tracker from "@/components/Tracker";
-import { company, team } from "@/lib/content";
+import { company, team, services, socialLinks } from "@/lib/content";
 import { siteUrl } from "@/lib/site";
 import "./globals.css";
 
@@ -64,13 +64,16 @@ export const metadata: Metadata = {
   },
 };
 
-// Organization structured data (JSON-LD) so search engines can associate the
-// name, logo, location and contact details — eligible for rich results.
+// Organization + ProfessionalService structured data (JSON-LD). Typing the
+// same node as both ties the website to the verified Google Business Profile
+// entity (name, location, service catalog) and stays eligible for rich results.
 const organizationSchema = {
   "@context": "https://schema.org",
-  "@type": "Organization",
+  "@type": ["Organization", "ProfessionalService"],
+  "@id": `${siteUrl}/#organization`,
   name: company.name,
   alternateName: company.short,
+  slogan: company.tagline,
   url: siteUrl,
   logo: `${siteUrl}/logo.png`,
   image: `${siteUrl}/og-image.jpg`,
@@ -80,9 +83,12 @@ const organizationSchema = {
   address: {
     "@type": "PostalAddress",
     addressLocality: "Bohol",
+    addressRegion: "Bohol",
     addressCountry: "PH",
   },
   areaServed: ["US", "APAC"],
+  // Only emit sameAs once real public profile URLs exist (see content.ts).
+  ...(socialLinks.length ? { sameAs: socialLinks } : {}),
   founder: team.map((t) => ({
     "@type": "Person",
     name: t.name,
@@ -97,6 +103,19 @@ const organizationSchema = {
     "Workforce management",
     "Healthcare operations",
   ],
+  // The service line-up as an offer catalog, from the single copy source.
+  hasOfferCatalog: {
+    "@type": "OfferCatalog",
+    name: "KPO & BPO delivery services",
+    itemListElement: services.map((s) => ({
+      "@type": "Offer",
+      itemOffered: {
+        "@type": "Service",
+        name: s.title,
+        description: s.body,
+      },
+    })),
+  },
   contactPoint: {
     "@type": "ContactPoint",
     contactType: "sales",

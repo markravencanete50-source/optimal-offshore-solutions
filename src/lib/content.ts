@@ -13,6 +13,13 @@ export const company = {
   serving: "Serving US & APAC",
 };
 
+// Public profiles that represent the SAME entity as the website — emitted as
+// schema.org `sameAs` so Google ties them to the brand (and the verified
+// Google Business Profile). Add the exact public URLs as they go live:
+//   e.g. "https://www.linkedin.com/company/optimal-offshore-solutions",
+//        the GBP "share" URL, Facebook page, etc.
+export const socialLinks: string[] = [];
+
 export const services = [
   {
     id: "S1",
