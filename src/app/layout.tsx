@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Space_Grotesk, IBM_Plex_Mono } from "next/font/google";
 import { ScrollProgress } from "@/components/motion";
 import Tracker from "@/components/Tracker";
-import { company } from "@/lib/content";
+import { company, team } from "@/lib/content";
 import { siteUrl } from "@/lib/site";
 import "./globals.css";
 
@@ -83,6 +83,12 @@ const organizationSchema = {
     addressCountry: "PH",
   },
   areaServed: ["US", "APAC"],
+  founder: team.map((t) => ({
+    "@type": "Person",
+    name: t.name,
+    jobTitle: t.position,
+    url: `${siteUrl}/team`,
+  })),
   knowsAbout: [
     "Knowledge Process Outsourcing",
     "Business Process Outsourcing",

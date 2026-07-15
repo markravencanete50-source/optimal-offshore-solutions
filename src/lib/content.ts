@@ -268,6 +268,143 @@ export const whyStats = [
   { to: 99, suffix: "%", label: "In-SLA delivery target" },
 ];
 
+// ---- /offshore-readiness — the interactive diagnostic page ----
+// Prose paragraphs support inline links as [text](/path); the page renders them
+// as real <a> elements so the links live in context, server-side.
+export const readiness = {
+  metaTitle:
+    "Offshore Readiness Scorecard — Score Your Operation | Optimal Offshore Solutions",
+  metaDescription:
+    "A 20-point diagnostic built by BPO operators. Score your operation out of 100 in two minutes and see whether offshore fits your model — before it costs you.",
+
+  hero: {
+    kicker: "// Operations diagnostic",
+    headline: "Is your offshore program drifting out of SLA?",
+    // Answers the core query inside the first 40 words.
+    standfirst:
+      "If handle time is creeping, QA sampling is thinning and the QBR still says green, your program is drifting — the SLA number just hasn't caught up yet. Score your operation against the 20 signals that actually predict offshore performance.",
+    cta: "Score your operation →",
+    ctaNote: "Free · about two minutes · no email required for your score",
+  },
+
+  problem: {
+    kicker: "The problem",
+    title: "The QBR is a lagging indicator.",
+    paragraphs: [
+      "An offshore program almost never breaks in one visible moment. It drifts. Average handle time creeps eight seconds a week — nothing anyone escalates. QA sampling thins from ten contacts per agent to four because the team lead is now covering two queues. An experienced agent resigns and the backfill inherits the login but not the judgment. Each change is small enough to survive a weekly call. Together, they are a program quietly leaving SLA — and the quarterly review won't show it for another eight weeks.",
+      "We've sat on both sides of that QBR table. The deck says green because monthly averages are generous: a 94% month can contain a 71% Tuesday, and it's the Tuesdays your customers remember. Underperformance has a vocabulary — ramp impact, seasonality, mix shift — and every one of those phrases is sometimes true, which is exactly what makes them dangerous.",
+      "Here's the part most buyers get wrong: the drift usually isn't vendor dishonesty. It's the operating model. When a program is managed to occupancy and seat count, everything upstream of the SLA number is invisible by design. Nobody is paid to notice that the SOP no longer matches the workflow, that the exception queue has doubled, or that new-hire time-to-proficiency slid from six weeks to ten. Those are the numbers that break SLA later — and they're rarely on anyone's dashboard. It's why most of our [program recovery](/services/program-recovery) work starts with rebuilding the measurement, not the team.",
+      "The uncomfortable truth is that drift starts before the contract is signed. Programs built on undocumented process, unmeasurable quality and heroic supervision drift by default, offshore or not — offshore just removes the hallway conversations that were quietly holding everything together. So the useful question isn't \"is my vendor underperforming?\" It's \"was this operation ready to be run at distance in the first place?\"",
+      "That's a measurable question. The twenty signals below are what we check before we take on any program — the same list, ungated. Score yourself honestly; the low scores are the useful ones.",
+    ],
+  },
+
+  signals: {
+    kicker: "The four signals",
+    title: "What actually predicts offshore success.",
+    intro:
+      "After enough program rescues, you stop believing the usual predictors. Vendor brand doesn't predict success. Hourly rate doesn't predict it in either direction. Even industry experience matters less than buyers assume. What predicts whether an offshore program still holds SLA at month twelve sits almost entirely on the client's side of the fence — and it comes down to four things.",
+    items: [
+      {
+        title: "Process, written down",
+        body: "Not aspirational documentation — the real workflow, including the exceptions, in a form a smart stranger could execute. When we take over a drifting program, the first artefact we ask for is the SOP, and the first thing we find is that it describes the process as it worked two systems ago. If your workflows are documented, measurable and genuinely runnable at distance — cloud systems, asynchronous communication — the hardest part of offshoring is already done.",
+      },
+      {
+        title: "A management framework, not a manager",
+        body: "Programs survive on structure: written role responsibilities, training material that exists before the vacancy does, performance measured on outcomes rather than visible effort. The floor-level tell is supervision. A team that needs constant shoulder-taps onshore will need them offshore too, where they aren't available. Every seat you outsource inherits your management system — it doesn't fix it.",
+      },
+      {
+        title: "A real business case",
+        body: "The programs that scale are the ones where offshore solves an actual constraint: roles you can't fill, labour as the dominant cost line, headcount that must move faster than local recruiting allows, leadership time bleeding into queue management. If none of those is true, offshore is a preference, not a strategy — and preferences get cancelled at the first rough quarter. The business-impact section of the scorecard reads inverted for exactly that reason: the more pain you admit to, the stronger your case.",
+      },
+      {
+        title: "Technology and security posture",
+        body: "The unglamorous one, and it delays more launches than everything else combined. A project management tool in live use, documented security protocols, systems with clean APIs or at least sane remote access, and a clear-eyed view of your data-privacy obligations. None of this is exotic; all of it takes weeks to retrofit under deadline. Security review is the most common reason a 30-day launch becomes a 90-day launch.",
+      },
+    ],
+    outro: [
+      "Notice what's not on the list: your industry, your size, your timezone, whether you've outsourced before. We've run healthcare queues under HIPAA with licensed clinical leadership, and we've run tech-support queues where the entire knowledge base was one shared document. Both can hold SLA. The difference was never the sector — it was these four signals. (If you want the mechanics of how we run an engagement against them, that's [our approach](/approach).)",
+      "The scorecard below tests all four — five statements each, five points a statement, 100 in total. Answer honestly. The score computes on your device and never leaves it unless you ask for the full breakdown. A low score doesn't mean don't offshore; it means don't offshore yet — and it tells you exactly what to fix first, whether you fix it alone or with an [offshore setup partner](/services/offshore-setup-and-expansion).",
+    ],
+  },
+
+  scorecard: {
+    kicker: "The scorecard",
+    title: "Twenty statements. Answer honestly.",
+    instruction:
+      "Mark each statement true or false for your operation today — not the operation you're planning to have. Your score updates live and is never sent anywhere.",
+    resultPlaceholder: "Answer all 20 statements to see your band, diagnosis and quick wins.",
+    yourScore: "Your score",
+    quickWinsTitle: "Your three quick wins",
+    quickWinsNote:
+      "Free, specific, and worth doing whether or not you ever talk to us.",
+  },
+
+  gate: {
+    title: "Get the full breakdown as a PDF",
+    body: "The detailed scorecard: all four section scores explained, what each gap costs in practice, and the order we'd fix them in. Your score above stays free either way.",
+    button: "Send me the scorecard",
+    success: "Scorecard sent.",
+    successBody: "Check your inbox — and you can download it directly here too:",
+    downloadLabel: "Download the scorecard (PDF)",
+    fineprint: "We reply within one business day. No spam, ever.",
+  },
+
+  whoBuilt: {
+    kicker: "Who built this",
+    title: "Written by operators, not marketers.",
+    paragraphs: [
+      "This diagnostic is the intake checklist we run before accepting any engagement at Optimal Offshore Solutions — a KPO delivery team in Bohol, Philippines, serving US and APAC clients. The founders have 50+ combined years running BPO floors: Karl Ian Martin Cañeda spent 15+ years leading operations across healthcare, telecom, financial services and logistics at Sagility, Tech Mahindra and Fusion BPO. Rizzie Lynne Larios — a licensed Registered Nurse — led US healthcare operations at Optum Global Solutions. Lynlee Gesoro ran workforce management and real-time analytics at Teleperformance and Tech Mahindra. Karl Ivan David Cañeda runs a major US streaming account at Concentrix, with prior leadership at Foundever and Optum.",
+      "Every statement in the scorecard exists because we've watched its absence break a real program. [Meet the full team](/team), or see [how a pilot works](/book-a-pilot) if your score says you're ready.",
+    ],
+    attribution:
+      "Written by the operators at Optimal Offshore Solutions · Reviewed by Karl Ian Martin Cañeda, Client Operations",
+    lastReviewed: "2026-07-15",
+    lastReviewedLabel: "Last reviewed 15 July 2026",
+  },
+
+  faqs: [
+    {
+      q: "How do I know if my company is ready to outsource offshore?",
+      a: "You're ready when your processes are documented, quality is measurable, and the work can run without physical supervision. The fastest honest check: could a smart new hire do the job from your written material alone? If yes, offshore can work. The 20-point scorecard above measures exactly this.",
+    },
+    {
+      q: "What is a KPO pilot and how long does it take?",
+      a: "A pilot is a small, measured placement — typically one workflow and a small team — run against agreed KPIs for 60 to 90 days. It exists to prove performance on evidence before you commit to scale. We baseline your metrics on day one and report against them throughout.",
+    },
+    {
+      q: "Why do offshore programs drift out of SLA?",
+      a: "Because the leading indicators — handle-time creep, thinning QA samples, rising escalations, attrition backfill — move weeks before the SLA number does. Monthly averages hide interval-level misses, so the review deck still shows green. By the time SLA visibly breaks, the causes are months old.",
+    },
+    {
+      q: "What's the difference between KPO and BPO?",
+      a: "BPO delegates process execution: contact handling, data entry, back-office tasks. KPO — knowledge process outsourcing — delegates work that needs judgment and domain expertise: analysis, research, clinical review, reporting. Mature providers run both. The distinction that matters is whether the team is managed to outcomes or just occupancy.",
+    },
+    {
+      q: "What should I document before offshoring a process?",
+      a: "Four things per workflow: the trigger that starts it, the steps and decision points, the hand-offs and exceptions, and the definition of done with a measurable quality standard. One page per workflow beats a binder nobody reads. If exceptions outnumber rules, the process isn't ready to move.",
+    },
+    {
+      q: "How is offshore performance actually measured?",
+      a: "Against the same numbers you'd hold an internal team to: SLA, quality rate, handle time, first-contact resolution and unit cost — reported at interval level, not monthly averages. If your provider can't show you yesterday's numbers today, you're not measuring performance; you're receiving a newsletter.",
+    },
+    {
+      q: "What does an in-SLA delivery target of 94% mean in practice?",
+      a: "It means 94 of every 100 work items complete inside the agreed window — measured per interval, per day, not as a monthly average. The distribution matters more than the average: 94% overall can conceal one weekday running at 70%. Contract the target; publish the interval-level detail.",
+    },
+    {
+      q: "Can I offshore if my data is sensitive or regulated?",
+      a: "Yes, with controls: documented security protocols, least-privilege access, secure remote provisioning, and a provider who understands your obligations — HIPAA, GDPR, PCI or otherwise. Our healthcare accounts are led by a licensed Registered Nurse. If a vendor can't explain your regulation back to you, keep looking.",
+    },
+  ],
+
+  finalCta: {
+    title: "Your score says pilot? Prove it on a small one.",
+    body: "One workflow, your KPIs, 60 days, no black box. We baseline the numbers on day one and you watch them on a live dashboard.",
+    button: "Book a pilot →",
+  },
+};
+
 // ---- Core values (Mission section). Icon is rendered in the component, keyed by `key`. ----
 export const coreValues = [
   {

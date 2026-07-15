@@ -7,7 +7,14 @@ import { getClientDb } from "@/lib/firebaseClient";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-const ALLOWED_TYPES = new Set(["pageview", "cta_click", "lead_submitted"]);
+const ALLOWED_TYPES = new Set([
+  "pageview",
+  "cta_click",
+  "lead_submitted",
+  // offshore-readiness scorecard funnel
+  "scorecard_start",
+  "scorecard_complete",
+]);
 
 // Light per-instance rate limit — serverless instances are short-lived, so this
 // is a nuisance brake on floods, not a hard guarantee.

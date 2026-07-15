@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { LEAD_STATUSES, STATUS_LABELS, type LeadStatus } from "@/lib/leadStatus";
+import { bands as READINESS_BANDS } from "@/lib/readiness";
 
 type Lead = {
   id: string;
@@ -19,6 +20,8 @@ type Lead = {
   status: LeadStatus;
   notes: string;
   source: string;
+  readinessScore: number | null;
+  readinessBand: string;
   createdAt: string;
   updatedAt: string;
   bookedAt: string;
@@ -446,12 +449,15 @@ function exportCsv(leads: Lead[]) {
   const esc = (v: string) => `"${String(v ?? "").replace(/"/g, '""')}"`;
   const header = [
     "Date", "Name", "Email", "Phone", "Preferred contact", "Best time",
-    "Company", "Industry", "Interest", "Budget", "Status", "Details", "Notes",
+    "Company", "Industry", "Interest", "Budget", "Status",
+    "Readiness score", "Readiness band", "Details", "Notes",
   ];
   const rows = leads.map((l) =>
     [
       l.createdAt, l.firstName, l.email, l.phone, l.contactMethod, l.availability,
-      l.company, l.industry, l.interest, l.budget, l.status, l.challenge, l.notes,
+      l.company, l.industry, l.interest, l.budget, l.status,
+      l.readinessScore != null ? String(l.readinessScore) : "",
+      l.readinessBand, l.challenge, l.notes,
     ]
       .map(esc)
       .join(","),
@@ -534,6 +540,24 @@ function AgeBadge({ ms, warn = false, title }: { ms: number; warn?: boolean; tit
   );
 }
 
+const BAND_LABEL: Record<string, string> = Object.fromEntries(
+  READINESS_BANDS.map((b) => [b.slug, b.label]),
+);
+
+/** Readiness score chip; gold ("hot") at 76+ — call those within the hour. */
+function ScorePill({ score, band }: { score: number | null; band: string }) {
+  if (score == null) return <span>—</span>;
+  return (
+    <span
+      className={`adm-rdy${score >= 76 ? " hot" : ""}`}
+      title={score >= 76 ? "Highly ready — call within the hour" : BAND_LABEL[band] ?? band}
+    >
+      <b>{score}</b>/100
+      {band && <em>{BAND_LABEL[band] ?? band}</em>}
+    </span>
+  );
+}
+
 export default function AdminDashboard() {
   const router = useRouter();
   const [stats, setStats] = useState<Stats | null>(null);
@@ -543,6 +567,8 @@ export default function AdminDashboard() {
   const [refreshedAt, setRefreshedAt] = useState<Date | null>(null);
   const [query, setQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
+  const [bandFilter, setBandFilter] = useState("all");
+  const [sortBy, setSortBy] = useState<"newest" | "score">("newest");
   const [notesOpen, setNotesOpen] = useState<string | null>(null);
   const [notesDraft, setNotesDraft] = useState("");
   const [section, setSection] = useState("overview");
@@ -719,19 +745,25 @@ export default function AdminDashboard() {
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
-    return leads.filter((l) => {
+    const list = leads.filter((l) => {
       if (segment === "attention" && !attentionIds.has(l.id)) return false;
       if (segment === "new" && l.status !== "new") return false;
       if (segment === "booked" && l.status !== "booked") return false;
       if (segment === "won" && l.status !== "won") return false;
       if (statusFilter !== "all" && l.status !== statusFilter) return false;
+      if (bandFilter !== "all" && l.readinessBand !== bandFilter) return false;
       if (!q) return true;
       return [l.firstName, l.email, l.company, l.industry, l.challenge, l.notes]
         .join(" ")
         .toLowerCase()
         .includes(q);
     });
-  }, [leads, query, statusFilter, segment, attentionIds]);
+    // Leads without a score sink to the bottom when sorting by score.
+    if (sortBy === "score") {
+      list.sort((a, b) => (b.readinessScore ?? -1) - (a.readinessScore ?? -1));
+    }
+    return list;
+  }, [leads, query, statusFilter, segment, attentionIds, bandFilter, sortBy]);
 
   const t = stats?.totals;
   const configured = stats?.configured !== false;
@@ -1147,6 +1179,26 @@ export default function AdminDashboard() {
                     </option>
                   ))}
                 </select>
+                <select
+                  value={bandFilter}
+                  onChange={(e) => setBandFilter(e.target.value)}
+                  aria-label="Filter by readiness band"
+                >
+                  <option value="all">All readiness bands</option>
+                  {READINESS_BANDS.map((b) => (
+                    <option key={b.slug} value={b.slug}>
+                      {b.label} ({b.min}–{b.max})
+                    </option>
+                  ))}
+                </select>
+                <select
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value as "newest" | "score")}
+                  aria-label="Sort leads"
+                >
+                  <option value="newest">Newest first</option>
+                  <option value="score">Score, high → low</option>
+                </select>
               </div>
 
               <div className="adm-table-wrap">
@@ -1164,6 +1216,7 @@ export default function AdminDashboard() {
                         <th>Contact</th>
                         <th>Company</th>
                         <th>Interest</th>
+                        <th>Score</th>
                         <th>Budget</th>
                         <th>Status</th>
                         <th>Notes</th>
@@ -1223,6 +1276,9 @@ export default function AdminDashboard() {
                             )}
                             {l.challenge && <span className="detail">{l.challenge}</span>}
                             {(!l.interest || l.interest === "Not specified") && !l.challenge && "—"}
+                          </td>
+                          <td className="rdy-col">
+                            <ScorePill score={l.readinessScore} band={l.readinessBand} />
                           </td>
                           <td className="budget">
                             {l.budget && l.budget !== "Not specified" ? l.budget : "—"}
@@ -1423,6 +1479,12 @@ export default function AdminDashboard() {
                   <div className="adm-dr-field">
                     <span>Source</span>
                     <b>{selected.source || "—"}</b>
+                  </div>
+                  <div className="adm-dr-field">
+                    <span>Readiness</span>
+                    <b>
+                      <ScorePill score={selected.readinessScore} band={selected.readinessBand} />
+                    </b>
                   </div>
                   <div className="adm-dr-field">
                     <span>Budget</span>

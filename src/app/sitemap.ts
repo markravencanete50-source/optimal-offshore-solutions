@@ -16,6 +16,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${siteUrl}/why-us`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
     { url: `${siteUrl}/team`, lastModified: now, changeFrequency: "monthly", priority: 0.7 },
     { url: `${siteUrl}/book-a-pilot`, lastModified: now, changeFrequency: "monthly", priority: 0.9 },
+    { url: `${siteUrl}/offshore-readiness`, lastModified: now, changeFrequency: "monthly", priority: 0.9 },
   ];
 
   const serviceDetail: MetadataRoute.Sitemap = servicePages.map((s) => ({

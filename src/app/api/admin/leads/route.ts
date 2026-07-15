@@ -42,6 +42,8 @@ export async function GET() {
         status: data.status ?? "new",
         notes: data.notes ?? "",
         source: data.source ?? "",
+        readinessScore: typeof data.readinessScore === "number" ? data.readinessScore : null,
+        readinessBand: typeof data.readinessBand === "string" ? data.readinessBand : "",
         createdAt: toIso(data.createdAt),
         updatedAt: toIso(data.updatedAt),
         bookedAt: toIso(data.bookedAt),

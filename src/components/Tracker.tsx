@@ -41,7 +41,10 @@ function isExcluded(): boolean {
   }
 }
 
-export function track(type: "pageview" | "cta_click" | "lead_submitted", label = "") {
+export function track(
+  type: "pageview" | "cta_click" | "lead_submitted" | "scorecard_start" | "scorecard_complete",
+  label = "",
+) {
   try {
     if (isExcluded()) return;
     const payload = JSON.stringify({
