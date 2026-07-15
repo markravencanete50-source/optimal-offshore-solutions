@@ -8,6 +8,7 @@ const links = [
   { href: "/services", label: "Services" },
   { href: "/approach", label: "Approach" },
   { href: "/why-us", label: "Why us" },
+  { href: "/offshore-readiness", label: "Readiness" },
   { href: "/team", label: "Team" },
 ];
 
